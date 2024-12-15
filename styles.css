@@ -135,3 +135,70 @@ main p {
 .system-button:focus {
   outline: 2px solid #FFD700; /* Gold outline for accessibility */
 }
+
+
+button {
+  background-color: #FFD700; /* 黃色背景 */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 3px 10px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* 陰影 */
+  transition: box-shadow 0.3s, transform 0.2s;
+  margin-top: 20px;
+}
+
+button:hover {
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3); /* 懸停時陰影加深 */
+  transform: translateY(-2px); /* 懸停時略微抬高 */
+}
+
+button:active {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 點擊時陰影縮小 */
+  transform: translateY(0); /* 點擊時回到原位置 */
+}
+
+/* 基本表單樣式 */
+form {
+  max-width: 400px;
+  margin: 50px auto; /* 中心對齊 */
+  padding: 20px;
+  background-color: #ffffff; /* 白色背景 */
+  border-radius: 15px; /* 圓角容器 */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 輕微陰影 */
+}
+
+/* 標籤樣式 */
+label {
+  display: block;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333; /* 深色文字 */
+  margin-bottom: 8px; /* 與輸入框的間距 */
+}
+
+/* 輸入框樣式 */
+input[type="text"], input[type="password"] {
+  width: 80%;
+  padding: 10px 15px; /* 內邊距 */
+  font-size: 1rem;
+  color: #333; /* 深色文字 */
+  background-color: #f9f9f9; /* 淺灰色背景 */
+  border: 1px solid #ccc; /* 淺色邊框 */
+  border-radius: 25px; /* 圓角 */
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1); /* 內陰影 */
+  transition: all 0.3s ease; /* 平滑過渡效果 */
+  margin-bottom: 20px;
+}
+
+/* 輸入框聚焦樣式 */
+input[type="text"]:focus, input[type="password"]:focus {
+  background-color: #ffffff; /* 聚焦時改為白色背景 */
+  border-color: #0078D7; /* 聚焦時改為藍色邊框 */
+  box-shadow: 0 0 6px rgba(0, 120, 215, 0.5); /* 聚焦時的藍色光暈 */
+  outline: none; /* 移除瀏覽器默認外框 */
+  margin-bottom: 20px;
+}
