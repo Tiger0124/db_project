@@ -23,22 +23,24 @@
         </select>
         <button type="submit">查詢</button>
     </form>
-    <table>
-        <tr>
-            <th>隊伍名稱</th>
-            <th>指導老師</th>
-            <th>學生名單</th>
-            <th>作品名稱</th>
-            <th>作品描述</th>
-        </tr>
-        <tr>
-            <td>隊伍名稱</td>
-            <td>指導老師</td>
-            <td>學生名單</td>
-            <td>作品名稱</td>
-            <td>作品描述</td>
-        </tr>
-    </table>
+    <div class="rounded-box">
+      <table style="width:100% ">
+          <tr>
+              <th>隊伍名稱</th>
+              <th>指導老師</th>
+              <th>學生名單</th>
+              <th>作品名稱</th>
+              <th>作品描述</th>
+          </tr>
+          <tr>
+              <td>c哈哈哈</td>
+              <td>吳俊興</td>
+              <td>李憲昌 林柏諺 宋暐峻 何皓宇 </td>
+              <td>作品名稱</td>
+              <td>作品描述</td>
+          </tr>
+      </table>
+    </div>
     <form action="admin_dashboard.php" method="POST">
         <input type="hidden" name="username" value="<?php echo $_POST['username']; ?>">
         <input type="hidden" name="password" value="<?php echo $_POST['password']; ?>">

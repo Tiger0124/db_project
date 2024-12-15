@@ -214,6 +214,7 @@ input[type="text"]:focus, input[type="password"]:focus {
   padding: 15px; /* 內邊距，讓內容不貼邊 */
   width: auto; /* 設定方框寬度（可根據需要調整） */
   margin: 50px auto;
+  overflow-x: auto;
 }
 
 /* 設置 ul 和 li 的基本樣式 */
@@ -241,4 +242,69 @@ a {
 /* 懸停時變化 */
 a:hover {
   color: #005BB5; /* 懸停時改變顏色 */
+}
+
+/* 外層容器樣式 */
+.admin-buttons {
+  display: flex; /* 使用 flex 來排列按鈕 */
+  flex-direction: column; /* 垂直排列表單 */
+  align-items: center; /* 水平居中 */
+  gap: 15px; /* 按鈕之間的間隔 */
+  padding: 20px;
+  background-color: #f9f9f9; /* 淡灰背景 */
+  border-radius: 10px; /* 圓角 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 添加陰影 */
+  width: 400px; /* 設置容器寬度 */
+  margin: 20px auto; /* 水平居中並在上下保留空間 */
+}
+
+/* 按鈕樣式 */
+.admin-buttons button {
+  width: 100%; /* 按鈕寬度占滿父容器 */
+  padding: 10px 20px; /* 上下和左右的內邊距 */
+  font-size: 16px; /* 字體大小 */
+  font-weight: bold; /* 加粗文字 */
+  color: white; /* 白色文字 */
+  background-color: #FFD700; /* 主按鈕顏色 */
+  border: none; /* 移除邊框 */
+  border-radius: 8px; /* 按鈕圓角 */
+  cursor: pointer; /* 鼠標懸停時顯示手形 */
+  transition: background-color 0.3s ease; /* 添加過渡效果 */
+}
+
+/* 按鈕懸停效果 */
+.admin-buttons button:hover {
+  color: #005BB5; /* 懸停時更深的藍色 */
+}
+
+/* 表單樣式（可選） */
+.admin-buttons form {
+  width: 100%; /* 表單寬度與按鈕保持一致 */
+  margin: 0; /* 移除表單的預設外邊距 */
+}
+
+
+table {
+  width: 100%;
+  border-collapse: collapse; /* 去除邊框間的間隙 */
+}
+
+th, td {
+  border: 1px solid #ddd; /* 表格邊框顏色 */
+  padding: 10px; /* 單元格內邊距 */
+  text-align: left; /* 文字左對齊 */
+  word-wrap: break-word; /* 強制單詞斷行 */
+  word-break: break-word; /* 允許在單詞內斷行 */
+  max-width: 150px; /* 限制單元格寬度 */
+  overflow: hidden; /* 隱藏超出部分 */
+}
+
+th {
+  background-color: #FFD700; /* 標題背景顏色 */
+  color: white; /* 標題文字顏色 */
+  font-weight: bold;
+}
+
+td {
+  background-color: #fff; /* 單元格背景顏色 */
 }
