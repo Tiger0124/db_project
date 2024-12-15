@@ -52,7 +52,6 @@
                         </tr>
                     </tbody>
                 </table>
-       
     </main>
 </body>
 </html>
