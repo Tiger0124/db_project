@@ -1,0 +1,51 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .navbar {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    padding: 10px 20px;
+    border-bottom: 2px solid orange;
+  }
+  
+  .logo {
+    width: 360px;
+    height: 69px;
+  }
+  
+  h1 {
+    flex: 1;
+    text-align: right;
+    font-size: 18px;
+    color: black;
+  }
+  
+  nav {
+    background-color: orange;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  nav button {
+    margin: 0 5px;
+    padding: 10px 20px;
+    background-color: white;
+    color: orange;
+    border: 1px solid white;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  nav button:hover {
+    background-color: #ffcc99;
+  }
+  
+  #content {
+    padding: 20px;
+  }
+  
