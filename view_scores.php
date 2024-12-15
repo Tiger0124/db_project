@@ -9,7 +9,9 @@
 <body>
   <header>
     <div class="navbar">
-      <img src="images/logo.png" alt="Logo" class="logo">
+      <a href="main.php" alt="Logo" class="logo">
+        <img src="images/logo.png" alt="Logo" class="logo">
+      </a>
       <h1>高雄大學激發學生創意競賽管理系統</h1>
     </div>
   </header>
