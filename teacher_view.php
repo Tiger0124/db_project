@@ -98,5 +98,10 @@
             </div>
         </section>
     </main>
+    <form action="teacher_dashboard.php" method="POST">
+        <input type="hidden" name="username" value="<?php echo $_POST['username']; ?>">
+        <input type="hidden" name="password" value="<?php echo $_POST['password']; ?>">
+        <button type="submit">返回</button>
+    </form>
 </body>
 </html>

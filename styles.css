@@ -184,8 +184,7 @@ label {
 }
 
 /* 輸入框樣式 */
-input[type="text"], input[type="password"] ,input[type="email"],
-input[type="tel"] {
+input[type="text"], input[type="password"] ,input[type="email"],input[type="tel"] {
   width: 80%;
   padding: 10px 15px; /* 內邊距 */
   font-size: 1rem;
@@ -199,8 +198,7 @@ input[type="tel"] {
 }
 
 /* 輸入框聚焦樣式 */
-input[type="text"]:focus, input[type="password"]:focus i,nput[type="email"]:focus,
-input[type="tel"]:focus {
+input[type="text"]:focus, input[type="password"]:focus ,input[type="email"]:focus,input[type="tel"]:focus {
   background-color: #ffffff; /* 聚焦時改為白色背景 */
   border-color: #FFD700; /* 聚焦時改為藍色邊框 */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 聚焦時的藍色光暈 */

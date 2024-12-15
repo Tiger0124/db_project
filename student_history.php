@@ -51,5 +51,8 @@
                 <p>該年份無作品資料。</p>
             <?php endif; ?>
         </main> 
+        <form action="main.php" method="POST">
+        <button type="submit">回主頁</button>
+    </form>
     </body>
 </html>
