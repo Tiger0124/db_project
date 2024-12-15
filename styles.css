@@ -169,9 +169,9 @@ form {
   max-width: 400px;
   margin: 50px auto; /* 中心對齊 */
   padding: 20px;
-  background-color: #ffffff; /* 白色背景 */
+  /*background-color: #ffffff;  白色背景 */
   border-radius: 15px; /* 圓角容器 */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 輕微陰影 */
+  /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 輕微陰影 */
 }
 
 /* 標籤樣式 */
