@@ -9,13 +9,15 @@
 <body>
     <header>
         <div class="navbar">
+        <a href="main.php" alt="Logo" class="logo">
             <img src="images/logo.png" alt="Logo" class="logo">
+        </a>
             <h1>高雄大學激發學生創意競賽報名系統</h1>
         </div>
     </header>
 
-    <main>
-        <section class="registration-form">
+    
+    <main id="content">
             <h2>競賽報名表</h2>
             <form action="register_team.php" method="POST">
                 <h3>隊伍資料</h3>
@@ -142,7 +144,7 @@
 
                 <button type="submit">提交報名表</button>
             </form>
-        </section>
+        
     </main>
 </body>
 </html>

@@ -71,7 +71,7 @@ main {
   background: white;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  text-align: center;
+  /*text-align: center;*/
 }
 
 main h2 {
@@ -169,9 +169,9 @@ form {
   max-width: 400px;
   margin: 50px auto; /* 中心對齊 */
   padding: 20px;
-  background-color: #ffffff; /* 白色背景 */
+  /*background-color: #ffffff;  白色背景 */
   border-radius: 15px; /* 圓角容器 */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 輕微陰影 */
+  /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 輕微陰影 */
 }
 
 /* 標籤樣式 */
@@ -306,4 +306,33 @@ th {
 
 td {
   background-color: #fff; /* 單元格背景顏色 */
+}
+
+/* 按鈕容器樣式 */
+.buttons {
+  display: flex;
+  flex-direction: column; /* 按鈕垂直排列 */
+  gap: 15px; /* 按鈕之間的間隙 */
+  align-items: center; /* 水平居中 */
+  padding: 20px;
+}
+
+/* 按鈕樣式 */
+.buttons input[type="submit"] {
+  width: 100%; /* 按鈕寬度為父容器的 100% */
+  max-width: 300px; /* 限制最大寬度 */
+  padding: 10px 20px; /* 上下和左右的內邊距 */
+  font-size: 16px; /* 字體大小 */
+  font-weight: bold; /* 字體加粗 */
+  color: white; /* 文字顏色 */
+  background-color: #FFD700; /* 按鈕背景顏色 */
+  border: none; /* 移除邊框 */
+  border-radius: 8px; /* 圓角 */
+  cursor: pointer; /* 鼠標懸停時顯示手形 */
+  transition: background-color 0.3s ease; /* 背景顏色過渡 */
+}
+
+/* 按鈕懸停效果 */
+.buttons input[type="submit"]:hover {
+  color: #005BB5; /* 懸停時改變顏色 */
 }
