@@ -14,7 +14,7 @@
         </div>
     </header>
 
-    <main>
+    <main id="content">
         <section class="edit-team-section">
             <h2>修改評審資料</h2>
             <form action="judge_dashboard.php" method="POST">

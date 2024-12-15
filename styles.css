@@ -70,7 +70,7 @@ main {
   /*margin: 20px auto;*/
   background: white;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   /*text-align: center;*/
 }
 
@@ -123,7 +123,7 @@ main p {
   border: none;
   border-radius: 8px;
   transition: background-color 0.3s, transform 0.2s;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .system-button:hover {
@@ -149,18 +149,18 @@ button {
   font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* 陰影 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 陰影 */
   transition: box-shadow 0.3s, transform 0.2s;
   margin-top: 20px;
 }
 
 button:hover {
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3); /* 懸停時陰影加深 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 懸停時陰影加深 */
   transform: translateY(-2px); /* 懸停時略微抬高 */
 }
 
 button:active {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 點擊時陰影縮小 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 點擊時陰影縮小 */
   transform: translateY(0); /* 點擊時回到原位置 */
 }
 
@@ -184,7 +184,8 @@ label {
 }
 
 /* 輸入框樣式 */
-input[type="text"], input[type="password"] {
+input[type="text"], input[type="password"] ,input[type="email"],
+input[type="tel"] {
   width: 80%;
   padding: 10px 15px; /* 內邊距 */
   font-size: 1rem;
@@ -198,10 +199,11 @@ input[type="text"], input[type="password"] {
 }
 
 /* 輸入框聚焦樣式 */
-input[type="text"]:focus, input[type="password"]:focus {
+input[type="text"]:focus, input[type="password"]:focus i,nput[type="email"]:focus,
+input[type="tel"]:focus {
   background-color: #ffffff; /* 聚焦時改為白色背景 */
   border-color: #FFD700; /* 聚焦時改為藍色邊框 */
-  box-shadow: 0 0 6px rgba(0, 120, 215, 0.5); /* 聚焦時的藍色光暈 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 聚焦時的藍色光暈 */
   outline: none; /* 移除瀏覽器默認外框 */
   margin-bottom: 20px;
 }
@@ -252,7 +254,7 @@ a:hover {
   padding: 20px;
   background-color: #f9f9f9; /* 淡灰背景 */
   border-radius: 10px; /* 圓角 */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 添加陰影 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 添加陰影 */
   width: 400px; /* 設置容器寬度 */
   margin: 20px auto; /* 水平居中並在上下保留空間 */
 }
@@ -289,7 +291,7 @@ table {
 }
 
 th, td {
-  border: 1px solid #ddd; /* 表格邊框顏色 */
+  border: 1px solid #ccc; /* 表格邊框顏色 */
   padding: 10px; /* 單元格內邊距 */
   text-align: left; /* 文字左對齊 */
   word-wrap: break-word; /* 強制單詞斷行 */
@@ -336,3 +338,5 @@ td {
 .buttons input[type="submit"]:hover {
   color: #005BB5; /* 懸停時改變顏色 */
 }
+
+
