@@ -12,6 +12,6 @@ if ($_POST['username'] === 'admin' && $_POST['password'] === '1234') {
     </div>';
 } else {
     echo '<p>登入失敗，請返回並重試。</p>';
-    echo '<a href="index.php?page=admin">返回</a>';
+    echo '<a href="admin.php">返回</a>';
 }
 ?>
