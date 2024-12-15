@@ -1,14 +1,35 @@
 <?php
+
 if ($_POST['username'] === 'admin' && $_POST['password'] === '1234') {
     echo '<h2>歡迎，管理員！</h2>';
     echo '<p>請選擇以下功能：</p>';
     echo '
     <div class="admin-buttons">
-        <a href="view_students.php">查詢學生資料</a>
-        <a href="edit_students.php">修改報名資料</a>
-        <a href="view_judges.php">查詢評審資料</a>
-        <a href="view_scores.php">查看評分資料</a>
-        <a href="announcements.php">公告重要事項</a>
+        <form action="view_students.php" method="POST">
+            <input type="hidden" name="username" value="' . $_POST['username'] . '">
+            <input type="hidden" name="password" value="' . $_POST['password'] . '">
+            <button type="submit">查詢隊伍資料</button>
+        </form>
+        <form action="edit_students.php" method="POST">
+            <input type="hidden" name="username" value="' . $_POST['username'] . '">
+            <input type="hidden" name="password" value="' . $_POST['password'] . '">
+            <button type="submit">修改隊伍資料</button>
+        </form>
+        <form action="view_judges.php" method="POST">
+            <input type="hidden" name="username" value="' . $_POST['username'] . '">
+            <input type="hidden" name="password" value="' . $_POST['password'] . '">
+            <button type="submit">查詢評審資料</button>
+        </form>
+        <form action="view_scores.php" method="POST">
+            <input type="hidden" name="username" value="' . $_POST['username'] . '">
+            <input type="hidden" name="password" value="' . $_POST['password'] . '">
+            <button type="submit">查看評分資料</button>
+        </form>
+        <form action="announcements.php" method="POST">
+            <input type="hidden" name="username" value="' . $_POST['username'] . '">
+            <input type="hidden" name="password" value="' . $_POST['password'] . '">
+            <button type="submit">公告重要事項</button>
+        </form>
     </div>';
 } else {
     echo '<p>登入失敗，請返回並重試。</p>';

@@ -13,8 +13,8 @@
         <h1>高雄大學激發學生創意競賽管理系統</h1>
         </div>
     </header>
-        <h2 style="text-align: center">管理員登入系統 </h2> 
-    <form action="admin_dashboard.php" method="POST">
+        <h2 style="text-align: center">學生登入系統 </h2> 
+    <form action="student_dashboard.php" method="POST">
         <label for="username">用戶名</label>
         <input type="text" id="username" name="username" required>
         <label for="password">密碼</label>
