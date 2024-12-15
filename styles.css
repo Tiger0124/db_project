@@ -17,9 +17,10 @@ body {
 
 /* Header styles */
 header {
+  width:100%;
   background-color: #e5e5e5; /* Kaohsiung University blue tone */
   color: black;
-  padding: 20px 10px;
+  /*padding: 20px 10px;*/
   text-align: center;
 }
 
@@ -64,7 +65,7 @@ nav a:hover {
 
 /* Main content styles */
 main {
-  padding: 20px;
+  /*padding: 20px;*/
   width: 100%;
   /*margin: 20px auto;*/
   background: white;
@@ -85,8 +86,10 @@ main p {
 
 /* Responsive design */
 @media (max-width: 768px) {
+  
   header h1 {
     font-size: 1.2rem;
+    padding: 0 10px;
   }
 
   nav a {
