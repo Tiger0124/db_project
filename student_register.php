@@ -17,7 +17,7 @@
     </header>
 
     
-        
+    <main id="content">
             <h2>競賽報名表</h2>
             <form action="register_team.php" method="POST">
                 <h3>隊伍資料</h3>
@@ -145,6 +145,6 @@
                 <button type="submit">提交報名表</button>
             </form>
         
-    
+    </main>
 </body>
 </html>
