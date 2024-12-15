@@ -9,7 +9,9 @@
 <body>
     <header>
         <div class="navbar">
+        <a href="main.php" alt="Logo" class="logo">
             <img src="images/logo.png" alt="Logo" class="logo">
+        </a>
             <h1>高雄大學激發學生創意競賽管理系統</h1>
         </div>
     </header>
@@ -94,5 +96,10 @@
             </form>
         </section>
     </main>
+    <form action="student_dashboard.php" method="POST">
+            <input type="hidden" name="username" value="<?php echo $_POST['username']; ?>">
+            <input type="hidden" name="password" value="<?php echo $_POST['password']; ?>">
+            <button type="submit">返回</button>
+    </form>
 </body>
 </html>

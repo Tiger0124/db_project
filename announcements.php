@@ -16,7 +16,7 @@
     </div>
   </header>
 
-  <main>
+  <main id="content">
     <section class="announcement-section">
       <h2>發布公告</h2>
       <form action="post_announcement.php" method="POST" enctype="multipart/form-data">
@@ -37,5 +37,10 @@
       </form>
     </section>
   </main>
+  <form action="admin_dashboard.php" method="POST">
+            <input type="hidden" name="username" value="<?php echo $_POST['username']; ?>">
+            <input type="hidden" name="password" value="<?php echo $_POST['password']; ?>">
+            <button type="submit">返回</button>
+        </form>
 </body>
 </html>
