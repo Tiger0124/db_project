@@ -14,7 +14,7 @@
         </div>
     </header>
         
-        <h2 style="text-align: center;">管理員登入系統 </h2> 
+        <h2 style="text-align: center">管理員登入系統 </h2> 
         
     <form action="admin_dashboard.php" method="POST">
         <label for="username">用戶名</label>
