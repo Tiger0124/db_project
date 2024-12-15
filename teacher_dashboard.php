@@ -17,7 +17,7 @@
     </header>
     <main id="content">
     <?php
-
+            
         if ($_POST['username'] === 'admin' && $_POST['password'] === '1234') {
             echo '<h2>歡迎，xx教授！</h2>';
             echo '
