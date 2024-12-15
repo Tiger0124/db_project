@@ -17,8 +17,8 @@ body {
 
 /* Header styles */
 header {
-  background-color: #0078D7; /* Kaohsiung University blue tone */
-  color: white;
+  background-color: #e5e5e5; /* Kaohsiung University blue tone */
+  color: black;
   padding: 20px 10px;
   text-align: center;
 }
@@ -46,7 +46,7 @@ nav {
   margin-top: 15px;
   display: flex;
   justify-content: center;
-  background-color: #005BB5; /* A darker blue for the nav */
+  background-color: #f5be11; /* A darker blue for the nav */
   padding: 10px 0;
 }
 
@@ -75,7 +75,7 @@ main {
 
 main h2 {
   font-size: 1.5rem;
-  color: #0078D7;
+  color: black;
 }
 
 main p {
@@ -115,7 +115,7 @@ main p {
   font-size: 1rem;
   font-weight: bold;
   text-align: center;
-  background-color: #0078D7;
+  background-color: #f5be11;
   color: white;
   border: none;
   border-radius: 8px;
@@ -124,12 +124,12 @@ main p {
 }
 
 .system-button:hover {
-  background-color: #005BB5; /* Darker blue on hover */
+  background-color: #f5be11; /* Darker blue on hover */
   transform: scale(1.05);    /* Slightly enlarge */
 }
 
 .system-button:active {
-  background-color: #003F7D; /* Even darker blue when clicked */
+  background-color: #f5be11; /* Even darker blue when clicked */
 }
 
 .system-button:focus {
