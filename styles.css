@@ -65,8 +65,8 @@ nav a:hover {
 /* Main content styles */
 main {
   padding: 20px;
-  max-width: 1000px;
-  margin: 20px auto;
+  width: 100%;
+  /*margin: 20px auto;*/
   background: white;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -197,8 +197,45 @@ input[type="text"], input[type="password"] {
 /* 輸入框聚焦樣式 */
 input[type="text"]:focus, input[type="password"]:focus {
   background-color: #ffffff; /* 聚焦時改為白色背景 */
-  border-color: #0078D7; /* 聚焦時改為藍色邊框 */
+  border-color: #FFD700; /* 聚焦時改為藍色邊框 */
   box-shadow: 0 0 6px rgba(0, 120, 215, 0.5); /* 聚焦時的藍色光暈 */
   outline: none; /* 移除瀏覽器默認外框 */
   margin-bottom: 20px;
+}
+
+/* 設置方框的圓角、邊框和內部樣式 */
+.rounded-box {
+  background-color: #f9f9f9; /* 方框背景色 */
+  border: 1px solid #ccc; /* 邊框顏色 */
+  border-radius: 15px; /* 圓角 */
+  padding: 15px; /* 內邊距，讓內容不貼邊 */
+  width: auto; /* 設定方框寬度（可根據需要調整） */
+  margin: 50px auto;
+}
+
+/* 設置 ul 和 li 的基本樣式 */
+ul {
+  list-style-type: none; /* 移除列表項目符號 */
+  padding: 0; /* 移除預設的內邊距 */
+  margin: 0; /* 移除預設的外邊距 */
+}
+
+/* 設置每個 li 的間距 */
+li {
+  margin-bottom: 10px; /* 列表項目間距 */
+}
+
+/* 設置 a 標籤樣式 */
+a {
+  text-decoration: none; /* 移除超鏈接的底線 */
+  color: #FFD700; /* 設定鏈接顏色 */
+  font-weight: bold; /* 加粗文字 */
+  display: block; /* 讓鏈接佔據整個 li */
+  padding: 8px 0; /* 上下內邊距 */
+  transition: color 0.3s ease; /* 文字顏色過渡效果 */
+}
+
+/* 懸停時變化 */
+a:hover {
+  color: #005BB5; /* 懸停時改變顏色 */
 }
