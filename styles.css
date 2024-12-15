@@ -1,7 +1,7 @@
 /* Reset some basic styles */
 body, h1, h2, p, a {
   margin: 0;
-  padding: 0;
+  /*padding: 0;*/
   text-decoration: none;
   box-sizing: border-box;
 }
@@ -235,7 +235,6 @@ a {
   color: #FFD700; /* 設定鏈接顏色 */
   font-weight: bold; /* 加粗文字 */
   display: block; /* 讓鏈接佔據整個 li */
-  padding: 8px 0; /* 上下內邊距 */
   transition: color 0.3s ease; /* 文字顏色過渡效果 */
 }
 

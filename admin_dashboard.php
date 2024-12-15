@@ -9,7 +9,9 @@
 <body>
     <header>
         <div class="navbar">
-            <img src="images/logo.png" alt="Logo" class="logo">
+            <a href="main.php" alt="Logo" class="logo">
+                <img src="images/logo.png" alt="Logo" class="logo">
+            </a>
             <h1>高雄大學激發學生創意競賽管理系統</h1>
         </div>
     </header>
@@ -23,11 +25,6 @@
                 <input type="hidden" name="username" value="' . $_POST['username'] . '">
                 <input type="hidden" name="password" value="' . $_POST['password'] . '">
                 <button type="submit">查詢隊伍資料</button>
-            </form>
-            <form action="edit_students.php" method="POST">
-                <input type="hidden" name="username" value="' . $_POST['username'] . '">
-                <input type="hidden" name="password" value="' . $_POST['password'] . '">
-                <button type="submit">修改隊伍資料</button>
             </form>
             <form action="view_judges.php" method="POST">
                 <input type="hidden" name="username" value="' . $_POST['username'] . '">
