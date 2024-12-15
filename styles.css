@@ -65,8 +65,8 @@ nav a:hover {
 /* Main content styles */
 main {
   padding: 20px;
-  max-width: 1000px;
-  margin: 20px auto;
+  width: 100%;
+  /*margin: 20px auto;*/
   background: white;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -209,7 +209,7 @@ input[type="text"]:focus, input[type="password"]:focus {
   border: 1px solid #ccc; /* 邊框顏色 */
   border-radius: 15px; /* 圓角 */
   padding: 15px; /* 內邊距，讓內容不貼邊 */
-  width: 400px; /* 設定方框寬度（可根據需要調整） */
+  width: auto; /* 設定方框寬度（可根據需要調整） */
   margin: 50px auto;
 }
 

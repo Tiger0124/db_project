@@ -14,7 +14,7 @@
     </div>
     </header>
     <main id="content">
-    <h2>歡迎進入創意競賽管理系統</h2><p>請選擇功能。</p>
+        <h2>歡迎進入創意競賽管理系統</h2><!--<p>請選擇功能。</p>-->
         <div class="rounded-box">
             <div class="button-container">
                 <a href="admin.php" class="system-button">管理員系統</a>
