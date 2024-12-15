@@ -28,15 +28,15 @@
             <th>隊伍名稱</th>
             <th>指導老師</th>
             <th>學生名單</th>
-            <th>作品名稱</th>
-            <th>作品描述</th>
+            <th>作品海報</th>
+            <th>作品說明書</th>
         </tr>
         <tr>
             <td>隊伍名稱</td>
             <td>指導老師</td>
             <td>學生名單</td>
-            <td>作品名稱</td>
-            <td>作品描述</td>
+            <td>作品海報</td>
+            <td>作品說明書</td>
         </tr>
     </table>
     <form action="admin_dashboard.php" method="POST">

@@ -10,11 +10,6 @@ if ($_POST['username'] === 'admin' && $_POST['password'] === '1234') {
             <input type="hidden" name="password" value="' . $_POST['password'] . '">
             <button type="submit">查詢隊伍資料</button>
         </form>
-        <form action="edit_students.php" method="POST">
-            <input type="hidden" name="username" value="' . $_POST['username'] . '">
-            <input type="hidden" name="password" value="' . $_POST['password'] . '">
-            <button type="submit">修改隊伍資料</button>
-        </form>
         <form action="view_judges.php" method="POST">
             <input type="hidden" name="username" value="' . $_POST['username'] . '">
             <input type="hidden" name="password" value="' . $_POST['password'] . '">
