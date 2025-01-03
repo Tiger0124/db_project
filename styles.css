@@ -1,3 +1,8 @@
+* {
+  margin: 0;
+  /*padding: 0;*/
+  /*box-sizing: border-box;*/
+}
 /* Reset some basic styles */
 body, h1, h2, p, a {
   margin: 0;
@@ -22,6 +27,8 @@ header {
   color: black;
   /*padding: 20px 10px;*/
   text-align: center;
+  
+  
 }
 
 header .navbar {
@@ -83,7 +90,13 @@ main p {
   margin: 15px 0;
   color: #555;
 }
-
+.main-content {
+  flex: 1; /* 主內容填滿 Header 和 Footer 之間的空間 */
+  margin-top: 60px; /* 避免被 Header 遮擋，高度與 Header 相匹配 */
+  margin-bottom: 50px; /* 避免被 Footer 遮擋，高度與 Footer 相匹配 */
+  padding: 20px;
+  background-color: #f9f9f9;
+}
 /* Responsive design */
 @media (max-width: 768px) {
   
@@ -99,6 +112,16 @@ main p {
 
   header .logo {
     height: 50px;
+  }
+
+  .footer-content {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .footer-links {
+    flex-direction: column;
+    gap: 5px;
   }
 }
 
@@ -226,7 +249,7 @@ ul {
 
 /* 設置每個 li 的間距 */
 li {
-  margin-bottom: 10px; /* 列表項目間距 */
+  margin-bottom: 0px; /* 列表項目間距 */
 }
 
 /* 設置 a 標籤樣式 */
@@ -234,7 +257,7 @@ a {
   text-decoration: none; /* 移除超鏈接的底線 */
   color: #FFD700; /* 設定鏈接顏色 */
   font-weight: bold; /* 加粗文字 */
-  display: block; /* 讓鏈接佔據整個 li */
+  /*display: block;  讓鏈接佔據整個 li */
   transition: color 0.3s ease; /* 文字顏色過渡效果 */
 }
 
@@ -337,4 +360,71 @@ td {
   color: #005BB5; /* 懸停時改變顏色 */
 }
 
+
+/* Footer 的基本樣式 */
+.site-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #2c3e50;
+  color: #ecf0f1;
+  text-align: center;
+  padding: 10px;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Footer 內容區塊 */
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0px;
+}
+
+/* 同行資訊樣式 */
+.footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap; /* 保證在小螢幕時能自動換行 */
+}
+
+/* 文字樣式 */
+.site-footer p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* 鏈接樣式 */
+.site-footer a {
+  color: #1abc9c;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.site-footer a:hover {
+  color: #16a085;
+}
+
+/* 鏈接列表樣式 */
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 15px;
+}
+
+.footer-links li {
+  display: inline;
+}
+
+.footer-links li a {
+  font-size: 14px;
+}
 

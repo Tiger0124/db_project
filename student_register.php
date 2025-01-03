@@ -147,4 +147,19 @@
         
     </main>
 </body>
+<footer class="site-footer">
+    <div class="footer-content">
+        <p>&copy; 2024 我的網站名稱. 保留所有權利.</p>
+        <div class="footer-row">
+        <div class="footer-container">
+            <p>聯絡我們 : <a href="mailto:contact@mysite.com">contact@mysite.com</a></p>
+        </div>
+        <ul class="footer-links">
+            <li><a href="/about">關於我們</a></li>
+            <li><a href="/privacy">隱私政策</a></li>
+            <li><a href="/terms">使用條款</a></li>
+        </ul>
+        </div>
+    </div>
+</footer>
 </html>
