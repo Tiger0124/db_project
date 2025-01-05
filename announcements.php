@@ -21,19 +21,25 @@
       <h2>發布公告</h2>
       <form action="post_announcement.php" method="POST" enctype="multipart/form-data">
         <!-- 公告標題 -->
-        <label for="announcement-title">公告內容：</label>
-        <textarea id="announcement-content" name="announcement_content" placeholder="請輸入公告內容" rows="5" required></textarea>
-        
-        <!-- 公告內容 -->
-        <label for="announcement-content">競賽規則：</label>
-        <textarea id="announcement-content" name="announcement_content" placeholder="請輸入競賽規則" rows="5" required></textarea>
-        
-        <!-- 檔案上傳 -->
-        <label for="file-upload">附加檔案：</label>
-        <input type="file" id="file-upload" name="uploaded_file">
+        <?php
+        include 'conn.php';
+        $sql = "SELECT * FROM 創意競賽 where 屆數 = '第13屆'";
+        $result = mysqli_query($link, $sql);
+        $row = mysqli_fetch_array($result);
+        echo "<label for='announcement-content'>公告內容：</label>";
+        echo "<textarea id='announcement-content' name='announcement_content' rows='5' required>" . htmlspecialchars($row['公告內容']) . "</textarea>";
+
+        echo "<label for='competition-rules'>比賽規則：</label>";
+        echo "<textarea id='competition-rules' name='competition_rules' rows='5' required>" . htmlspecialchars($row['比賽規則']) . "</textarea>";
+
+        echo "<label for='announcement-file'>上傳檔案：</label>";
+        echo "<input type='file' id='announcement-file' name='announcement_file' accept='.pdf' required>";
+        ?>
         
         <!-- 提交按鈕 -->
         <button type="submit">發布公告</button>
+        <input type="hidden" name="username" value="<?php echo $_POST['username']; ?>">
+        <input type="hidden" name="password" value="<?php echo $_POST['password']; ?>">
       </form>
     </section>
   

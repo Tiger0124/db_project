@@ -62,7 +62,15 @@
                         ?>
                     </tr>
         </table>
-        <p>活動海報</p>
+        <?php
+            include 'conn.php';
+            $sql = "SELECT * FROM 創意競賽 where 屆數 = '第13屆'";
+            $result = mysqli_query($link, $sql);
+            while ($row = mysqli_fetch_array($result)) {
+                $blob = base64_encode($row['宣傳海報']);
+                echo "<a href='data:application/pdf;base64," . $blob . "' download>宣傳海報.pdf</a>";
+            }
+        ?>
     </main>
 </body>
 <footer class="site-footer">
