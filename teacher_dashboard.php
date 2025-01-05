@@ -24,8 +24,9 @@
 
         $sql = "SELECT * FROM 指導老師 WHERE 隊伍編號 = '".$filename."' and 身分證字號 = '".$filepasswd."'";
         $result = mysqli_query($link, $sql);
+        $name = mysqli_fetch_array($result);
         if (mysqli_num_rows($result)==1) {
-            echo '<h2>歡迎，'.$filename.' 教授！</h2>';
+            echo '<h2>歡迎，'.$name['姓名'].' 教授！</h2>';
             echo '
             <div class="buttons">
                 <form action="teacher_view.php" method="post">
@@ -41,6 +42,9 @@
             </div>';
         } else {
             echo '<h2>登入失敗，請返回並重試。</h2>';
+            echo '<P>隊伍帳號密碼提示</P>';
+            echo '<p>隊伍帳號：隊伍編號</p>';
+            echo '<p>隊伍密碼：身分證字號</p>';
         echo '
             <div class="button-container">    
                 <a href="teacher.php" class="system-button">返回</a>
