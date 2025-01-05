@@ -65,17 +65,15 @@
                         while($row = mysqli_fetch_assoc($result)){
                             echo "<tr>";
                             echo "<td>".$row['隊伍名稱']."</td>";
-                            echo "<td><a href='files/".$row['說明書']."' download>下載說明書</a></td>";
-                            echo "<td><a href='files/".$row['海報']."' download>下載海報</a></td>";
+                            $blob = base64_encode($row['說明書']);
+                            echo "<td><a href='data:application/pdf;base64,".$blob."' download>下載說明書</a></td>";
+                            $blob = base64_encode($row['海報']);
+                            echo "<td><a href='data:application/pdf;base64,".$blob."' download>下載海報</a></td>";
                             echo "<td><a href='".$row['作品展示_youtube連結']."' target='_blank'>影片連結</a></td>";
                             echo "<td><a href='".$row['程式碼_Github連結']."' target='_blank'>程式碼連結</a></td>";
                             echo "<td>";
                             echo "<form action='submit_score.php' method='POST'>";
                             echo "<input type='number' id='score".$row['隊伍編號']."' name='score".$row['隊伍編號']."' min='1' max='100' required>";
-                            echo "</td>";
-                            echo "<td>";
-                            echo "<button type='submit'>提交評分</button>";
-                            echo "</form>";
                             echo "</td>";
                             echo "</tr>";
                         }
