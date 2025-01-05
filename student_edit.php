@@ -17,6 +17,23 @@
     </header>
 
     <main>
+        <?php
+            include 'conn.php';
+            $select_db = @mysqli_select_db($link, "db_project"); //選擇資料庫
+            $filename=$_POST["username"];
+            $filepasswd=$_POST["password"];
+
+            $sql = "SELECT * FROM 學生 WHERE  姓名 = '".$filename."' and 身分證字號 = '".$filepasswd."'";
+            $result = mysqli_query($link, $sql);
+            if (mysqli_num_rows($result)==1) {
+                echo '<h2>歡迎，'.$filename.'！</h2>';
+            } else {
+                echo '<h2>登入失敗，請返回並重試。</h2>';
+                echo '
+                    <div class="button-container">    
+                        <a href="student_login.php" class="system-button">返回</a>
+                    </div>';
+            }
         <section class="edit-team-section">
             <h2>修改團隊成員資料</h2>
             <form action="student_dashboard.php" method="POST">
@@ -72,7 +89,55 @@
                     <input type="number" id="student2-grade" name="student2_grade" value="2" required>
                 </fieldset>
 
-                <!-- 其他學生資料可以類似新增 -->
+                <!-- 學生 3 資料 -->
+                <fieldset>
+                    <legend>學生 3</legend>
+                    <label for="student2-id">身分證字號：</label>
+                    <input type="text" id="student2-id" name="student2_id" value="B123456789" required>
+
+                    <label for="student2-studentid">學號：</label>
+                    <input type="text" id="student2-studentid" name="student2_studentid" value="11012346" required>
+
+                    <label for="student2-name">姓名：</label>
+                    <input type="text" id="student2-name" name="student2_name" value="李小華" required>
+
+                    <label for="student2-email">電子郵件：</label>
+                    <input type="email" id="student2-email" name="student2_email" value="student2@example.com" required>
+
+                    <label for="student2-phone">電話：</label>
+                    <input type="tel" id="student2-phone" name="student2_phone" value="0922345678" required>
+
+                    <label for="student2-department">科系：</label>
+                    <input type="text" id="student2-department" name="student2_department" value="機械工程學系" required>
+
+                    <label for="student2-grade">年級：</label>
+                    <input type="number" id="student2-grade" name="student2_grade" value="2" required>
+                </fieldset>
+
+                <!-- 學生 4 資料 -->
+                <fieldset>
+                    <legend>學生 4</legend>
+                    <label for="student2-id">身分證字號：</label>
+                    <input type="text" id="student2-id" name="student2_id" value="B123456789" required>
+
+                    <label for="student2-studentid">學號：</label>
+                    <input type="text" id="student2-studentid" name="student2_studentid" value="11012346" required>
+
+                    <label for="student2-name">姓名：</label>
+                    <input type="text" id="student2-name" name="student2_name" value="李小華" required>
+
+                    <label for="student2-email">電子郵件：</label>
+                    <input type="email" id="student2-email" name="student2_email" value="student2@example.com" required>
+
+                    <label for="student2-phone">電話：</label>
+                    <input type="tel" id="student2-phone" name="student2_phone" value="0922345678" required>
+
+                    <label for="student2-department">科系：</label>
+                    <input type="text" id="student2-department" name="student2_department" value="機械工程學系" required>
+
+                    <label for="student2-grade">年級：</label>
+                    <input type="number" id="student2-grade" name="student2_grade" value="2" required>
+                </fieldset>
 
                 <h3>指導教授資料</h3>
                 <fieldset>

@@ -21,7 +21,7 @@
         $filename=$_POST["username"];
         $filepasswd=$_POST["password"];
 
-        $sql = "SELECT * FROM 學生 WHERE  隊伍編號 = '".$filename."' and 身分證字號 = '".$filepasswd."'";
+        $sql = "SELECT * FROM 學生 WHERE  姓名 = '".$filename."' and 身分證字號 = '".$filepasswd."'";
         $result = mysqli_query($link, $sql);
         if (mysqli_num_rows($result)==1) {
             echo '<h2>歡迎，'.$filename.'！</h2>';
