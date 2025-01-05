@@ -23,6 +23,7 @@
                     <thead>
                         <tr>
                             <th>隊伍名稱</th>
+                            <th>作品名稱</th>
                             <th>作品說明書</th>
                             <th>海報</th>
                             <th>影片網址</th>
@@ -32,61 +33,42 @@
                     </thead>
                     <tbody>
                     <form action="submit_score.php" method="POST">
-                    
-                        <!-- 隊伍 1 -->
-                        <!-- <tr>
-                            <td>創新未來隊</td>
-                            <td><a href="files/description1.pdf" download>下載說明書</a></td>
-                            <td><a href="files/poster1.pdf" download>下載海報</a></td>
-                            <td><a href="https://youtu.be/example1" target="_blank">影片連結</a></td>
-                            <td><a href="https://github.com/example/project1" target="_blank">程式碼連結</a></td>
-                            <td>
-                                <input type="number" id="score1" name="score1" min="1" max="100" required>
-                            </td>
-                        </tr> -->
-                        <!-- 隊伍 2 -->
-                        <!-- <tr>
-                            <td>未來之星隊</td>
-                            <td><a href="files/description2.pdf" download>下載說明書</a></td>
-                            <td><a href="files/poster2.pdf" download>下載海報</a></td>
-                            <td><a href="https://youtu.be/example2" target="_blank">影片連結</a></td>
-                            <td><a href="https://github.com/example/project2" target="_blank">程式碼連結</a></td>
-                            <td>
-                            <input type="number" id="score1" name="score1" min="1" max="100" required>    
-                            </td>
-                        </tr> -->
-                    <?php
+                        <?php
                         include 'conn.php';
-                        // 獲取當前年份
                         $currentYear = date("Y");
-                        $select_db = @mysqli_select_db($link, "db_project"); //選擇資料庫
-                        $sql = "SELECT 隊伍.隊伍編號, 隊伍.隊伍名稱, 作品.說明書, 作品.海報, 作品.作品展示_youtube連結, 作品.程式碼_Github連結 FROM 隊伍 natural join 作品 WHERE 隊伍.參加年份 = '$currentYear'";
+                        $select_db = @mysqli_select_db($link, "db_project");
+                        $sql = "SELECT 隊伍.屆數, 隊伍.隊伍編號, 隊伍.隊伍名稱, 作品.作品名稱, 作品.說明書, 作品.海報, 作品.作品展示_youtube連結, 作品.程式碼_Github連結 
+                                FROM 隊伍 
+                                NATURAL JOIN 作品 
+                                WHERE 隊伍.參加年份 = '$currentYear'";
                         $result = mysqli_query($link, $sql);
-                        while($row = mysqli_fetch_assoc($result)){
+
+                        while ($row = mysqli_fetch_assoc($result)) {
                             echo "<tr>";
-                            echo "<td>".$row['隊伍名稱']."</td>";
+                            echo "<td>" . $row['隊伍名稱'] . "</td>";
+                            echo "<td>" . $row['作品名稱'] . "</td>";
                             $blob = base64_encode($row['說明書']);
-                            echo "<td><a href='data:application/pdf;base64,".$blob."' download>下載說明書</a></td>";
+                            echo "<td><a href='data:application/pdf;base64," . $blob . "' download>下載說明書</a></td>";
                             $blob = base64_encode($row['海報']);
-                            echo "<td><a href='data:application/pdf;base64,".$blob."' download>下載海報</a></td>";
-                            echo "<td><a href='".$row['作品展示_youtube連結']."' target='_blank'>影片連結</a></td>";
-                            echo "<td><a href='".$row['程式碼_Github連結']."' target='_blank'>程式碼連結</a></td>";
+                            echo "<td><a href='data:application/pdf;base64," . $blob . "' download>下載海報</a></td>";
+                            echo "<td><a href='" . $row['作品展示_youtube連結'] . "' target='_blank'>影片連結</a></td>";
+                            echo "<td><a href='" . $row['程式碼_Github連結'] . "' target='_blank'>程式碼連結</a></td>";
                             echo "<td>";
-                            echo "<form action='submit_score.php' method='POST'>";
-                            echo "<input type='number' id='score".$row['隊伍編號']."' name='score".$row['隊伍編號']."' min='1' max='100' required>";
+                            echo "<input type='number' name='scores[" . $row['隊伍編號'] . "]' min='1' max='100' required>";
+                            echo "<input type='hidden' name='team_ids[" . $row['隊伍編號'] . "]' value='" . $row['隊伍編號'] . "'>";
+                            echo "<input type='hidden' name='sessions[" . $row['隊伍編號'] . "]' value='" . $row['屆數'] . "'>";
+                            echo "<input type='hidden' name='username' value='" . $_POST['username'] . "'>";
+                            echo "<input type='hidden' name='judge_id' value='" . $_POST['password'] . "'>";
                             echo "</td>";
                             echo "</tr>";
                         }
-                    ?>
-                            
-                        </tbody>
-                        
+                        ?>
+                    </tbody>
                 </table>
                 <div style="text-align: right;">
                     <button type="submit">提交評分</button>
                 </div>
-
-            </form>
+                </form> 
         </section>
         <form action="judge_dashboard.php" method="POST">
             <input type="hidden" name="username" value="<?php echo $_POST['username']; ?>">

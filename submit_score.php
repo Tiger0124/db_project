@@ -1,34 +1,62 @@
-<?php
-// 連接資料庫
-include 'conn.php';
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高雄大學創意競賽管理系統 - 評分確認</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <a href="main.php" alt="Logo" class="logo">
+                <img src="images/logo.png" alt="Logo" class="logo">
+            </a>
+            <h1>高雄大學激發學生創意競賽管理系統</h1>
+        </div>
+    </header>
+    <?php
+    include 'conn.php';
 
-// 檢查是否有提交表單
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // 遍歷提交的所有數據
-    foreach ($_POST as $key => $value) {
-        // 判斷是否為評分欄位
-        if (strpos($key, 'score') === 0) {
-            // 擷取隊伍編號
-            $teamId = str_replace('score', '', $key);
-            $score = intval($value); // 確保評分為整數
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $scores = $_POST['scores']; // 所有評分
+        $teamIds = $_POST['team_ids']; // 隊伍編號
+        $sessions = $_POST['sessions']; // 屆數
+        $username = $_POST['username']; // 評審帳號
+        $judgeId = $_POST['judge_id']; // 評審身分證(密碼)
 
-            // 插入或更新評分資料表
-            $sql = "INSERT INTO 評分資料 (評分, 隊伍編號) 
-                    VALUES ('$score', '$teamId')
-                    ON DUPLICATE KEY UPDATE 評分 = '$score'";
 
-            // 執行 SQL 語句
+        $currentYear = date("Y");
+
+        foreach ($scores as $teamId => $score) {
+            $session = $sessions[$teamId]; // 取得對應屆數
+            // 將評分資料插入資料庫
+            $sql = "INSERT INTO 評分資料 (評分, 參加年份, 隊伍編號, 身分證字號, 屆數) 
+                    VALUES ('$score', '$currentYear', '$teamId', '$judgeId', '$session')";
+
             if (mysqli_query($link, $sql)) {
-                echo "評分提交成功：隊伍 $teamId 的分數為 $score。<br>";
+                echo "<h2>隊伍 $teamId 的評分已成功提交！<br>";
             } else {
-                echo "提交失敗：隊伍 $teamId 的分數無法保存。" . mysqli_error($link) . "<br>";
+                echo "<h2>隊伍 $teamId 的評分提交失敗：" . mysqli_error($link) . "<br>";
             }
         }
-    }
-} else {
-    echo "無效的請求方式。";
-}
+        $updateRankSql = "
+        UPDATE 隊伍 t
+        JOIN (
+            SELECT
+                參加年份,
+                隊伍編號,
+                RANK() OVER (PARTITION BY 屆數 ORDER BY AVG(評分) DESC) AS rank
+            FROM 評分資料
+            GROUP BY 參加年份, 隊伍編號, 屆數
+        ) ranked_scores
+        ON t.參加年份 = ranked_scores.參加年份 AND t.隊伍編號 = ranked_scores.隊伍編號
+        SET t.名次 = ranked_scores.rank";
+        mysqli_query($link, $updateRankSql);
 
-// 關閉資料庫連接
-mysqli_close($link);
-?>
+    }
+    ?>
+    <form action="judge_dashboard.php" method="POST">
+        <input type="hidden" name="username" value="<?php echo $_POST['username']; ?>">
+        <input type="hidden" name="password" value="<?php echo $judgeId; ?>">
+        <button type="submit">返回</button>
+    </form>
+</body>

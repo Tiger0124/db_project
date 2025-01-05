@@ -22,7 +22,7 @@
     $filepasswd=$_POST["password"];
 
     // 查詢資料
-    $sql = "SELECT * FROM 評審委員 WHERE 姓名 = '".$filename."' and 身分證字號 = '".$filepasswd."'";
+    $sql = "SELECT * FROM 評審委員 WHERE 姓名 = '".$filename."' and 身分證字號 = '".$filepasswd."' and 屆數 = '第13屆'";
     $result = mysqli_query($link, $sql);
     if(mysqli_num_rows($result)==1){
         echo '<h2>歡迎，'.$filename.'評審！</h2>';
