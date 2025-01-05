@@ -24,7 +24,7 @@
             $filepasswd = $_POST["password"];
 
             // 驗證使用者身份
-            $sql = "SELECT * FROM 學生 WHERE 姓名 = ? AND 身分證字號 = ?";
+            $sql = "SELECT * FROM 學生 WHERE 隊伍編號 = ? AND 身分證字號 = ?";
             $stmt = mysqli_prepare($link, $sql);
             mysqli_stmt_bind_param($stmt, "ss", $filename, $filepasswd);
             mysqli_stmt_execute($stmt);
