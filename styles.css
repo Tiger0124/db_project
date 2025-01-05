@@ -312,6 +312,7 @@ a:hover {
 table {
   width: 100%;
   border-collapse: collapse; /* 去除邊框間的間隙 */
+  margin-bottom: 20px
 }
 
 th, td {
