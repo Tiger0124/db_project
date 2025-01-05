@@ -22,7 +22,7 @@
         $filename=$_POST["username"];
         $filepasswd=$_POST["password"];   
 
-        $sql = "SELECT * FROM 指導老師 WHERE 姓名 = '".$filename."' and 身分證字號 = '".$filepasswd."'";
+        $sql = "SELECT * FROM 指導老師 WHERE 隊伍編號 = '".$filename."' and 身分證字號 = '".$filepasswd."'";
         $result = mysqli_query($link, $sql);
         $name = mysqli_fetch_array($result);
         if (mysqli_num_rows($result)==1) {
