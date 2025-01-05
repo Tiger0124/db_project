@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="styles.css">
 <?php
 include 'conn.php';
 
@@ -25,12 +26,12 @@ if (isset($_FILES['announcement_file']) && $_FILES['announcement_file']['error']
     $sql="Update 創意競賽 set 公告內容 = '".$announcement_content."', 比賽規則 = '".$competition_rules."', 宣傳海報 = '".$file_content."' where 屆數 = '第13屆'";
     $result = mysqli_query($link, $sql);
     if ($result) {
-        echo "公告發布成功！";
+        echo "<h2>公告發布成功！</h2>";
     } else {
-        echo "公告發布失敗！";
+        echo "<h2>公告發布失敗！</h2>";
     }
 } else {
-    echo "檔案上傳失敗！";
+    echo "<h2>檔案上傳失敗！</h2>";
 }
 
 //回主畫面

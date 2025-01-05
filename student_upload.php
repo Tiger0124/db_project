@@ -20,43 +20,41 @@
         <section class="upload-section">
             <h2>提交作品資料</h2>
             <form action="submit_project.php" method="POST" enctype="multipart/form-data">
-                <!-- 上傳說明書 -->
-                <div class="form-group">
-                    <label for="manual-upload">上傳說明書：</label>
-                    <input type="file" id="manual-upload" name="manual_file" accept=".pdf,.doc,.docx" required>
-                </div>
+                <?php
+                echo"<div class='form-group'>";
+                echo"<label for='manual-upload'>上傳說明書：</label>";
+                echo"<input type='file' id='manual-upload' name='manual_file' accept='.pdf' required>";
+                echo"</div>";
 
-                <!-- 上傳海報 -->
-                <div class="form-group">
-                    <label for="poster-upload">上傳海報：</label>
-                    <input type="file" id="poster-upload" name="poster_file" accept=".jpg,.png,.pdf" required>
-                </div>
+                echo"<div class='form-group'>";
+                echo"<label for='poster-upload'>上傳海報：</label>";
+                echo"<input type='file' id='poster-upload' name='poster_file' accept='.pdf' required>";
+                echo"</div>";
 
-                <!-- 作品影片網址 -->
-                <div class="form-group">
-                    <label for="video-url">作品影片網址：</label>
-                    <input type="url" id="video-url" name="video_url" placeholder="https://example.com/video" required>
-                </div>
+                echo"<div class='form-group'>";
+                echo"<label for='video-url'>作品影片網址：</label>";
+                echo"<input type='url' id='video-url' name='video_url' placeholder='https://example.com/video' required>";
+                echo"</div>";
 
-                <!-- 作品程式碼網址 -->
-                <div class="form-group">
-                    <label for="code-url">作品程式碼網址：</label>
-                    <input type="url" id="code-url" name="code_url" placeholder="https://github.com/example" required>
-                </div>
+                echo"<div class='form-group'>";
+                echo"<label for='code-url'>作品程式碼網址：</label>";
+                echo"<input type='url' id='code-url' name='code_url' placeholder='https://github.com/example' required>";
+                echo"</div>";
 
-                <!-- 作品程式碼網址 -->
-                <div class="form-group">
-                    <label for="code-url">作品稱：</label>
-                    <input type="url" id="code-url" name="code_url" placeholder="https://github.com/example" required>
-                </div>
+                echo"<div class='form-group'>";
+                echo"<label for='pro-name'>作品名稱：</label>";
+                echo"<input type='text' id='pro-name' name='pro_name' required>";
+                echo"</div>";
 
-                <!-- 作品程式碼網址 -->
-                <div class="form-group">
-                    <label for="code-url">作品程式碼網址：</label>
-                    <input type="url" id="code-url" name="code_url" placeholder="https://github.com/example" required>
-                </div>
+                echo"<div class='form-group'>";
+                echo"<label for='pro-des'>作品描述：</label>";
+                echo"<textarea id='pro-des' name='pro_des' row='5' required></textarea>";
+                echo"</div>";
 
-                <button type="submit">提交資料</button>
+                echo"<button type='submit'>提交資料</button>";
+                echo"<input type='hidden' name='username' value='".$_POST['username']."'>";
+                echo"<input type='hidden' name='password' value='".$_POST['password']."'>";
+                ?>
             </form>
         </section>
     </main>

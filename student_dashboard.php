@@ -17,12 +17,12 @@
     </header>
     <?php
         include 'conn.php';
-        $select_db = @mysql_select_db($link, "db_project"); //選擇資料庫
+        $select_db = @mysqli_select_db($link, "db_project"); //選擇資料庫
         $filename=$_POST["username"];
         $filepasswd=$_POST["password"];
         
 
-        $sql = "SELECT * FROM 學生 WHERE  姓名 = '".$filename."' and 身分證字號 = '".$filepasswd."'";
+        $sql = "SELECT * FROM 學生 WHERE  隊伍編號 = '".$filename."' and 身分證字號 = '".$filepasswd."'";
         $result = mysqli_query($link, $sql);
         $name = mysqli_fetch_array($result);
         if (mysqli_num_rows($result)==1) {
