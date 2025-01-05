@@ -16,33 +16,39 @@
     </div>
     </header>
     <?php
+        include 'conn.php';
+        $select_db = @mysqli_select_db($link, "db_project"); //選擇資料庫
+        $filename=$_POST["username"];
+        $filepasswd=$_POST["password"];
 
-if ($_POST['username'] === 'admin' && $_POST['password'] === '1234') {
-    echo '<h2>歡迎，組名！</h2>';
-    
-    echo '
-    <div class="admin-buttons">
-        <form action="student_edit.php" method="post">
-            <input type="hidden" name="username" value="' . $_POST['username'] . '">
-            <input type="hidden" name="password" value="' . $_POST['password'] . '">
-            <button type="submit">修改團隊資訊</button>
-        </form>
-        <form action="student_upload.php" method="post">
-            <input type="hidden" name="username" value="' . $_POST['username'] . '">
-            <input type="hidden" name="password" value="' . $_POST['password'] . '">
-            <button type="submit" >上傳作品</button>
-        </form>
-        
-        <form action="student_history.php" method="post">
-            <input type="hidden" name="username" value="' . $_POST['username'] . '">
-            <input type="hidden" name="password" value="' . $_POST['password'] . '">
-            <button type="submit" >歷屆作品瀏覽</button>
-        </form>
-    </div>';
-} else {
-    echo '<p>登入失敗，請返回並重試。</p>';
-    echo '<a href="student_login.php">返回</a>';
-}
+        $sql = "SELECT * FROM 學生 WHERE  = '".$filename."' and 身分證字號 = '".$filepasswd."'";
+        $result = mysqli_query($link, $sql);
+        if (mysqli_num_rows($result)==1) {
+            echo '<h2>歡迎，'.$filename.'！</h2>';
+            
+            echo '
+            <div class="admin-buttons">
+                <form action="student_edit.php" method="post">
+                    <input type="hidden" name="username" value="' . $_POST['username'] . '">
+                    <input type="hidden" name="password" value="' . $_POST['password'] . '">
+                    <button type="submit">修改團隊資訊</button>
+                </form>
+                <form action="student_upload.php" method="post">
+                    <input type="hidden" name="username" value="' . $_POST['username'] . '">
+                    <input type="hidden" name="password" value="' . $_POST['password'] . '">
+                    <button type="submit" >上傳作品</button>
+                </form>
+                
+                <form action="student_history.php" method="post">
+                    <input type="hidden" name="username" value="' . $_POST['username'] . '">
+                    <input type="hidden" name="password" value="' . $_POST['password'] . '">
+                    <button type="submit" >歷屆作品瀏覽</button>
+                </form>
+            </div>';
+        } else {
+            echo '<p>登入失敗，請返回並重試。</p>';
+            echo '<a href="student_login.php">返回</a>';
+        }
 ?>
 
 </body>

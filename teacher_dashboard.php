@@ -17,9 +17,15 @@
     </header>
     <main id="content">
     <?php
-            
-        if ($_POST['username'] === 'admin' && $_POST['password'] === '1234') {
-            echo '<h2>歡迎，xx教授！</h2>';
+        include 'conn.php';
+        $select_db = @mysqli_select_db($link, "db_project"); //選擇資料庫
+        $filename=$_POST["username"];
+        $filepasswd=$_POST["password"];   
+
+        $sql = "SELECT * FROM 指導老師 WHERE 隊伍編號 = '".$filename."' and 身分證字號 = '".$filepasswd."'";
+        $result = mysqli_query($link, $sql);
+        if (mysqli_num_rows($result)==1) {
+            echo '<h2>歡迎，'.$filename.' 教授！</h2>';
             echo '
             <div class="buttons">
                 <form action="teacher_view.php" method="post">
