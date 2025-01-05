@@ -44,6 +44,18 @@
                     <input type="url" id="code-url" name="code_url" placeholder="https://github.com/example" required>
                 </div>
 
+                <!-- 作品程式碼網址 -->
+                <div class="form-group">
+                    <label for="code-url">作品稱：</label>
+                    <input type="url" id="code-url" name="code_url" placeholder="https://github.com/example" required>
+                </div>
+
+                <!-- 作品程式碼網址 -->
+                <div class="form-group">
+                    <label for="code-url">作品程式碼網址：</label>
+                    <input type="url" id="code-url" name="code_url" placeholder="https://github.com/example" required>
+                </div>
+
                 <button type="submit">提交資料</button>
             </form>
         </section>
