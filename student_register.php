@@ -20,13 +20,13 @@
     <main id="content">
             <h2>競賽報名表</h2>
             <form action="register_team.php" method="POST">
-                <h3>隊伍資料</h3>
-                <div class="form-group">
+                <h2 style="margin-left: -70px;">隊伍資料</h2>
+                <div class="student-info">
                     <label for="team-name">隊伍名稱：</label>
                     <input type="text" id="team-name" name="team_name" placeholder="請輸入隊伍名稱" required>
                 </div>
 
-                <h3>學生資料</h3>
+                <h2 style="margin-left: -70px;">學生資料</h2>
                 <!-- 學生1 -->
                 <div class="student-info">
                     <h4>學生 1</h4>
@@ -127,7 +127,10 @@
                     <input type="text" id="student4-grade" name="student4_grade">
                 </div>
 
-                <h3>指導教授資料</h3>
+            <h2 style="margin-left: -70px;">指導教授資料</h2>
+
+            <div class="student-info">
+                
                 <div class="form-group">
                     <label for="professor-id">身分證字號：</label>
                     <input type="text" id="professor-id" name="professor_id" required>
@@ -141,6 +144,7 @@
                     <label for="professor-phone">電話：</label>
                     <input type="text" id="professor-phone" name="professor_phone" required>
                 </div>
+            </div>
 
                 <button type="submit">提交報名表</button>
             </form>

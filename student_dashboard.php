@@ -17,15 +17,16 @@
     </header>
     <?php
         include 'conn.php';
-        $select_db = @mysqli_select_db($link, "db_project"); //選擇資料庫
+        $select_db = @mysql_select_db($link, "db_project"); //選擇資料庫
         $filename=$_POST["username"];
         $filepasswd=$_POST["password"];
+        
 
         $sql = "SELECT * FROM 學生 WHERE  隊伍編號 = '".$filename."' and 身分證字號 = '".$filepasswd."'";
         $result = mysqli_query($link, $sql);
+        $name = mysqli_fetch_array($result);
         if (mysqli_num_rows($result)==1) {
-            echo '<h2>歡迎，'.$filename.'！</h2>';
-            
+            echo '<h2>歡迎，'.$name['姓名'].' 參賽同學！</h2>';
             echo '
             <div class="admin-buttons">
                 <form action="student_edit.php" method="post">
@@ -47,6 +48,9 @@
             </div>';
         } else {
             echo '<h2>登入失敗，請返回並重試。</h2>';
+            echo '<P>隊伍帳號密碼提示</P>';
+            echo '<p>隊伍帳號：隊伍編號</p>';
+            echo '<p>隊伍密碼：身分證字號</p>';
             echo '
                 <div class="button-container">    
                     <a href="student_login.php" class="system-button">返回</a>
