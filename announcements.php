@@ -21,12 +21,12 @@
       <h2>發布公告</h2>
       <form action="post_announcement.php" method="POST" enctype="multipart/form-data">
         <!-- 公告標題 -->
-        <label for="announcement-title">公告標題：</label>
-        <input type="text" id="announcement-title" name="announcement_title" placeholder="請輸入公告標題" required>
+        <label for="announcement-title">公告內容：</label>
+        <textarea id="announcement-content" name="announcement_content" placeholder="請輸入公告內容" rows="5" required></textarea>
         
         <!-- 公告內容 -->
-        <label for="announcement-content">公告內容：</label>
-        <textarea id="announcement-content" name="announcement_content" placeholder="請輸入公告內容" rows="5" required></textarea>
+        <label for="announcement-content">競賽規則：</label>
+        <textarea id="announcement-content" name="announcement_content" placeholder="請輸入競賽規則" rows="5" required></textarea>
         
         <!-- 檔案上傳 -->
         <label for="file-upload">附加檔案：</label>
