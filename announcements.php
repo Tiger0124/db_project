@@ -36,12 +36,13 @@
         <button type="submit">發布公告</button>
       </form>
     </section>
-  </main>
+  
   <form action="admin_dashboard.php" method="POST">
             <input type="hidden" name="username" value="<?php echo $_POST['username']; ?>">
             <input type="hidden" name="password" value="<?php echo $_POST['password']; ?>">
             <button type="submit">返回</button>
         </form>
+    </main>
 </body>
 <footer class="site-footer">
     <div class="footer-content">

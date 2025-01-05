@@ -48,6 +48,7 @@
                         <td>各位同學好，第12屆激發學生創意競賽即日起至114年受理報名</td>
                     </tr>
         </table>
+        <p>活動海報</p>
     </main>
 </body>
 <footer class="site-footer">
