@@ -21,7 +21,7 @@
         $filename=$_POST["username"];
         $filepasswd=$_POST["password"];
 
-        $sql = "SELECT * FROM 學生 WHERE  = '".$filename."' and 身分證字號 = '".$filepasswd."'";
+        $sql = "SELECT * FROM 學生 WHERE  隊伍編號 = '".$filename."' and 身分證字號 = '".$filepasswd."'";
         $result = mysqli_query($link, $sql);
         if (mysqli_num_rows($result)==1) {
             echo '<h2>歡迎，'.$filename.'！</h2>';
@@ -49,7 +49,7 @@
             echo '<h2>登入失敗，請返回並重試。</h2>';
             echo '
                 <div class="button-container">    
-                    <a href="judge.php" class="system-button">返回</a>
+                    <a href="student_login.php" class="system-button">返回</a>
                 </div>';
         }
 ?>

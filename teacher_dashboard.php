@@ -43,8 +43,9 @@
             echo '<h2>登入失敗，請返回並重試。</h2>';
         echo '
             <div class="button-container">    
-                <a href="judge.php" class="system-button">返回</a>
+                <a href="teacher.php" class="system-button">返回</a>
             </div>';
+        }
         ?>
     </main>
 </body>
