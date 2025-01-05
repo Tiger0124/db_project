@@ -16,7 +16,7 @@
         </div>
     </header>
 
-    <main>
+    <main id="content">
         <?php
             include 'conn.php';
             $select_db = @mysqli_select_db($link, "db_project"); // 選擇資料庫
