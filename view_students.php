@@ -17,11 +17,12 @@
   </header>
     <form action="view_students.php" method="POST">
         <select name="year">
-        <option value="2020">2020</option>
-        <option value="2021">2021</option>
-        <option value="2022">2022</option>
-        <option value="2023">2023</option>
-        <option value="2024">2024</option>
+          <option value="2020">2020</option>
+          <option value="2021">2021</option>
+          <option value="2022">2022</option>
+          <option value="2023">2023</option>
+          <option value="2024">2024</option>
+          <option value="2025">2025</option>
         </select>
         <button type="submit">查詢</button>
     </form>
@@ -34,19 +35,36 @@
               <th>作品名稱</th>
               <th>作品描述</th>
           </tr>
-          <tr>
+          <!-- <tr>
               <td>c哈哈哈</td>
               <td>吳俊興</td>
               <td>李憲昌 林柏諺 宋暐峻 何皓宇 </td>
               <td>作品名稱</td>
               <td>作品描述</td>
-          </tr>
+          </tr> -->
+          <?php
+              include 'conn.php';
+              $select_db = @mysqli_select_db($link, "db_project"); //選擇資料庫
+              if (isset($_POST['year'])) { // 確認是否有提交表單
+                $sql = "SELECT 指導老師.姓名 as 指導老師姓名, GROUP_CONCAT(學生.姓名 SEPARATOR ', ') AS 學生名單, 隊伍名稱 FROM 隊伍 join 指導老師 ON 隊伍.隊伍編號 = 指導老師.隊伍編號 join 學生 ON 隊伍.隊伍編號 = 學生.隊伍編號 WHERE 隊伍.參加年份 = '".$_POST['year']."'";
+                $result = mysqli_query($link, $sql);
+                while($row = mysqli_fetch_assoc($result)){
+                    echo "<tr>";
+                    echo "<td>".$row['隊伍名稱']."</td>";
+                    echo "<td>".$row['指導老師姓名']."</td>";
+                    echo "<td>".$row['學生名單']."</td>";
+                    echo "<td>".$row['隊伍名稱']."</td>";
+                    echo "<td>".$row['隊伍名稱']."</td>";
+                    echo "</tr>";
+                }
+              }
+          ?>
       </table>
     </div>
-    <form action="admin_dashboard.php" method="POST">
+    <!-- <form action="admin_dashboard.php" method="POST">
         <input type="hidden" name="username" value="<?php echo $_POST['username']; ?>">
         <input type="hidden" name="password" value="<?php echo $_POST['password']; ?>">
         <button type="submit">返回</button>
-    </form>
+    </form> -->
 </body>
 </html>

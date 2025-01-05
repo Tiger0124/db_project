@@ -22,6 +22,7 @@
         <option value="2022">2022</option>
         <option value="2023">2023</option>
         <option value="2024">2024</option>
+        <option value="2025">2025</option>
         </select>
         <button type="submit">查詢</button>
     </form>
@@ -33,13 +34,23 @@
             <th>姓名</th>
             <th>電話</th>
         </tr>
-        <tr>
-            <td>身分證字號</td>
-            <td>電子郵件</td>
-            <td>頭銜</td>
-            <td>姓名</td>
-            <td>電話</td>
-        </tr>
+        <?php
+            include 'conn.php';
+            $select_db = @mysqli_select_db($link, "db_project"); //選擇資料庫
+            if (isset($_POST['year'])) { // 確認是否有提交表單
+              $sql = "SELECT * FROM 評審委員 WHERE 評審委員.參加年份 = '".$_POST['year']."'";
+              $result = mysqli_query($link, $sql);
+              while($row = mysqli_fetch_assoc($result)){
+                  echo "<tr>";
+                  echo "<td>".$row['身分證字號']."</td>";
+                  echo "<td>".$row['電子郵件']."</td>";
+                  echo "<td>".$row['頭銜']."</td>";
+                  echo "<td>".$row['姓名']."</td>";
+                  echo "<td>".$row['電話']."</td>";
+                  echo "</tr>";
+              }
+            }
+        ?>
     </table>
     <form action="admin_dashboard.php" method="POST">
         <input type="hidden" name="username" value="<?php echo $_POST['username']; ?>">

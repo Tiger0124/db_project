@@ -33,7 +33,7 @@
                 </thead>
                 <tbody>
                     <!-- 隊伍 1 -->
-                    <tr>
+                    <!-- <tr>
                         <td>創新未來隊</td>
                         <td><a href="files/description1.pdf" download>下載說明書</a></td>
                         <td><a href="files/poster1.pdf" download>下載海報</a></td>
@@ -47,9 +47,9 @@
                                 <button type="submit">提交評分</button>
                             </form>
                         </td>
-                    </tr>
+                    </tr> -->
                     <!-- 隊伍 2 -->
-                    <tr>
+                    <!-- <tr>
                         <td>未來之星隊</td>
                         <td><a href="files/description2.pdf" download>下載說明書</a></td>
                         <td><a href="files/poster2.pdf" download>下載海報</a></td>
@@ -63,7 +63,32 @@
                                 <button type="submit">提交評分</button>
                             </form>
                         </td>
-                    </tr>
+                    </tr> -->
+                    <?php
+                        include 'conn.php';
+                        // 獲取當前年份
+                        $currentYear = date("Y");
+                        $select_db = @mysqli_select_db($link, "db_project"); //選擇資料庫
+                        $sql = "SELECT 隊伍.隊伍編號, 隊伍.隊伍名稱, 作品.說明書, 作品.海報, 作品.作品展示_youtube連結, 作品.程式碼_Github連結 FROM 隊伍 natural join 作品 WHERE 隊伍.參加年份 = '$currentYear'";
+                        $result = mysqli_query($link, $sql);
+                        while($row = mysqli_fetch_assoc($result)){
+                            echo "<tr>";
+                            echo "<td>".$row['隊伍名稱']."</td>";
+                            echo "<td><a href='files/".$row['說明書']."' download>下載說明書</a></td>";
+                            echo "<td><a href='files/".$row['海報']."' download>下載海報</a></td>";
+                            echo "<td><a href='".$row['作品展示_youtube連結']."' target='_blank'>影片連結</a></td>";
+                            echo "<td><a href='".$row['程式碼_Github連結']."' target='_blank'>程式碼連結</a></td>";
+                            echo "<td>";
+                            echo "<form action='submit_score.php' method='POST'>";
+                            echo "<input type='number' id='score".$row['隊伍編號']."' name='score".$row['隊伍編號']."' min='1' max='100' required>";
+                            echo "</td>";
+                            echo "<td>";
+                            echo "<button type='submit'>提交評分</button>";
+                            echo "</form>";
+                            echo "</td>";
+                            echo "</tr>";
+                        }
+                    ?>
                 </tbody>
             </table>
         </section>

@@ -18,9 +18,9 @@
         <main id="content">
             <?php
             $works = [
-                100 => [['隊伍A', '作品A說明書'], ['隊伍B', '作品B說明書']],
-                101 => [['隊伍C', '作品C說明書'], ['隊伍D', '作品D說明書']],
-                102 => [['隊伍E', '作品E說明書'], ['隊伍F', '作品F說明書']],
+                2020 => [['隊伍A', '作品A說明書'], ['隊伍B', '作品B說明書']],
+                2021 => [['隊伍C', '作品C說明書'], ['隊伍D', '作品D說明書']],
+                2022 => [['隊伍E', '作品E說明書'], ['隊伍F', '作品F說明書']],
             ];
             $year = isset($_GET['year']) ? (int)$_GET['year'] : 100;
             ?>
@@ -28,9 +28,9 @@
             <form method="GET" action="student_history.php">
                 <label for="year">選擇年份：</label>
                     <select id="year" name="year">
-                    <option value="100" <?= $year === 100 ? 'selected' : '' ?>>100 年</option>
-                    <option value="101" <?= $year === 101 ? 'selected' : '' ?>>101 年</option>
-                    <option value="102" <?= $year === 102 ? 'selected' : '' ?>>102 年</option>
+                    <option value="2020" <?= $year === 2020 ? 'selected' : '' ?>>2020 年</option>
+                    <option value="2021" <?= $year === 2021 ? 'selected' : '' ?>>2021 年</option>
+                    <option value="2022" <?= $year === 2022 ? 'selected' : '' ?>>2022 年</option>
                 </select>
                 <button type="submit">查詢</button>
                 </form>
