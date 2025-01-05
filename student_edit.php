@@ -94,12 +94,25 @@
                 <input type="hidden" name="password" value="<?php echo $_POST['password']; ?>">
                 <button type="submit">提交修改</button>
             </form>
+            <form action="student_dashboard.php" method="POST">
+                <input type="hidden" name="username" value="<?php echo $_POST['username']; ?>">
+                <input type="hidden" name="password" value="<?php echo $_POST['password']; ?>">
+                <button type="submit">返回</button>
+            </form>
         </section>
     </main>
-    <form action="student_dashboard.php" method="POST">
-            <input type="hidden" name="username" value="<?php echo $_POST['username']; ?>">
-            <input type="hidden" name="password" value="<?php echo $_POST['password']; ?>">
-            <button type="submit">返回</button>
-    </form>
 </body>
+<footer class="site-footer">
+    <div class="footer-content">
+        <p>&copy; Copyright © 2025 XC Lee Tiger Lin  How Ho. All rights reserved.</p>
+        <div class="footer-row">
+        <div class="footer-container">
+            <p>聯絡我們 : <a href="mailto:wylin@nuk.edu.tw">wylin@nuk.edu.tw</a></p>
+        </div>
+        <ul class="footer-links">
+            <li><a href="https://github.com/Tiger0124/db_project.git">關於我們</a></li>
+        </ul>
+        </div>
+    </div>
+</footer>
 </html>
