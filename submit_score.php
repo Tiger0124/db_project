@@ -38,20 +38,6 @@
                 echo "<h2>隊伍 $teamId 的評分提交失敗：" . mysqli_error($link) . "<br>";
             }
         }
-        $updateRankSql = "
-        UPDATE 隊伍 t
-        JOIN (
-            SELECT
-                參加年份,
-                隊伍編號,
-                RANK() OVER (PARTITION BY 屆數 ORDER BY AVG(評分) DESC) AS rank
-            FROM 評分資料
-            GROUP BY 參加年份, 隊伍編號, 屆數
-        ) ranked_scores
-        ON t.參加年份 = ranked_scores.參加年份 AND t.隊伍編號 = ranked_scores.隊伍編號
-        SET t.名次 = ranked_scores.rank";
-        mysqli_query($link, $updateRankSql);
-
     }
     ?>
     <form action="judge_dashboard.php" method="POST">
