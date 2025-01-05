@@ -62,6 +62,7 @@
                         ?>
                     </tr>
         </table>
+        <p>活動海報</p>
     </main>
 </body>
 <footer class="site-footer">

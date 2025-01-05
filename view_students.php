@@ -15,6 +15,8 @@
       <h1>高雄大學激發學生創意競賽管理系統</h1>
     </div>
   </header>
+
+  <main id="content">
     <form action="view_students.php" method="POST">
         <select name="year">
           <option value="2013">2013</option>
@@ -76,6 +78,7 @@
         <input type="hidden" name="password" value="<?php echo $_POST['password']; ?>">
         <button type="submit">返回</button>
     </form>
+  </main>
 </body>
 <footer class="site-footer">
     <div class="footer-content">
