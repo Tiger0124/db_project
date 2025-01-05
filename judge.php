@@ -16,7 +16,7 @@
         </div>
     </header>
     <main id="content">    
-        <h2 style="text-align: center">評分老師登入系統 </h2>             
+        <h2 style="text-align: center">評審委員登入系統 </h2>             
         <form action="judge_dashboard.php" method="POST">
             <label for="username">用戶名</label>
             <input type="text" id="username" name="username" required>
