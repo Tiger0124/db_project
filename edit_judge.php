@@ -20,11 +20,10 @@
         <section class="edit-team-section">
             <h2>修改評審資料</h2>
             <form action="update_judge.php" method="POST">
-                <h3>評審資料</h3>
+                <h2 style="margin-left: -70px;">評審資料</h2>
 
                 <!-- 學生 1 資料 -->
-                <fieldset>
-                    <legend>xx 評審</legend>
+                <div class="student-info">
                     <label for="student1-id">身分證字號：</label>
                     <?php
                     include 'conn.php';
@@ -50,11 +49,11 @@
                     echo '<input type="text" id="student1-department" name="student1_department" value="'.$row1['頭銜'].'" required>';
                     echo '<input type="hidden" id="student1-department" name="student1_session" value="'.$row1['屆數'].'">';
                 ?>
-                </fieldset>
                 
                 <input type="hidden" name="username" value="<?php echo $_POST['username']; ?>">
                 <input type="hidden" name="password" value="<?php echo $_POST['password']; ?>">
                 <button type="submit">提交修改</button>
+                </div>
             </form>
         </section>
     

@@ -434,8 +434,15 @@ td {
 }
 
 .student-info {
-  border: 2px solid rgb(168, 160, 160);   /* 黑色實線邊框 */
+  border: 2px solid rgb(198, 192, 192);   /* 黑色實線邊框 */
   padding: 10px;            /* 增加內邊距 */
   margin: 10px 0;           /* 每個 div 間增加垂直間距 */
   border-radius: 5px;     
+}
+
+fieldset {
+  border: 2px solid #ccc; /* 邊框 */
+  border-radius: 5px; /* 圓角 */
+  padding: 10px; /* 內邊距 */
+  margin: 10px 0; /* 上下間距 */
 }
