@@ -24,7 +24,7 @@
     // 查詢資料
     $sql = "SELECT * FROM 評審委員 WHERE 姓名 = '".$filename."' and 身分證字號 = '".$filepasswd."'";
     $result = mysqli_query($link, $sql);
-    if(mysqli_num_rows($result)==1){
+    if(mysqli_num_rows($result)>=1){
         echo '<h2>歡迎，'.$filename.'評審！</h2>';
         echo '
         <div class="admin-buttons">

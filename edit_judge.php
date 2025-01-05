@@ -19,26 +19,37 @@
     <main id="content">
         <section class="edit-team-section">
             <h2>修改評審資料</h2>
-            <form action="judge_dashboard.php" method="POST">
+            <form action="update_judge.php" method="POST">
                 <h3>評審資料</h3>
 
                 <!-- 學生 1 資料 -->
                 <fieldset>
                     <legend>xx 評審</legend>
                     <label for="student1-id">身分證字號：</label>
-                    <input type="text" id="student1-id" name="student1_id" value="A123456789" required>
+                    <?php
+                    include 'conn.php';
+                    $select_db = @mysqli_select_db($link, "db_project");
+                    $password = $_POST['password'];
+                    echo '<input type="text" id="student1-id" name="student1_id" value="'.$password.'" required readonly>';
 
-                    <label for="student1-name">姓名：</label>
-                    <input type="text" id="student1-name" name="student1_name" value="王小明" required>
+                    echo '<label for="student1-name">姓名：</label>';
+                    $username = $_POST['username'];
+                    echo '<input type="text" id="student1-name" name="student1_name" value="'.$username.'" required>';
 
-                    <label for="student1-email">電子郵件：</label>
-                    <input type="email" id="student1-email" name="student1_email" value="student1@example.com" required>
+                    $sql1 = "SELECT * FROM 評審委員 WHERE 身分證字號 = '$password'";
+                    $result1 = mysqli_query($link, $sql1);
+                    $row1 = mysqli_fetch_assoc($result1);
 
-                    <label for="student1-phone">電話：</label>
-                    <input type="tel" id="student1-phone" name="student1_phone" value="0912345678" required>
+                    echo '<label for="student1-email">電子郵件：</label>';     
+                    echo '<input type="email" id="student1-email" name="student1_email" value="'.$row1['電子郵件'].'" required>';
 
-                    <label for="student1-department">頭銜：</label>
-                    <input type="text" id="student1-department" name="student1_department" value="老師" required>
+                    echo '<label for="student1-phone">電話：</label>';
+                    echo '<input type="tel" id="student1-phone" name="student1_phone" value="'.$row1['電話'].'" required>';
+
+                    echo '<label for="student1-department">頭銜：</label>';
+                    echo '<input type="text" id="student1-department" name="student1_department" value="'.$row1['頭銜'].'" required>';
+                    echo '<input type="hidden" id="student1-department" name="student1_session" value="'.$row1['屆數'].'">';
+                ?>
                 </fieldset>
                 
                 <input type="hidden" name="username" value="<?php echo $_POST['username']; ?>">
