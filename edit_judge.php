@@ -36,7 +36,7 @@
                     $username = $_POST['username'];
                     echo '<input type="text" id="student1-name" name="student1_name" value="'.$username.'" required>';
 
-                    $sql1 = "SELECT * FROM 評審委員 WHERE 身分證字號 = '$password'";
+                    $sql1 = "SELECT * FROM 評審委員 WHERE 身分證字號 = '$password' and 屆數 = '第13屆'";
                     $result1 = mysqli_query($link, $sql1);
                     $row1 = mysqli_fetch_assoc($result1);
 
