@@ -42,9 +42,9 @@
             </div>';
         } else {
             echo '<h2>登入失敗，請返回並重試。</h2>';
-            echo '<P>隊伍帳號密碼提示</P>';
-            echo '<p>隊伍帳號：隊伍編號</p>';
-            echo '<p>隊伍密碼：身分證字號</p>';
+            echo '<P>教師帳號密碼提示</P>';
+            echo '<p>教師帳號：隊伍編號</p>';
+            echo '<p>教師密碼：身分證字號</p>';
         echo '
             <div class="button-container">    
                 <a href="teacher.php" class="system-button">返回</a>

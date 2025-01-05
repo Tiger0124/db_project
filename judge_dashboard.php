@@ -46,9 +46,9 @@
             </div>';
     } else {
         echo '<h2>登入失敗，請返回並重試。</h2>';
-        echo '<P>隊伍帳號密碼提示</P>';
-        echo '<p>隊伍帳號：姓名</p>';
-        echo '<p>隊伍密碼：身分證字號</p>';
+        echo '<P>評審帳號密碼提示</P>';
+        echo '<p>評審帳號：姓名</p>';
+        echo '<p>評審密碼：身分證字號</p>';
         echo '
             <div class="button-container">    
                 <a href="judge.php" class="system-button">返回</a>

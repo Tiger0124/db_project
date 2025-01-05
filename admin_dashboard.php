@@ -25,7 +25,7 @@
         $result = mysqli_query($link, $sql);
         $name = mysqli_fetch_array($result);
     if (mysqli_num_rows($result)==1) {
-        echo '<h2>歡迎，'.$name[姓名].' 管理員！</h2>';
+        echo '<h2>歡迎，'.$name['姓名'].' 管理員！</h2>';
         echo '
         <div class="admin-buttons">
             <form action="view_students.php" method="POST">
@@ -51,9 +51,9 @@
             </div>';
     } else {
         echo '<h2>登入失敗，請返回並重試。</h2>';
-        echo '<P>隊伍帳號密碼提示</P>';
-        echo '<p>隊伍帳號：員工編號</p>';
-        echo '<p>隊伍密碼：密碼</p>';
+        echo '<P>管理員帳號密碼提示</P>';
+        echo '<p>管理員帳號：員工編號</p>';
+        echo '<p>管理員密碼：密碼</p>';
         echo '
             <div class="button-container">    
                 <a href="admin.php" class="system-button">返回</a>
