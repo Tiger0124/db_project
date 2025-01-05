@@ -15,7 +15,7 @@
       <h1>高雄大學激發學生創意競賽管理系統</h1>
     </div>
   </header>
-    <form action="view_judges.php" method="POST">
+    <form action="view_scores.php" method="POST">
         <select name="year">
         <option value="2013">2013</option>
         <option value="2014">2014</option>
@@ -40,11 +40,39 @@
             <th>得分</th>
             <th>名次</th>
         </tr>
-        <tr>
-            <td>隊伍</td>
-            <td>得分</td>
-            <td>名次</td>
-        </tr>
+        <?php
+            include 'conn.php';
+            $yearToSession = [
+              2013 => "第1屆",
+              2014 => "第2屆",
+              2015 => "第3屆",
+              2016 => "第4屆",
+              2017 => "第5屆",
+              2018 => "第6屆",
+              2019 => "第7屆",
+              2020 => "第8屆",
+              2021 => "第9屆",
+              2022 => "第10屆",
+              2023 => "第11屆",
+              2024 => "第12屆",
+              2025 => "第13屆"
+          ];
+            $select_db = @mysqli_select_db($link, "db_project"); //選擇資料庫
+            if (isset($_POST['year'])&& array_key_exists($_POST['year'], $yearToSession)) { // 確認是否有提交表單
+              $session = $yearToSession[$_POST['year']];
+              $sql = 
+              $result = mysqli_query($link, $sql);
+              while($row = mysqli_fetch_assoc($result)){
+                  echo "<tr>";
+                  echo "<td>".$row['身分證字號']."</td>";
+                  echo "<td>".$row['電子郵件']."</td>";
+                  echo "<td>".$row['頭銜']."</td>";
+                  echo "<td>".$row['姓名']."</td>";
+                  echo "<td>".$row['電話']."</td>";
+                  echo "</tr>";
+              }
+            }
+        ?>
     </table>
     <form action="admin_dashboard.php" method="POST">
         <input type="hidden" name="username" value="<?php echo $_POST['username']; ?>">

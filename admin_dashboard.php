@@ -23,8 +23,9 @@
 
         $sql = "SELECT * FROM 管理員_研發處 WHERE 員工編號 = '".$filename."' and 密碼 = '".$filepasswd."'";
         $result = mysqli_query($link, $sql);
+        $name = mysqli_fetch_array($result);
     if (mysqli_num_rows($result)==1) {
-        echo '<h2>歡迎，'.$filename.' 管理員！</h2>';
+        echo '<h2>歡迎，'.$name['姓名'].' 管理員！</h2>';
         echo '
         <div class="admin-buttons">
             <form action="view_students.php" method="POST">
