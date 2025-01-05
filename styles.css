@@ -9,6 +9,7 @@ body, h1, h2, p, a {
   /*padding: 0;*/
   text-decoration: none;
   box-sizing: border-box;
+  margin-left: 20px;
 }
 
 /* General body styling */
@@ -79,21 +80,24 @@ main {
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   /*text-align: center;*/
+  padding-bottom: 100px;
 }
 
 main h2 {
   font-size: 1.5rem;
   color: black;
+  margin-left: 20px;
 }
 
 main p {
   margin: 15px 0;
   color: #555;
+  margin-left: 20px;
 }
 .main-content {
   flex: 1; /* 主內容填滿 Header 和 Footer 之間的空間 */
   margin-top: 60px; /* 避免被 Header 遮擋，高度與 Header 相匹配 */
-  margin-bottom: 50px; /* 避免被 Footer 遮擋，高度與 Footer 相匹配 */
+  margin-bottom: 100px; /* 避免被 Footer 遮擋，高度與 Footer 相匹配 */
   padding: 20px;
   background-color: #f9f9f9;
 }
@@ -309,6 +313,7 @@ a:hover {
 table {
   width: 100%;
   border-collapse: collapse; /* 去除邊框間的間隙 */
+  margin-bottom: 20px
 }
 
 th, td {
@@ -426,4 +431,11 @@ td {
 
 .footer-links li a {
   font-size: 14px;
+}
+
+.student-info {
+  border: 2px solid rgb(168, 160, 160);   /* 黑色實線邊框 */
+  padding: 10px;            /* 增加內邊距 */
+  margin: 10px 0;           /* 每個 div 間增加垂直間距 */
+  border-radius: 5px;     
 }

@@ -25,7 +25,7 @@
     $sql = "SELECT * FROM 評審委員 WHERE 姓名 = '".$filename."' and 身分證字號 = '".$filepasswd."' and 屆數 = '第13屆'";
     $result = mysqli_query($link, $sql);
     if(mysqli_num_rows($result)==1){
-        echo '<h2>歡迎，'.$filename.'評審！</h2>';
+        echo '<h2>歡迎，'.$filename.' 評審！</h2>';
         echo '
         <div class="admin-buttons">
             <form action="edit_judge.php" method="POST">
@@ -46,6 +46,9 @@
             </div>';
     } else {
         echo '<h2>登入失敗，請返回並重試。</h2>';
+        echo '<P>評審帳號密碼提示</P>';
+        echo '<p>評審帳號：姓名</p>';
+        echo '<p>評審密碼：身分證字號</p>';
         echo '
             <div class="button-container">    
                 <a href="judge.php" class="system-button">返回</a>

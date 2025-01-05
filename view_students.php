@@ -15,6 +15,8 @@
       <h1>高雄大學激發學生創意競賽管理系統</h1>
     </div>
   </header>
+
+  <main id="content">
     <form action="view_students.php" method="POST">
         <select name="year">
           <option value="2013">2013</option>
@@ -44,26 +46,27 @@
               <th>作品名稱</th>
               <th>作品描述</th>
           </tr>
-          <!-- <tr>
-              <td>c哈哈哈</td>
-              <td>吳俊興</td>
-              <td>李憲昌 林柏諺 宋暐峻 何皓宇 </td>
-              <td>作品名稱</td>
-              <td>作品描述</td>
-          </tr> -->
           <?php
               include 'conn.php';
               $select_db = @mysqli_select_db($link, "db_project"); //選擇資料庫
               if (isset($_POST['year'])) { // 確認是否有提交表單
-                $sql = "SELECT 指導老師.姓名 as 指導老師姓名, GROUP_CONCAT(學生.姓名 SEPARATOR ', ') AS 學生名單, 隊伍名稱 FROM 隊伍 join 指導老師 ON 隊伍.隊伍編號 = 指導老師.隊伍編號 join 學生 ON 隊伍.隊伍編號 = 學生.隊伍編號 WHERE 隊伍.參加年份 = '".$_POST['year']."'";
+                $sql = "SELECT 指導老師.姓名 AS 指導老師姓名, GROUP_CONCAT(學生.姓名 SEPARATOR ', ') AS 學生名單, 隊伍.隊伍名稱, 作品.作品名稱, 作品.作品描述
+                        FROM 隊伍 
+                        JOIN 指導老師 ON 隊伍.隊伍編號 = 指導老師.隊伍編號 
+                        JOIN 學生 ON 隊伍.隊伍編號 = 學生.隊伍編號
+                        JOIN 作品 ON 隊伍.隊伍編號 = 作品.隊伍編號 
+                        WHERE 隊伍.參加年份 = '".$_POST['year']."' 
+                        GROUP BY 隊伍.隊伍編號;
+                      ";
                 $result = mysqli_query($link, $sql);
+                //result長度
                 while($row = mysqli_fetch_assoc($result)){
                     echo "<tr>";
                     echo "<td>".$row['隊伍名稱']."</td>";
                     echo "<td>".$row['指導老師姓名']."</td>";
                     echo "<td>".$row['學生名單']."</td>";
-                    echo "<td>".$row['隊伍名稱']."</td>";
-                    echo "<td>".$row['隊伍名稱']."</td>";
+                    echo "<td>".$row['作品名稱']."</td>";
+                    echo "<td>".$row['作品描述']."</td>";
                     echo "</tr>";
                 }
               }
@@ -75,6 +78,7 @@
         <input type="hidden" name="password" value="<?php echo $_POST['password']; ?>">
         <button type="submit">返回</button>
     </form>
+  </main>
 </body>
 <footer class="site-footer">
     <div class="footer-content">
