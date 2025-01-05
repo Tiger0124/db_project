@@ -25,6 +25,8 @@
         <option value="2025">2025</option>
         </select>
         <button type="submit">查詢</button>
+        <input type="hidden" name="username" value="<?php echo $_POST['username']; ?>">
+        <input type="hidden" name="password" value="<?php echo $_POST['password']; ?>">
     </form>
     <table>
         <tr>
@@ -36,9 +38,18 @@
         </tr>
         <?php
             include 'conn.php';
+            $yearToSession = [
+              2020 => "第8屆",
+              2021 => "第9屆",
+              2022 => "第10屆",
+              2023 => "第11屆",
+              2024 => "第12屆",
+              2025 => "第13屆"
+          ];
             $select_db = @mysqli_select_db($link, "db_project"); //選擇資料庫
-            if (isset($_POST['year'])) { // 確認是否有提交表單
-              $sql = "SELECT * FROM 評審委員 WHERE 評審委員.參加年份 = '".$_POST['year']."'";
+            if (isset($_POST['year'])&& array_key_exists($_POST['year'], $yearToSession)) { // 確認是否有提交表單
+              $session = $yearToSession[$_POST['year']];
+              $sql = "SELECT * FROM 評審委員 WHERE 評審委員.屆數 = '".$session."'";
               $result = mysqli_query($link, $sql);
               while($row = mysqli_fetch_assoc($result)){
                   echo "<tr>";
@@ -52,6 +63,7 @@
             }
         ?>
     </table>
+    
     <form action="admin_dashboard.php" method="POST">
         <input type="hidden" name="username" value="<?php echo $_POST['username']; ?>">
         <input type="hidden" name="password" value="<?php echo $_POST['password']; ?>">

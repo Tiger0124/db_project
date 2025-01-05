@@ -25,6 +25,8 @@
           <option value="2025">2025</option>
         </select>
         <button type="submit">查詢</button>
+        <input type="hidden" name="username" value="<?php echo $_POST['username']; ?>">
+        <input type="hidden" name="password" value="<?php echo $_POST['password']; ?>">
     </form>
     <div class="rounded-box">
       <table style="width:100% ">
@@ -61,10 +63,10 @@
           ?>
       </table>
     </div>
-    <!-- <form action="admin_dashboard.php" method="POST">
+    <form action="admin_dashboard.php" method="POST">
         <input type="hidden" name="username" value="<?php echo $_POST['username']; ?>">
         <input type="hidden" name="password" value="<?php echo $_POST['password']; ?>">
         <button type="submit">返回</button>
-    </form> -->
+    </form>
 </body>
 </html>

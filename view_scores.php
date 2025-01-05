@@ -24,6 +24,8 @@
         <option value="2024">2024</option>
         </select>
         <button type="submit">查詢</button>
+        <input type="hidden" name="username" value="<?php echo $_POST['username']; ?>">
+        <input type="hidden" name="password" value="<?php echo $_POST['password']; ?>">
     </form>
     <table>
         <tr>
