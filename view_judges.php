@@ -17,6 +17,13 @@
   </header>
     <form action="view_judges.php" method="POST">
         <select name="year">
+        <option value="2013">2013</option>
+        <option value="2014">2014</option>
+        <option value="2015">2015</option>
+        <option value="2016">2016</option>
+        <option value="2017">2017</option>
+        <option value="2018">2018</option>
+        <option value="2019">2019</option>
         <option value="2020">2020</option>
         <option value="2021">2021</option>
         <option value="2022">2022</option>
@@ -39,6 +46,13 @@
         <?php
             include 'conn.php';
             $yearToSession = [
+              2013 => "第1屆",
+              2014 => "第2屆",
+              2015 => "第3屆",
+              2016 => "第4屆",
+              2017 => "第5屆",
+              2018 => "第6屆",
+              2019 => "第7屆",
               2020 => "第8屆",
               2021 => "第9屆",
               2022 => "第10屆",
