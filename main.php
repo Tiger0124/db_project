@@ -34,18 +34,32 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>各位同學好，第12屆激發學生創意競賽即日起至114年受理報名</td>
+                        <?php
+                            include 'conn.php';
+                            $sql = "SELECT * FROM 創意競賽 where 屆數 = '第13屆'";
+                            $result = mysqli_query($link, $sql);
+                            while ($row = mysqli_fetch_array($result)) {
+                                echo "<td>" . $row['公告內容'] . "</td>";
+                            }
+                        ?>
                     </tr>
         </table>
         <table>
                 <thead>
                     <tr>
-                        <th>競賽規則</th>
+                        <th>比賽規則</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>各位同學好，第12屆激發學生創意競賽即日起至114年受理報名</td>
+                        <?php
+                            include 'conn.php';
+                            $sql = "SELECT * FROM 創意競賽 where 屆數 = '第13屆'";
+                            $result = mysqli_query($link, $sql);
+                            while ($row = mysqli_fetch_array($result)) {
+                                echo "<td>" . $row['比賽規則'] . "</td>";
+                            }
+                        ?>
                     </tr>
         </table>
     </main>
