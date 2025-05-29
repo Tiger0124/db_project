@@ -1,0 +1,316 @@
+/* Reset & 基本設定 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: "Microsoft JhengHei", "Noto Sans TC", Arial, sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* Header 樣式 - 滿版 */
+header {
+  width: 100vw;
+  flex-shrink: 0;
+  background: linear-gradient(
+    to right,
+    #ffffff 0%,
+    #ffffff 30%,
+    #FFD700 60%,
+    #f5be11 100%
+  );
+  color: #2c3e50;
+  padding: 1rem 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  position: relative;
+  z-index: 10;
+}
+
+.navbar {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  padding: 0 2rem;
+  gap: 1.5rem;
+}
+
+.logo img {
+  height: 50px;
+  width: auto;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+header h1 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: #2c3e50;
+  text-shadow: 0 1px 3px rgba(255,255,255,0.8);
+}
+
+/* Main 內容區塊 - 滿版置中 */
+main#content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  min-height: calc(100vh - 120px); /* 扣除header和footer高度 */
+  padding: 2rem;
+  background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+}
+
+/* 標題樣式 */
+h2 {
+  color: #2c3e50;
+  font-size: 2.2rem;
+  margin-bottom: 3rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* 表單容器 - 響應式卡片 */
+form {
+  width: 100%;
+  max-width: 450px;
+  padding: 3rem;
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  border-radius: 25px;
+  box-shadow: 0 15px 40px rgba(240, 147, 251, 0.4);
+  transform: translateY(0);
+  transition: all 0.3s ease;
+}
+
+form:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 50px rgba(240, 147, 251, 0.5);
+}
+
+/* 標籤樣式 */
+label {
+  display: block;
+  color: white;
+  font-weight: 600;
+  font-size: 1.2rem;
+  margin-bottom: 0.8rem;
+  margin-top: 1.5rem;
+}
+
+label:first-of-type {
+  margin-top: 0;
+}
+
+/* 輸入框樣式 - 響應式 */
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 1.2rem;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  margin-bottom: 1.5rem;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+  outline: none;
+  background: white;
+  box-shadow: 0 6px 20px rgba(245, 190, 17, 0.4);
+  transform: translateY(-3px);
+}
+
+/* 登入按鈕樣式 - 響應式 */
+button[type="submit"] {
+  width: 100%;
+  padding: 1.2rem;
+  background: linear-gradient(135deg, #FFD700 0%, #f5be11 100%);
+  color: #2c3e50;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.3rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 20px rgba(245, 190, 17, 0.4);
+  margin-top: 1.5rem;
+}
+
+button[type="submit"]:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(245, 190, 17, 0.6);
+  background: linear-gradient(135deg, #f5be11 0%, #e6a800 100%);
+  color: white;
+}
+
+/* Footer 樣式 - 滿版 */
+.site-footer {
+  width: 100vw;
+  flex-shrink: 0;
+  background: #2c3e50;
+  color: white;
+  padding: 1rem 0;
+  font-size: 0.9rem;
+  margin-top: auto;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  text-align: center;
+}
+
+.footer-content > p {
+  margin-bottom: 0.5rem;
+}
+
+.footer-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.footer-container {
+  flex: 1;
+}
+
+.footer-container p {
+  margin: 0;
+}
+
+.footer-container a {
+  color: #3498db;
+  text-decoration: none;
+}
+
+.footer-container a:hover {
+  color: #5dade2;
+}
+
+.footer-links {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+}
+
+.footer-links li a {
+  color: #ecf0f1;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.footer-links li a:hover {
+  color: #3498db;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+  header {
+    background: linear-gradient(
+      to bottom,
+      #ffffff 0%,
+      #f5be11 100%
+    );
+  }
+  
+  .navbar {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+    padding: 0 1rem;
+  }
+  
+  header h1 {
+    font-size: 1.4rem;
+  }
+  
+  main#content {
+    padding: 1rem;
+    min-height: calc(100vh - 140px);
+  }
+  
+  h2 {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+  }
+  
+  form {
+    padding: 2rem;
+    max-width: 90vw;
+  }
+  
+  .footer-row {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+  }
+  
+  .footer-links {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  header h1 {
+    font-size: 1.2rem;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+  }
+  
+  form {
+    padding: 1.5rem;
+    max-width: 95vw;
+  }
+  
+  input[type="text"],
+  input[type="password"] {
+    padding: 1rem;
+    font-size: 1rem;
+  }
+  
+  button[type="submit"] {
+    padding: 1rem;
+    font-size: 1.1rem;
+  }
+}
+
+/* 大螢幕優化 */
+@media (min-width: 1200px) {
+  form {
+    max-width: 500px;
+    padding: 3.5rem;
+  }
+  
+  h2 {
+    font-size: 2.5rem;
+  }
+}
