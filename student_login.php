@@ -18,7 +18,7 @@
     <main id="content">
         <h2 style="text-align: center">學生登入系統 </h2> 
         <form action="student_dashboard.php" method="POST">
-            <label for="username">用戶名</label>
+            <label for="username">隊伍編號</label>
             <input type="text" id="username" name="username" required>
             <label for="password">密碼</label>
             <input type="password" id="password" name="password" required>
