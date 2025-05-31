@@ -21,8 +21,8 @@ body {
   background-color: #f5f5f5;
   color: #333;
   line-height: 1.6;
-  padding-top: 100px;
-  padding-bottom: 80px;
+  padding-top: 80px;
+  padding-bottom: 70px;
 }
 
 /* Header 樣式 - 固定在頂部 */
@@ -73,61 +73,86 @@ header h1 {
 main#content {
   flex: 1;
   width: 100vw;
-  padding: 3rem 2rem 2rem 2rem;
+  padding: 2rem;
   background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
   margin-top: 0;
   margin-bottom: 0;
 }
 
-/* 歡迎標題 */
-main > h2 {
+/* 主標題樣式 */
+main h2 {
   text-align: center;
   color: #2c3e50;
-  font-size: 2.2rem;
+  font-size: 2.5rem;
   margin-bottom: 3rem;
-  margin-top: 2rem;
-  font-weight: 600;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-/* 編輯團隊資料區塊 */
-.edit-team-section {
+/* 表單容器 */
+form {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1000px;
   margin: 0 auto;
   background: white;
   border-radius: 20px;
   padding: 3rem;
   box-shadow: 0 15px 40px rgba(0,0,0,0.1);
-  margin-bottom: 2rem;
   transform: translateY(0);
   transition: all 0.3s ease;
 }
 
-.edit-team-section:hover {
+form:hover {
   transform: translateY(-5px);
   box-shadow: 0 20px 50px rgba(0,0,0,0.15);
 }
 
 /* 區塊標題樣式 */
-.edit-team-section h2 {
-  text-align: center;
-  color: #2c3e50;
-  font-size: 2rem;
-  margin-bottom: 3rem;
+h3 {
+  color: #28a745;
+  font-size: 1.8rem;
+  margin: 2.5rem 0 1.5rem 0;
   font-weight: 600;
+  border-bottom: 3px solid #28a745;
+  padding-bottom: 0.5rem;
+  position: relative;
 }
 
-/* 成員切換標籤 */
-.member-tabs {
+h3:first-of-type {
+  margin-top: 0;
+}
+
+h3::before {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 50px;
+  height: 3px;
+  background: linear-gradient(135deg, #FFD700 0%, #f5be11 100%);
+}
+
+/* 學生區塊樣式 */
+.student-section {
+  margin: 2rem 0;
+}
+
+.section-header {
   display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-bottom: 3rem;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
 }
 
-.tab-btn {
-  padding: 1rem 2rem;
+/* 組員按鈕樣式 */
+.member-buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.member-btn {
+  padding: 1rem 1.5rem;
   background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
   color: #495057;
   border: 2px solid #dee2e6;
@@ -139,98 +164,95 @@ main > h2 {
   text-align: center;
 }
 
-.tab-btn:hover {
+.member-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-.tab-btn.active {
+.member-btn.active {
   background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
   color: white;
   border-color: #28a745;
   box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
 }
 
-.tab-btn.professor-tab {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+.member-btn.optional {
+  background: linear-gradient(135deg, #ffc107 0%, #ffb300 100%);
+  color: #212529;
+  border-color: #ffc107;
+}
+
+.member-btn.optional.active {
+  background: linear-gradient(135deg, #ff8c00 0%, #ff7700 100%);
   color: white;
-  border-color: #667eea;
+  border-color: #ff8c00;
+  box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3);
 }
 
-.tab-btn.professor-tab.active {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-  border-color: #f093fb;
-  box-shadow: 0 4px 15px rgba(240, 147, 251, 0.3);
+/* 表單群組樣式 */
+.form-group {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 15px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
 }
 
-/* 表單容器 */
-.member-form {
-  display: none;
+/* 學生資料區塊 */
+.student-info {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  border-radius: 15px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+  position: relative;
   opacity: 0;
   transform: translateX(20px);
   transition: all 0.4s ease;
 }
 
-.member-form.active {
-  display: block;
+.student-info.active {
   opacity: 1;
   transform: translateX(0);
 }
 
-/* Fieldset 樣式 */
-.student-fieldset {
-  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-  border: none;
-  border-radius: 15px;
-  padding: 2.5rem;
-  margin-bottom: 2rem;
-  box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
-  transition: all 0.3s ease;
+.student-info.optional-member {
+  background: linear-gradient(135deg, #ffc107 0%, #ffb300 100%);
+  box-shadow: 0 8px 25px rgba(255, 193, 7, 0.3);
 }
 
-.professor-fieldset {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-  border: none;
-  border-radius: 15px;
-  padding: 2.5rem;
-  margin-bottom: 2rem;
-  box-shadow: 0 8px 25px rgba(240, 147, 251, 0.3);
-  transition: all 0.3s ease;
-}
-
-fieldset:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(40, 167, 69, 0.4);
-}
-
-.professor-fieldset:hover {
-  box-shadow: 0 10px 30px rgba(240, 147, 251, 0.4);
-}
-
-/* Legend 樣式 */
-legend {
-  color: black;
-  font-weight: 700;
-  font-size: 1.4rem;
-  padding: 0.8rem 1.5rem;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 10px;
-  margin-bottom: 2rem;
-  backdrop-filter: blur(10px);
-  text-align: center;
-}
-
-/* 表單行布局 */
-.form-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
+.student-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 1.5rem;
 }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
+/* 學生標題 */
+h4 {
+  color: white;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+/* 必填/選填標籤 */
+.required-badge {
+  background: rgba(220, 53, 69, 0.9);
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.optional-badge {
+  background: rgba(255, 255, 255, 0.9);
+  color: #212529;
+  padding: 0.3rem 0.8rem;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  font-weight: 600;
 }
 
 /* 標籤樣式 */
@@ -239,14 +261,17 @@ label {
   font-weight: 600;
   font-size: 1.1rem;
   margin-bottom: 0.5rem;
+  margin-top: 1rem;
   display: block;
+}
+
+label:first-of-type {
+  margin-top: 0;
 }
 
 /* 輸入框樣式 */
 input[type="text"],
-input[type="email"],
-input[type="tel"],
-input[type="number"] {
+input[type="email"] {
   width: 100%;
   padding: 1rem;
   border: 2px solid transparent;
@@ -255,12 +280,11 @@ input[type="number"] {
   font-family: inherit;
   background: rgba(255, 255, 255, 0.95);
   transition: all 0.3s ease;
+  margin-bottom: 1rem;
 }
 
 input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="tel"]:focus,
-input[type="number"]:focus {
+input[type="email"]:focus {
   outline: none;
   border-color: #FFD700;
   background: white;
@@ -268,101 +292,38 @@ input[type="number"]:focus {
   transform: translateY(-2px);
 }
 
-/* 表單動作區塊 */
-.form-actions {
-  text-align: center;
+/* Placeholder 樣式 */
+input::placeholder {
+  color: #999;
+  font-style: italic;
+}
+
+/* 提交區塊 */
+.submit-section {
   margin-top: 2rem;
 }
 
 /* 提交按鈕樣式 */
-.submit-btn {
-  padding: 1.2rem 3rem;
+button[type="submit"] {
+  width: 100%;
+  padding: 1.5rem 2rem;
   background: linear-gradient(135deg, #FFD700 0%, #f5be11 100%);
   color: #2c3e50;
   border: none;
-  border-radius: 12px;
-  font-size: 1.3rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 6px 20px rgba(245, 190, 17, 0.4);
-}
-
-.submit-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 30px rgba(245, 190, 17, 0.6);
-  background: linear-gradient(135deg, #f5be11 0%, #e6a800 100%);
-  color: white;
-}
-
-/* 返回區塊 */
-.return-section {
-  text-align: center;
-  margin-top: 2rem;
-  padding: 2rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border-radius: 15px;
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
-}
-
-.return-btn {
-  padding: 1rem 2.5rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border: none;
-  border-radius: 10px;
-  font-size: 1.1rem;
-  font-weight: 600;
+  font-size: 1.4rem;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-}
-
-.return-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
-  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-}
-
-/* 錯誤區塊 */
-.error-section {
-  text-align: center;
-  max-width: 600px;
-  margin: 2rem auto;
-  padding: 3rem;
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.1);
-}
-
-.error-section h2 {
-  color: #dc3545;
-  margin-bottom: 2rem;
-}
-
-.button-container {
-  display: flex;
-  justify-content: center;
+  box-shadow: 0 8px 25px rgba(245, 190, 17, 0.4);
   margin-top: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-.system-button {
-  display: inline-block;
-  padding: 1.2rem 2.5rem;
-  background: linear-gradient(135deg, #FFD700 0%, #f5be11 100%);
-  color: #2c3e50;
-  text-decoration: none;
-  border-radius: 12px;
-  font-weight: 700;
-  font-size: 1.2rem;
-  text-align: center;
-  transition: all 0.3s ease;
-  box-shadow: 0 6px 20px rgba(245, 190, 17, 0.4);
-}
-
-.system-button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 30px rgba(245, 190, 17, 0.6);
+button[type="submit"]:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 35px rgba(245, 190, 17, 0.6);
   background: linear-gradient(135deg, #f5be11 0%, #e6a800 100%);
   color: white;
 }
@@ -444,8 +405,8 @@ input[type="number"]:focus {
 /* 響應式設計 */
 @media (max-width: 768px) {
   body {
-    padding-top: 130px;
-    padding-bottom: 100px;
+    padding-top: 110px;
+    padding-bottom: 90px;
   }
   
   header {
@@ -469,48 +430,46 @@ input[type="number"]:focus {
   }
   
   main#content {
-    padding: 2rem 1rem;
+    padding: 1rem;
   }
   
-  main > h2 {
-    margin-top: 1rem;
-    font-size: 1.8rem;
+  main h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
   }
   
-  .edit-team-section {
+  form {
     padding: 2rem;
-    max-width: 90vw;
+    max-width: 95vw;
   }
   
-  .member-tabs {
-    flex-direction: column;
+  h3 {
+    font-size: 1.5rem;
+  }
+  
+  .member-buttons {
+    grid-template-columns: repeat(2, 1fr);
     gap: 0.8rem;
   }
   
-  .tab-btn {
-    padding: 0.8rem 1.5rem;
+  .member-btn {
+    padding: 0.8rem 1rem;
     font-size: 0.9rem;
   }
   
-  .form-row {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-  
-  fieldset {
+  .form-group,
+  .student-info {
     padding: 1.5rem;
   }
   
   input[type="text"],
-  input[type="email"],
-  input[type="tel"],
-  input[type="number"] {
+  input[type="email"] {
     padding: 0.8rem;
   }
   
-  .submit-btn {
-    font-size: 1.1rem;
-    padding: 1rem 2rem;
+  button[type="submit"] {
+    font-size: 1.2rem;
+    padding: 1.2rem;
   }
   
   .site-footer {
@@ -530,8 +489,8 @@ input[type="number"]:focus {
 
 @media (max-width: 480px) {
   body {
-    padding-top: 150px;
-    padding-bottom: 120px;
+    padding-top: 130px;
+    padding-bottom: 110px;
   }
   
   header {
@@ -542,34 +501,57 @@ input[type="number"]:focus {
     font-size: 1.2rem;
   }
   
-  main > h2 {
-    font-size: 1.5rem;
+  main h2 {
+    font-size: 1.7rem;
   }
   
-  .edit-team-section {
+  form {
     padding: 1.5rem;
-    max-width: 95vw;
   }
   
-  fieldset {
+  h3 {
+    font-size: 1.3rem;
+  }
+  
+  .member-buttons {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  
+  .form-group,
+  .student-info {
     padding: 1rem;
   }
   
   input[type="text"],
-  input[type="email"],
-  input[type="tel"],
-  input[type="number"] {
+  input[type="email"] {
     padding: 0.7rem;
     font-size: 0.9rem;
   }
   
-  .submit-btn {
-    font-size: 1rem;
-    padding: 0.8rem 1.5rem;
+  button[type="submit"] {
+    font-size: 1.1rem;
+    padding: 1rem;
   }
   
   .site-footer {
     height: 110px;
+  }
+}
+
+/* 大螢幕優化 */
+@media (min-width: 1200px) {
+  form {
+    max-width: 1200px;
+    padding: 4rem;
+  }
+  
+  main h2 {
+    font-size: 3rem;
+  }
+  
+  h3 {
+    font-size: 2rem;
   }
 }
 
@@ -585,10 +567,6 @@ input[type="number"]:focus {
   }
 }
 
-.edit-team-section {
-  animation: fadeInUp 0.8s ease-out;
-}
-
-fieldset {
+.form-group {
   animation: fadeInUp 0.6s ease-out;
 }
