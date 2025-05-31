@@ -59,14 +59,29 @@ function initializeFormValidation() {
             e.preventDefault();
             return false;
         }
+        
+        // 顯示提交中的狀態
+        showSubmittingState();
     });
     
     // 為所有輸入框添加即時驗證
     const inputs = form.querySelectorAll('input[required]');
     inputs.forEach(input => {
-        input.addEventListener('blur', validateInput);
-        input.addEventListener('input', clearInputError);
+        if (!input.hasAttribute('readonly')) {
+            input.addEventListener('blur', validateInput);
+            input.addEventListener('input', clearInputError);
+        }
     });
+}
+
+// 顯示提交中狀態
+function showSubmittingState() {
+    const submitBtn = document.querySelector('.submit-btn');
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="spinner"></span> 提交中...';
+        submitBtn.style.opacity = '0.7';
+    }
 }
 
 // 驗證單個輸入框
@@ -105,8 +120,8 @@ function validateInput(event) {
             break;
     }
     
-    // 身分證字號驗證
-    if (input.name.includes('_id') && !isValidTaiwanID(value)) {
+    // 身分證字號驗證（非只讀欄位）
+    if (input.name.includes('_id') && !input.hasAttribute('readonly') && !isValidTaiwanID(value)) {
         showInputError(input, '請輸入有效的身分證字號格式');
         return false;
     }
@@ -149,7 +164,7 @@ function showInputError(input, message) {
 // 驗證整個表單
 function validateForm() {
     const form = document.getElementById('editForm');
-    const requiredInputs = form.querySelectorAll('input[required]');
+    const requiredInputs = form.querySelectorAll('input[required]:not([readonly])');
     let isValid = true;
     
     requiredInputs.forEach(input => {
@@ -249,7 +264,7 @@ function showNotification(message, type = 'info') {
     
     document.body.appendChild(notification);
     
-    // 顯示動畫
+        // 顯示動畫
     setTimeout(() => {
         notification.style.transform = 'translateX(0)';
     }, 10);
@@ -272,5 +287,21 @@ style.textContent = `
         border-color: #dc3545 !important;
         box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
     }
+    
+    .spinner {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        border: 2px solid #ffffff;
+        border-radius: 50%;
+        border-top-color: transparent;
+        animation: spin 1s ease-in-out infinite;
+        margin-right: 8px;
+    }
+    
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
 `;
 document.head.appendChild(style);
+

@@ -21,8 +21,8 @@ body {
   background-color: #f5f5f5;
   color: #333;
   line-height: 1.6;
-  padding-top: 80px; /* 為header預留空間 */
-  padding-bottom: 70px; /* 為footer預留空間 */
+  padding-top: 100px; /* 為header預留空間 */
+  padding-bottom: 80px; /* 為footer預留空間 */
 }
 
 /* Header 樣式 - 固定在頂部 */
@@ -70,102 +70,126 @@ header h1 {
 }
 
 /* Main 內容區塊 */
-main#content {
+main {
   flex: 1;
   width: 100vw;
-  padding: 2rem;
+  padding: 3rem 2rem 2rem 2rem;
   background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
   margin-top: 0;
   margin-bottom: 0;
 }
 
-/* 標題樣式 */
-main h2 {
+/* 隊伍資訊區塊 */
+.team-info {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 20px;
+  padding: 3rem;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+  margin-bottom: 2rem;
+  transform: translateY(0);
+  transition: all 0.3s ease;
+}
+
+.team-info:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+}
+
+/* 主標題樣式 */
+.team-info h2 {
   text-align: center;
   color: #2c3e50;
   font-size: 2.2rem;
   margin-bottom: 3rem;
   font-weight: 600;
+  border-bottom: 3px solid #8e44ad;
+  padding-bottom: 1rem;
+  position: relative;
 }
 
-/* 年份選擇表單 */
-main > form {
-  width: 100%;
-  max-width: 500px;
-  margin: 0 auto 3rem auto;
-  padding: 2rem;
-  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-  border-radius: 15px;
-  box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-/* 表單標籤 */
-main > form label {
-  color: white;
-  font-weight: 600;
-  font-size: 1.1rem;
-}
-
-/* 下拉選單樣式 */
-select {
-  padding: 0.8rem 1rem;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  background: rgba(255, 255, 255, 0.95);
-  color: #2c3e50;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  min-width: 120px;
-}
-
-select:focus {
-  outline: none;
-  background: white;
-  box-shadow: 0 4px 15px rgba(245, 190, 17, 0.3);
-}
-
-/* 查詢按鈕 */
-main > form button {
-  padding: 0.8rem 1.5rem;
+.team-info h2::before {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 3px;
   background: linear-gradient(135deg, #FFD700 0%, #f5be11 100%);
-  color: #2c3e50;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(245, 190, 17, 0.3);
 }
 
-main > form button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(245, 190, 17, 0.5);
-  background: linear-gradient(135deg, #f5be11 0%, #e6a800 100%);
+/* 隊伍資料區塊 */
+.team {
+  background: linear-gradient(135deg, #8e44ad 0%, #9b59b6 100%);
+  border-radius: 15px;
+  padding: 2.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 8px 25px rgba(142, 68, 173, 0.3);
   color: white;
+}
+
+.team p {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  padding: 0.8rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+}
+
+.team p:last-child {
+  margin-bottom: 0;
+}
+
+.team strong {
+  color: #FFD700;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+/* 連結樣式 */
+.team a {
+  color: #FFD700;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  background: rgba(255, 215, 0, 0.1);
+}
+
+.team a:hover {
+  color: white;
+  background: rgba(255, 215, 0, 0.3);
+  text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+}
+
+/* 子標題樣式 */
+h4 {
+  color: #8e44ad;
+  font-size: 1.5rem;
+  margin: 2rem 0 1rem 0;
+  font-weight: 600;
+  border-bottom: 2px solid #8e44ad;
+  padding-bottom: 0.5rem;
 }
 
 /* 表格樣式 */
 table {
   width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
   border-collapse: collapse;
+  margin-bottom: 2rem;
   background: white;
-  border-radius: 15px;
+  border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 8px 25px rgba(0,0,0,0.1);
 }
 
 /* 表格標題 */
 thead th {
-  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  background: linear-gradient(135deg, #8e44ad 0%, #9b59b6 100%);
   color: white;
   font-weight: 600;
   font-size: 1rem;
@@ -195,46 +219,39 @@ tbody tr:hover {
   transition: all 0.2s ease;
 }
 
-/* 無資料訊息 */
-tbody td[colspan] {
+/* 返回表單樣式 */
+body > form {
+  width: 100%;
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
   text-align: center;
-  color: #999;
-  font-style: italic;
-  padding: 3rem;
-  font-size: 1.1rem;
 }
 
-/* 下載連結樣式 */
-tbody td a {
-  display: inline-block;
-  padding: 0.5rem 1rem;
+/* 返回按鈕樣式 */
+button[type="submit"] {
+  width: 100%;
+  padding: 1.2rem 2rem;
   background: linear-gradient(135deg, #FFD700 0%, #f5be11 100%);
   color: #2c3e50;
-  text-decoration: none;
-  border-radius: 6px;
-  font-weight: 500;
-  font-size: 0.85rem;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.3rem;
+  font-weight: 700;
+  cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(245, 190, 17, 0.3);
+  box-shadow: 0 6px 20px rgba(245, 190, 17, 0.4);
+  margin: 0;
 }
 
-tbody td a:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(245, 190, 17, 0.5);
+button[type="submit"]:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(245, 190, 17, 0.6);
   background: linear-gradient(135deg, #f5be11 0%, #e6a800 100%);
   color: white;
-}
-
-/* 外部連結樣式 */
-tbody td a[target="_blank"] {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
-}
-
-tbody td a[target="_blank"]:hover {
-  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.5);
 }
 
 /* Footer 樣式 - 固定在底部 */
@@ -313,19 +330,19 @@ tbody td a[target="_blank"]:hover {
 
 /* 響應式設計 */
 @media (max-width: 1200px) {
-  main#content {
+  main {
     overflow-x: auto;
   }
   
   table {
-    min-width: 1000px;
+    min-width: 800px;
   }
 }
 
 @media (max-width: 768px) {
   body {
-    padding-top: 110px;
-    padding-bottom: 90px;
+    padding-top: 130px;
+    padding-bottom: 100px;
   }
   
   header {
@@ -348,25 +365,47 @@ tbody td a[target="_blank"]:hover {
     font-size: 1.4rem;
   }
   
-  main#content {
-    padding: 1rem;
+  main {
+    padding: 2rem 1rem;
   }
   
-  main h2 {
+  .team-info {
+    padding: 2rem;
+    max-width: 90vw;
+  }
+  
+  .team-info h2 {
     font-size: 1.8rem;
     margin-bottom: 2rem;
   }
   
-  main > form {
+  .team {
     padding: 1.5rem;
-    flex-direction: column;
-    gap: 1rem;
+  }
+  
+  .team p {
+    font-size: 1rem;
+    padding: 0.6rem;
+  }
+  
+  h4 {
+    font-size: 1.3rem;
   }
   
   thead th,
   tbody td {
     padding: 0.8rem 0.4rem;
     font-size: 0.8rem;
+  }
+  
+  body > form {
+    max-width: 90vw;
+    padding: 1.5rem;
+  }
+  
+  button[type="submit"] {
+    font-size: 1.1rem;
+    padding: 1rem;
   }
   
   .site-footer {
@@ -386,8 +425,8 @@ tbody td a[target="_blank"]:hover {
 
 @media (max-width: 480px) {
   body {
-    padding-top: 130px;
-    padding-bottom: 110px;
+    padding-top: 150px;
+    padding-bottom: 120px;
   }
   
   header {
@@ -398,13 +437,26 @@ tbody td a[target="_blank"]:hover {
     font-size: 1.2rem;
   }
   
-  main h2 {
+  .team-info h2 {
     font-size: 1.5rem;
   }
   
-  main > form {
-    padding: 1rem;
+  .team-info {
+    padding: 1.5rem;
     max-width: 95vw;
+  }
+  
+  .team {
+    padding: 1rem;
+  }
+  
+  .team p {
+    font-size: 0.9rem;
+    padding: 0.5rem;
+  }
+  
+  h4 {
+    font-size: 1.1rem;
   }
   
   thead th,
@@ -413,7 +465,41 @@ tbody td a[target="_blank"]:hover {
     font-size: 0.7rem;
   }
   
+  body > form {
+    max-width: 95vw;
+    padding: 1rem;
+  }
+  
+  button[type="submit"] {
+    font-size: 1rem;
+    padding: 0.8rem;
+  }
+  
   .site-footer {
     height: 110px;
   }
+}
+
+/* 動畫效果 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.team-info {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.team {
+  animation: fadeInUp 0.6s ease-out 0.2s both;
+}
+
+table {
+  animation: fadeInUp 0.6s ease-out 0.4s both;
 }

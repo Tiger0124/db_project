@@ -145,10 +145,10 @@ main > h2 {
 }
 
 .tab-btn.active {
-  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
-  border-color: #28a745;
-  box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+  border-color: #667eea;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
 }
 
 .tab-btn.professor-tab {
@@ -179,12 +179,12 @@ main > h2 {
 
 /* Fieldset 樣式 */
 .student-fieldset {
-  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border: none;
   border-radius: 15px;
   padding: 2.5rem;
   margin-bottom: 2rem;
-  box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
   transition: all 0.3s ease;
 }
 
@@ -200,7 +200,7 @@ main > h2 {
 
 fieldset:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(40, 167, 69, 0.4);
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
 }
 
 .professor-fieldset:hover {
@@ -209,7 +209,7 @@ fieldset:hover {
 
 /* Legend 樣式 */
 legend {
-  color: black;
+  color: white;
   font-weight: 700;
   font-size: 1.4rem;
   padding: 0.8rem 1.5rem;
@@ -268,6 +268,13 @@ input[type="number"]:focus {
   transform: translateY(-2px);
 }
 
+/* 只讀輸入框 */
+input[readonly] {
+  background: rgba(255, 255, 255, 0.7);
+  color: #666;
+  cursor: not-allowed;
+}
+
 /* 表單動作區塊 */
 .form-actions {
   text-align: center;
@@ -300,14 +307,14 @@ input[type="number"]:focus {
   text-align: center;
   margin-top: 2rem;
   padding: 2rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
   border-radius: 15px;
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
 }
 
 .return-btn {
   padding: 1rem 2.5rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
   color: white;
   border: none;
   border-radius: 10px;
@@ -315,13 +322,13 @@ input[type="number"]:focus {
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
 }
 
 .return-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
-  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+  box-shadow: 0 6px 20px rgba(40, 167, 69, 0.5);
+  background: linear-gradient(135deg, #20c997 0%, #28a745 100%);
 }
 
 /* 錯誤區塊 */

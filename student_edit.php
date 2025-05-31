@@ -97,7 +97,7 @@
                                                id="student<?= $index ?>-id" 
                                                name="student<?= $index ?>_id" 
                                                value="<?= htmlspecialchars($member["身分證字號"]) ?>" 
-                                               required>
+                                               required readonly>
                                     </div>
                                     <div class="form-group">
                                         <label for="student<?= $index ?>-studentid">學號：</label>
@@ -175,7 +175,7 @@
                                            id="professor-id" 
                                            name="professor_id" 
                                            value="<?= htmlspecialchars($professor["身分證字號"]) ?>" 
-                                           required>
+                                           required readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="professor-name">姓名：</label>
@@ -212,6 +212,7 @@
                 <input type="hidden" name="team_id" value="<?= $team_id ?>">
                 <input type="hidden" name="username" value="<?= htmlspecialchars($_POST['username']) ?>">
                 <input type="hidden" name="password" value="<?= htmlspecialchars($_POST['password']) ?>">
+                <input type="hidden" name="member_count" value="<?= count($members) ?>">
                 
                 <div class="form-actions">
                     <button type="submit" class="submit-btn">提交修改</button>
