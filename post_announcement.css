@@ -1,0 +1,334 @@
+/* Reset & 基本設定 */
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
+
+html, body {
+height: 100vh;
+width: 100vw;
+margin: 0;
+padding: 0;
+overflow-x: hidden;
+}
+
+body {
+display: flex;
+flex-direction: column;
+min-height: 100vh;
+font-family: "Microsoft JhengHei", "Noto Sans TC", Arial, sans-serif;
+background-color: #f5f5f5;
+color: #333;
+line-height: 1.6;
+padding-top: 80px; /* 為header預留空間 */
+padding-bottom: 70px; /* 為footer預留空間 */
+}
+
+/* Header 樣式 - 固定在頂部 */
+header {
+position: fixed;
+top: 0;
+left: 0;
+width: 100vw;
+height: 80px;
+background: linear-gradient(
+to right,
+#ffffff 0%,
+#ffffff 30%,
+#FFD700 60%,
+#f5be11 100%
+);
+color: #2c3e50;
+padding: 1rem 0;
+box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+z-index: 1000;
+}
+
+.navbar {
+max-width: 1200px;
+margin: 0 auto;
+display: flex;
+align-items: center;
+padding: 0 2rem;
+gap: 1.5rem;
+height: 100%;
+}
+
+.logo img {
+height: 50px;
+width: auto;
+filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+header h1 {
+font-size: 1.8rem;
+font-weight: 600;
+letter-spacing: 1px;
+color: #2c3e50;
+text-shadow: 0 1px 3px rgba(255,255,255,0.8);
+}
+
+/* Main 內容區塊 - 置中顯示 */
+body > h2,
+body > form {
+flex: 1;
+width: 100%;
+max-width: 600px;
+margin: 2rem auto;
+padding: 2rem;
+background: white;
+border-radius: 16px;
+box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+transform: translateY(0);
+transition: all 0.3s ease;
+}
+
+body > h2:hover,
+body > form:hover {
+transform: translateY(-5px);
+box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+}
+
+/* 結果標題樣式 */
+body > h2 {
+text-align: center;
+font-size: 2.2rem;
+font-weight: 600;
+margin-bottom: 0;
+}
+
+/* 成功訊息樣式 */
+h2:contains("成功") {
+color: #28a745;
+background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+border: 2px solid #28a745;
+}
+
+/* 失敗訊息樣式 */
+h2:contains("失敗") {
+color: #dc3545;
+background: linear-gradient(135deg, #f8d7da 0%, #f1b0b7 100%);
+border: 2px solid #dc3545;
+}
+
+/* 通用訊息樣式 */
+body > h2 {
+color: #2c3e50;
+background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+border: 2px solid #f093fb;
+color: white;
+text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+/* 表單容器樣式 */
+body > form {
+background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+border: none;
+padding: 3rem;
+}
+
+/* 返回按鈕樣式 */
+button[type="submit"] {
+padding: 1.2rem 3rem;
+background: linear-gradient(135deg, #FFD700 0%, #f5be11 100%);
+color: #2c3e50;
+border: none;
+border-radius: 12px;
+font-size: 1.3rem;
+font-weight: 700;
+cursor: pointer;
+transition: all 0.3s ease;
+box-shadow: 0 6px 20px rgba(245, 190, 17, 0.4);
+margin: 0;
+}
+
+button[type="submit"]:hover {
+transform: translateY(-3px);
+box-shadow: 0 10px 30px rgba(245, 190, 17, 0.6);
+background: linear-gradient(135deg, #f5be11 0%, #e6a800 100%);
+color: white;
+}
+
+/* Footer 樣式 - 固定在底部 */
+.site-footer {
+position: fixed;
+bottom: 0;
+left: 0;
+width: 100vw;
+height: 70px;
+background: #2c3e50;
+color: white;
+padding: 1rem 0;
+font-size: 0.9rem;
+z-index: 1000;
+display: flex;
+align-items: center;
+}
+
+.footer-content {
+max-width: 1200px;
+margin: 0 auto;
+padding: 0 2rem;
+text-align: center;
+width: 100%;
+}
+
+.footer-content > p {
+margin-bottom: 0.5rem;
+}
+
+.footer-row {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-top: 0.5rem;
+flex-wrap: wrap;
+gap: 1rem;
+}
+
+.footer-container {
+flex: 1;
+}
+
+.footer-container p {
+margin: 0;
+}
+
+.footer-container a {
+color: #3498db;
+text-decoration: none;
+}
+
+.footer-container a:hover {
+color: #5dade2;
+}
+
+.footer-links {
+list-style: none;
+display: flex;
+gap: 1rem;
+margin: 0;
+padding: 0;
+}
+
+.footer-links li a {
+color: #ecf0f1;
+text-decoration: none;
+font-weight: 500;
+transition: color 0.3s ease;
+font-size: 0.9rem;
+}
+
+.footer-links li a:hover {
+color: #3498db;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+body {
+padding-top: 110px;
+padding-bottom: 90px;
+}
+
+header {
+height: 110px;
+background: linear-gradient(
+    to bottom,
+    #ffffff 0%,
+    #f5be11 100%
+);
+}
+
+.navbar {
+flex-direction: column;
+text-align: center;
+gap: 1rem;
+padding: 0 1rem;
+}
+
+header h1 {
+font-size: 1.4rem;
+}
+
+body > h2,
+body > form {
+margin: 1rem auto;
+padding: 1.5rem;
+max-width: 90vw;
+}
+
+body > h2 {
+font-size: 1.8rem;
+}
+
+button[type="submit"] {
+font-size: 1.1rem;
+padding: 1rem 2rem;
+}
+
+.site-footer {
+height: 90px;
+}
+
+.footer-row {
+flex-direction: column;
+text-align: center;
+gap: 0.5rem;
+}
+
+.footer-links {
+justify-content: center;
+}
+}
+
+@media (max-width: 480px) {
+body {
+padding-top: 130px;
+padding-bottom: 110px;
+}
+
+header {
+height: 130px;
+}
+
+header h1 {
+font-size: 1.2rem;
+}
+
+body > h2,
+body > form {
+padding: 1rem;
+max-width: 95vw;
+}
+
+body > h2 {
+font-size: 1.5rem;
+}
+
+button[type="submit"] {
+font-size: 1rem;
+padding: 0.8rem 1.5rem;
+}
+
+.site-footer {
+height: 110px;
+}
+}
+
+/* 大螢幕優化 */
+@media (min-width: 1200px) {
+body > h2,
+body > form {
+max-width: 700px;
+padding: 3rem;
+}
+
+body > h2 {
+font-size: 2.5rem;
+}
+}
