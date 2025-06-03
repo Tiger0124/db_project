@@ -18,9 +18,9 @@
     <main id="content">  
         <h2 style="text-align: center">指導老師登入系統 </h2>             
         <form action="teacher_dashboard.php" method="POST">
-            <label for="username">用戶名</label>
+            <label for="username">用戶名(隊伍編號)</label>
             <input type="text" id="username" name="username" required>
-            <label for="password">密碼</label>
+            <label for="password">密碼(預設為身份證字號)</label>
             <input type="password" id="password" name="password" required>
             <button type="submit">登入</button>
         </form>

@@ -27,9 +27,10 @@
         $response = $supabaseClient->get('指導老師', [
             'query' => [
                 '隊伍編號' => 'eq.' . $filename,
-                '身分證字號' => 'eq.' . $filepasswd
+                '密碼' => 'eq.' . $filepasswd
             ]
         ]);
+
 
         $data = json_decode($response->getBody(), true);
 
@@ -57,6 +58,11 @@
                     <input type="hidden" name="username" value="' . $_POST['username'] . '">
                     <input type="hidden" name="password" value="' . $_POST['password'] . '">
                     <input type="submit" value="查看評分及評語">
+                </form>
+                <form action="teacher_changepassword.php" method="post">
+                    <input type="hidden" name="username" value="' . $_POST['username'] . '">
+                    <input type="hidden" name="password" value="' . $_POST['password'] . '">
+                    <input type="submit" value="修改密碼">
                 </form>
 
 
