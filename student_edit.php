@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>修改團隊成員資料</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="student_edit.css">
 </head>
 <body>
     <header>
@@ -19,7 +19,7 @@
     <main id="content">
         <?php
             include 'conn.php';
-            $select_db = @mysqli_select_db($link, "db_project"); // 選擇資料庫
+            $select_db = @mysqli_select_db($link, "db_project");
             $filename = $_POST["username"];
             $filepasswd = $_POST["password"];
 
@@ -41,7 +41,8 @@
                 $team_sql = "
                     SELECT 身分證字號, 學號, 姓名, 電子郵件, 電話, 科系, 年級
                     FROM 學生
-                    WHERE 隊伍編號 = ?";
+                    WHERE 隊伍編號 = ?
+                    ORDER BY 學號";
                 $team_stmt = mysqli_prepare($link, $team_sql);
                 mysqli_stmt_bind_param($team_stmt, "s", $team_id);
                 mysqli_stmt_execute($team_stmt);
@@ -58,88 +59,185 @@
                 mysqli_stmt_execute($professor_stmt);
                 $professor_result = mysqli_stmt_get_result($professor_stmt);
                 $professor = mysqli_fetch_assoc($professor_result);
-            } else {
-                echo '<h2>登入失敗，請返回並重試。</h2>';
-                echo '
-                    <div class="button-container">    
-                        <a href="student_login.php" class="system-button">返回</a>
-                    </div>';
-                exit; // 結束執行，避免顯示後續內容
-            }
         ?>
 
         <section class="edit-team-section">
             <h2>修改團隊成員資料</h2>
-            <form action="student_update.php" method="POST">
-                <?php
-                // 動態生成學生資料表單
-                if (!empty($members)) {
-                    foreach ($members as $index => $member) {
-                        echo '
-                            <fieldset>
-                                <legend>學生 ' . ($index + 1) . '</legend>
-                                <label for="student' . $index . '-id">身分證字號：</label>
-                                <input type="text" id="student' . $index . '-id" name="student' . $index . '_id" value="' . htmlspecialchars($member["身分證字號"]) . '" required>
+            
+            <!-- 學生資料切換按鈕 -->
+            <div class="member-tabs">
+                <?php if (!empty($members)): ?>
+                    <?php foreach ($members as $index => $member): ?>
+                        <button type="button" class="tab-btn <?= $index === 0 ? 'active' : '' ?>" 
+                                data-member="<?= $index ?>">
+                            學生 <?= $index + 1 ?>
+                        </button>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+                <?php if (!empty($professor)): ?>
+                    <button type="button" class="tab-btn professor-tab" data-member="professor">
+                        指導老師
+                    </button>
+                <?php endif; ?>
+            </div>
 
-                                <label for="student' . $index . '-studentid">學號：</label>
-                                <input type="text" id="student' . $index . '-studentid" name="student' . $index . '_studentid" value="' . htmlspecialchars($member["學號"]) . '" required>
+            <form action="student_update.php" method="POST" id="editForm">
+                <!-- 學生資料表單 -->
+                <?php if (!empty($members)): ?>
+                    <?php foreach ($members as $index => $member): ?>
+                        <div class="member-form <?= $index === 0 ? 'active' : '' ?>" 
+                             data-form="<?= $index ?>">
+                            <fieldset class="student-fieldset">
+                                <legend>學生 <?= $index + 1 ?> 資料</legend>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="student<?= $index ?>-id">身分證字號：</label>
+                                        <input type="text" 
+                                               id="student<?= $index ?>-id" 
+                                               name="student<?= $index ?>_id" 
+                                               value="<?= htmlspecialchars($member["身分證字號"]) ?>" 
+                                               required readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="student<?= $index ?>-studentid">學號：</label>
+                                        <input type="text" 
+                                               id="student<?= $index ?>-studentid" 
+                                               name="student<?= $index ?>_studentid" 
+                                               value="<?= htmlspecialchars($member["學號"]) ?>" 
+                                               required>
+                                    </div>
+                                </div>
 
-                                <label for="student' . $index . '-name">姓名：</label>
-                                <input type="text" id="student' . $index . '-name" name="student' . $index . '_name" value="' . htmlspecialchars($member["姓名"]) . '" required>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="student<?= $index ?>-name">姓名：</label>
+                                        <input type="text" 
+                                               id="student<?= $index ?>-name" 
+                                               name="student<?= $index ?>_name" 
+                                               value="<?= htmlspecialchars($member["姓名"]) ?>" 
+                                               required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="student<?= $index ?>-email">電子郵件：</label>
+                                        <input type="email" 
+                                               id="student<?= $index ?>-email" 
+                                               name="student<?= $index ?>_email" 
+                                               value="<?= htmlspecialchars($member["電子郵件"]) ?>" 
+                                               required>
+                                    </div>
+                                </div>
 
-                                <label for="student' . $index . '-email">電子郵件：</label>
-                                <input type="email" id="student' . $index . '-email" name="student' . $index . '_email" value="' . htmlspecialchars($member["電子郵件"]) . '" required>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="student<?= $index ?>-phone">電話：</label>
+                                        <input type="tel" 
+                                               id="student<?= $index ?>-phone" 
+                                               name="student<?= $index ?>_phone" 
+                                               value="<?= htmlspecialchars($member["電話"]) ?>" 
+                                               required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="student<?= $index ?>-department">科系：</label>
+                                        <input type="text" 
+                                               id="student<?= $index ?>-department" 
+                                               name="student<?= $index ?>_department" 
+                                               value="<?= htmlspecialchars($member["科系"]) ?>" 
+                                               required>
+                                    </div>
+                                </div>
 
-                                <label for="student' . $index . '-phone">電話：</label>
-                                <input type="tel" id="student' . $index . '-phone" name="student' . $index . '_phone" value="' . htmlspecialchars($member["電話"]) . '" required>
-
-                                <label for="student' . $index . '-department">科系：</label>
-                                <input type="text" id="student' . $index . '-department" name="student' . $index . '_department" value="' . htmlspecialchars($member["科系"]) . '" required>
-
-                                <label for="student' . $index . '-grade">年級：</label>
-                                <input type="number" id="student' . $index . '-grade" name="student' . $index . '_grade" value="' . htmlspecialchars($member["年級"]) . '" required>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="student<?= $index ?>-grade">年級：</label>
+                                        <input type="number" 
+                                               id="student<?= $index ?>-grade" 
+                                               name="student<?= $index ?>_grade" 
+                                               value="<?= htmlspecialchars($member["年級"]) ?>" 
+                                               min="1" max="4" required>
+                                    </div>
+                                </div>
                             </fieldset>
-                        ';
-                    }
-                } else {
-                    echo "<p>無法取得隊伍成員資料。</p>";
-                }
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
 
-                // 動態生成指導老師表單
-                if (!empty($professor)) {
-                    echo '
-                        <h3>指導老師資料</h3>
-                        <fieldset>
-                            <legend>指導老師</legend>
-                            <label for="professor-id">身分證字號：</label>
-                            <input type="text" id="professor-id" name="professor_id" value="' . htmlspecialchars($professor["身分證字號"]) . '" required>
+                <!-- 指導老師資料表單 -->
+                <?php if (!empty($professor)): ?>
+                    <div class="member-form" data-form="professor">
+                        <fieldset class="professor-fieldset">
+                            <legend>指導老師資料</legend>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="professor-id">身分證字號：</label>
+                                    <input type="text" 
+                                           id="professor-id" 
+                                           name="professor_id" 
+                                           value="<?= htmlspecialchars($professor["身分證字號"]) ?>" 
+                                           required readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="professor-name">姓名：</label>
+                                    <input type="text" 
+                                           id="professor-name" 
+                                           name="professor_name" 
+                                           value="<?= htmlspecialchars($professor["姓名"]) ?>" 
+                                           required>
+                                </div>
+                            </div>
 
-                            <label for="professor-name">姓名：</label>
-                            <input type="text" id="professor-name" name="professor_name" value="' . htmlspecialchars($professor["姓名"]) . '" required>
-
-                            <label for="professor-email">電子郵件：</label>
-                            <input type="email" id="professor-email" name="professor_email" value="' . htmlspecialchars($professor["電子郵件"]) . '" required>
-
-                            <label for="professor-phone">電話：</label>
-                            <input type="tel" id="professor-phone" name="professor_phone" value="' . htmlspecialchars($professor["電話"]) . '" required>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="professor-email">電子郵件：</label>
+                                    <input type="email" 
+                                           id="professor-email" 
+                                           name="professor_email" 
+                                           value="<?= htmlspecialchars($professor["電子郵件"]) ?>" 
+                                           required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="professor-phone">電話：</label>
+                                    <input type="tel" 
+                                           id="professor-phone" 
+                                           name="professor_phone" 
+                                           value="<?= htmlspecialchars($professor["電話"]) ?>" 
+                                           required>
+                                </div>
+                            </div>
                         </fieldset>
-                    ';
-                } else {
-                    echo "<p>無法取得指導老師資料。</p>";
-                }
-                ?>
-                <input type="hidden" name="team_id" value="<?php echo $team_id; ?>">
-                <input type="hidden" name="username" value="<?php echo htmlspecialchars($_POST['username']); ?>">
-                <input type="hidden" name="password" value="<?php echo htmlspecialchars($_POST['password']); ?>">
-                <button type="submit">提交修改</button>
+                    </div>
+                <?php endif; ?>
+
+                <input type="hidden" name="team_id" value="<?= $team_id ?>">
+                <input type="hidden" name="username" value="<?= htmlspecialchars($_POST['username']) ?>">
+                <input type="hidden" name="password" value="<?= htmlspecialchars($_POST['password']) ?>">
+                <input type="hidden" name="member_count" value="<?= count($members) ?>">
+                
+                <div class="form-actions">
+                    <button type="submit" class="submit-btn">提交修改</button>
+                </div>
             </form>
 
-            <form action="student_dashboard.php" method="POST">
-                <input type="hidden" name="username" value="<?php echo htmlspecialchars($_POST['username']); ?>">
-                <input type="hidden" name="password" value="<?php echo htmlspecialchars($_POST['password']); ?>">
-                <button type="submit">返回</button>
-            </form>
+            <div class="return-section">
+                <form action="student_dashboard.php" method="POST">
+                    <input type="hidden" name="username" value="<?= htmlspecialchars($_POST['username']) ?>">
+                    <input type="hidden" name="password" value="<?= htmlspecialchars($_POST['password']) ?>">
+                    <button type="submit" class="return-btn">返回</button>
+                </form>
+            </div>
         </section>
+
+        <?php
+            } else {
+                echo '<div class="error-section">';
+                echo '<h2>登入失敗，請返回並重試。</h2>';
+                echo '<div class="button-container">';
+                echo '<a href="student_login.php" class="system-button">返回登入</a>';
+                echo '</div>';
+                echo '</div>';
+            }
+        ?>
     </main>
 
     <footer class="site-footer">
@@ -155,5 +253,7 @@
             </div>
         </div>
     </footer>
+
+    <script src="student_edit.js"></script>
 </body>
 </html>

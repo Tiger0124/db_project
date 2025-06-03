@@ -29,7 +29,7 @@ $result = mysqli_query($link, $sql);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>高雄大學創意競賽管理系統</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="student_history.css">
 </head>
 <body>
 <header>
