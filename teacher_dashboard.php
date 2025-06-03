@@ -17,16 +17,25 @@
     </header>
     <main id="content">
     <?php
-        include 'conn.php';
-        $select_db = @mysqli_select_db($link, "db_project"); //選擇資料庫
-        $filename=$_POST["username"];
-        $filepasswd=$_POST["password"];   
+    include 'conn.php';
 
-        $sql = "SELECT * FROM 指導老師 WHERE 隊伍編號 = '".$filename."' and 身分證字號 = '".$filepasswd."'";
-        $result = mysqli_query($link, $sql);
-        $name = mysqli_fetch_array($result);
-        if (mysqli_num_rows($result)==1) {
-            echo '<h2>歡迎，'.$name['姓名'].' 教授！</h2>';
+    $filename = $_POST["username"];
+    $filepasswd = $_POST["password"];
+
+    try {
+        // 查詢 Supabase「指導老師」資料表中是否有符合的紀錄
+        $response = $supabaseClient->get('指導老師', [
+            'query' => [
+                '隊伍編號' => 'eq.' . $filename,
+                '身分證字號' => 'eq.' . $filepasswd
+            ]
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        if (count($data) === 1) {
+            $name = $data[0];
+            echo '<h2>歡迎，' . $name['姓名'] . ' 教授！</h2>';
             echo '
             <div class="buttons">
                 <form action="teacher_view.php" method="post">
@@ -39,18 +48,32 @@
                     <input type="hidden" name="password" value="' . $_POST['password'] . '">
                     <input type="submit" value="查看歷屆作品">
                 </form>
+                <form action="teacher_profile.php" method="post">
+                    <input type="hidden" name="username" value="' . $_POST['username'] . '">
+                    <input type="hidden" name="password" value="' . $_POST['password'] . '">
+                    <input type="submit" value="編輯個人資料">
+                </form>
+
+
+
+
             </div>';
         } else {
             echo '<h2>登入失敗，請返回並重試。</h2>';
             echo '<P>教師帳號密碼提示</P>';
             echo '<p>教師帳號：隊伍編號</p>';
             echo '<p>教師密碼：身分證字號</p>';
-        echo '
+            echo '
             <div class="button-container">    
                 <a href="teacher.php" class="system-button">返回</a>
             </div>';
         }
-        ?>
+
+    } catch (Exception $e) {
+        echo '<h2>系統錯誤：' . htmlspecialchars($e->getMessage()) . '</h2>';
+    }
+?>
+
     </main>
 </body>
 <footer class="site-footer">

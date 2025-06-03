@@ -18,223 +18,77 @@
 
     <main>
         <?php
-        include 'conn.php';
-        $select_db = @mysqli_select_db($link, "db_project");
-        
-        $filename = $_POST["username"];
-        $filepasswd = $_POST["password"];
+include 'conn.php';
 
-        // 使用 Prepared Statement 查詢指導老師資料
-        $sql = "SELECT * FROM 指導老師 WHERE 隊伍編號 = ? AND 身分證字號 = ?";
-        $stmt = mysqli_prepare($link, $sql);
-        mysqli_stmt_bind_param($stmt, "ss", $filename, $filepasswd);
-        mysqli_stmt_execute($stmt);
-        $result = mysqli_stmt_get_result($stmt);
+$filename = $_POST["username"];
+$filepasswd = $_POST["password"];
 
-        if (mysqli_num_rows($result) == 1) {
-            $row = mysqli_fetch_assoc($result);
-            $team_id = $row['隊伍編號'];
+try {
+    // 查詢指導老師是否存在
+    $response = $supabaseClient->get('指導老師', [
+        'query' => [
+            '隊伍編號' => 'eq.' . $filename,
+            '身分證字號' => 'eq.' . $filepasswd
+        ]
+    ]);
+    $data = json_decode($response->getBody(), true);
 
-            // 取得隊伍和作品資料
-            $team_sql = "
-            SELECT 隊伍.隊伍編號, 說明書, 作品展示_youtube連結, 程式碼_Github連結, 隊伍名稱
-            FROM 作品 JOIN 隊伍 ON 作品.隊伍編號 = 隊伍.隊伍編號
-            WHERE 隊伍.隊伍編號 = ?";
+    if (count($data) === 1) {
+        $row = $data[0];  // 指導老師資料
+        $team_id = $row['隊伍編號'];
 
-            $team_stmt = mysqli_prepare($link, $team_sql);
-            mysqli_stmt_bind_param($team_stmt, "s", $team_id);
-            mysqli_stmt_execute($team_stmt);
-            $team_result = mysqli_stmt_get_result($team_stmt);
-            
-            if (mysqli_num_rows($team_result) > 0) {
-                echo "<section class='team-info'>";
-                echo "<h2>指導的隊伍資訊</h2>";
-                
-                // 顯示隊伍資料
-                $team_row = mysqli_fetch_assoc($team_result);
-                $blob = base64_encode($team_row['說明書']);
-                
-                echo "<div class='team-details'>";
-                echo "<div class='team-basic-info'>";
-                echo "<h3>隊伍基本資料</h3>";
-                echo "<div class='info-item'>";
-                echo "<span class='label'>隊伍名稱：</span>";
-                echo "<span class='value'>" . htmlspecialchars($team_row['隊伍名稱']) . "</span>";
-                echo "</div>";
-                echo "<div class='info-item'>";
-                echo "<span class='label'>作品說明書：</span>";
-                echo "<a href='data:application/pdf;base64," . $blob . "' download class='download-link'>下載說明書</a>";
-                echo "</div>";
-                echo "<div class='info-item'>";
-                echo "<span class='label'>作品影片網址：</span>";
-                echo "<a href='" . htmlspecialchars($team_row['作品展示_youtube連結']) . "' target='_blank' class='external-link'>" . htmlspecialchars($team_row['作品展示_youtube連結']) . "</a>";
-                echo "</div>";
-                echo "<div class='info-item'>";
-                echo "<span class='label'>作品程式碼網址：</span>";
-                echo "<a href='" . htmlspecialchars($team_row['程式碼_Github連結']) . "' target='_blank' class='external-link'>" . htmlspecialchars($team_row['程式碼_Github連結']) . "</a>";
-                echo "</div>";
-                echo "</div>";
+        // 查詢隊伍與作品資料
+        $response_team = $supabaseClient->get('作品', [
+            'query' => ['隊伍編號' => 'eq.' . $team_id]
+        ]);
+        $作品 = json_decode($response_team->getBody(), true);
 
-                // 取得學生資料
-                $student_sql = "
-                SELECT 身分證字號, 學號, 姓名, 電子郵件, 電話, 科系, 年級
-                FROM 學生
-                WHERE 隊伍編號 = ?
-                ORDER BY 學號";
-                
-                $student_stmt = mysqli_prepare($link, $student_sql);
-                mysqli_stmt_bind_param($student_stmt, "s", $team_id);
-                mysqli_stmt_execute($student_stmt);
-                $student_result = mysqli_stmt_get_result($student_stmt);
-                $students_data = mysqli_fetch_all($student_result, MYSQLI_ASSOC);
+        $response_team2 = $supabaseClient->get('隊伍', [
+            'query' => ['隊伍編號' => 'eq.' . $team_id]
+        ]);
+        $隊伍 = json_decode($response_team2->getBody(), true);
 
-                // 顯示學生資料 - 桌面版表格
-                echo "<div class='students-section'>";
-                echo "<h3>學生資料</h3>";
-                echo "<div class='table-container desktop-table'>";
-                echo "<table>";
-                echo "<thead>";
-                echo "<tr>";
-                echo "<th>姓名</th>";
-                echo "<th>學號</th>";
-                echo "<th>身分證字號</th>";
-                echo "<th>科系</th>";
-                echo "<th>年級</th>";
-                echo "<th>電子郵件</th>";
-                echo "<th>電話</th>";
-                echo "</tr>";
-                echo "</thead>";
-                echo "<tbody>";
-                
-                foreach ($students_data as $student) {
-                    echo "<tr>";
-                    echo "<td>" . htmlspecialchars($student['姓名']) . "</td>";
-                    echo "<td>" . htmlspecialchars($student['學號']) . "</td>";
-                    echo "<td>" . htmlspecialchars($student['身分證字號']) . "</td>";
-                    echo "<td>" . htmlspecialchars($student['科系']) . "</td>";
-                    echo "<td>" . htmlspecialchars($student['年級']) . "</td>";
-                    echo "<td>" . htmlspecialchars($student['電子郵件']) . "</td>";
-                    echo "<td>" . htmlspecialchars($student['電話']) . "</td>";
-                    echo "</tr>";
-                }
-                
-                echo "</tbody>";
-                echo "</table>";
-                echo "</div>";
+        if (count($作品) > 0 && count($隊伍) > 0) {
+            $team_row = array_merge($作品[0], $隊伍[0]); // 合併資料
+            $blob = base64_encode($team_row['說明書']);
 
-                // 手機版卡片顯示
-                echo "<div class='mobile-cards'>";
-                foreach ($students_data as $index => $student) {
-                    echo "<div class='student-card'>";
-                    echo "<div class='card-header'>";
-                    echo "<h4>學生 " . ($index + 1) . "</h4>";
-                    echo "</div>";
-                    echo "<div class='card-body'>";
-                    echo "<div class='card-field'>";
-                    echo "<span class='field-label'>姓名：</span>";
-                    echo "<span class='field-value'>" . htmlspecialchars($student['姓名']) . "</span>";
-                    echo "</div>";
-                    echo "<div class='card-field'>";
-                    echo "<span class='field-label'>學號：</span>";
-                    echo "<span class='field-value'>" . htmlspecialchars($student['學號']) . "</span>";
-                    echo "</div>";
-                    echo "<div class='card-field'>";
-                    echo "<span class='field-label'>身分證字號：</span>";
-                    echo "<span class='field-value'>" . htmlspecialchars($student['身分證字號']) . "</span>";
-                    echo "</div>";
-                    echo "<div class='card-field'>";
-                    echo "<span class='field-label'>科系：</span>";
-                    echo "<span class='field-value'>" . htmlspecialchars($student['科系']) . "</span>";
-                    echo "</div>";
-                    echo "<div class='card-field'>";
-                    echo "<span class='field-label'>年級：</span>";
-                    echo "<span class='field-value'>" . htmlspecialchars($student['年級']) . "</span>";
-                    echo "</div>";
-                    echo "<div class='card-field'>";
-                    echo "<span class='field-label'>電子郵件：</span>";
-                    echo "<span class='field-value'>" . htmlspecialchars($student['電子郵件']) . "</span>";
-                    echo "</div>";
-                    echo "<div class='card-field'>";
-                    echo "<span class='field-label'>電話：</span>";
-                    echo "<span class='field-value'>" . htmlspecialchars($student['電話']) . "</span>";
-                    echo "</div>";
-                    echo "</div>";
-                    echo "</div>";
-                }
-                echo "</div>";
-                echo "</div>";
-
-                // 顯示指導教授資料
-                echo "<div class='professor-section'>";
-                echo "<h3>指導教授資料</h3>";
-                echo "<div class='table-container desktop-table'>";
-                echo "<table>";
-                echo "<thead>";
-                echo "<tr>";
-                echo "<th>姓名</th>";
-                echo "<th>身分證字號</th>";
-                echo "<th>電子郵件</th>";
-                echo "<th>電話</th>";
-                echo "</tr>";
-                echo "</thead>";
-                echo "<tbody>";
-                echo "<tr>";
-                echo "<td>" . htmlspecialchars($row['姓名']) . "</td>";
-                echo "<td>" . htmlspecialchars($row['身分證字號']) . "</td>";
-                echo "<td>" . htmlspecialchars($row['電子郵件']) . "</td>";
-                echo "<td>" . htmlspecialchars($row['電話']) . "</td>";
-                echo "</tr>";
-                echo "</tbody>";
-                echo "</table>";
-                echo "</div>";
-
-                // 手機版教授卡片
-                echo "<div class='mobile-cards'>";
-                echo "<div class='professor-card'>";
-                echo "<div class='card-header'>";
-                echo "<h4>指導教授</h4>";
-                echo "</div>";
-                echo "<div class='card-body'>";
-                echo "<div class='card-field'>";
-                echo "<span class='field-label'>姓名：</span>";
-                echo "<span class='field-value'>" . htmlspecialchars($row['姓名']) . "</span>";
-                echo "</div>";
-                echo "<div class='card-field'>";
-                echo "<span class='field-label'>身分證字號：</span>";
-                echo "<span class='field-value'>" . htmlspecialchars($row['身分證字號']) . "</span>";
-                echo "</div>";
-                echo "<div class='card-field'>";
-                echo "<span class='field-label'>電子郵件：</span>";
-                echo "<span class='field-value'>" . htmlspecialchars($row['電子郵件']) . "</span>";
-                echo "</div>";
-                echo "<div class='card-field'>";
-                echo "<span class='field-label'>電話：</span>";
-                echo "<span class='field-value'>" . htmlspecialchars($row['電話']) . "</span>";
-                echo "</div>";
-                echo "</div>";
-                echo "</div>";
-                echo "</div>";
-                echo "</div>";
-
-                echo "</div>";
-                echo "</section>";
-            } else {
-                echo "<div class='error-message'>";
-                echo "<h2>未找到符合的隊伍資料</h2>";
-                echo "</div>";
-            }
-        } else {
-            echo "<div class='error-message'>";
-            echo "<h2>登入驗證失敗，請重新登入</h2>";
+            echo "<section class='team-info'>";
+            echo "<h2>指導的隊伍資訊</h2>";
+            echo "<div class='team-details'>";
+            echo "<div class='team-basic-info'>";
+            echo "<h3>隊伍基本資料</h3>";
+            echo "<div class='info-item'><span class='label'>隊伍名稱：</span><span class='value'>" . htmlspecialchars($team_row['隊伍名稱']) . "</span></div>";
+            echo "<div class='info-item'><span class='label'>作品說明書：</span><a href='data:application/pdf;base64," . $blob . "' download class='download-link'>下載說明書</a></div>";
+            echo "<div class='info-item'><span class='label'>作品影片網址：</span><a href='" . htmlspecialchars($team_row['作品展示_youtube連結']) . "' target='_blank' class='external-link'>" . htmlspecialchars($team_row['作品展示_youtube連結']) . "</a></div>";
+            echo "<div class='info-item'><span class='label'>作品程式碼網址：</span><a href='" . htmlspecialchars($team_row['程式碼_Github連結']) . "' target='_blank' class='external-link'>" . htmlspecialchars($team_row['程式碼_Github連結']) . "</a></div>";
             echo "</div>";
-        }
 
-        // 關閉資料庫連線
-        if (isset($stmt)) mysqli_stmt_close($stmt);
-        if (isset($team_stmt)) mysqli_stmt_close($team_stmt);
-        if (isset($student_stmt)) mysqli_stmt_close($student_stmt);
-        mysqli_close($link);
-        ?>
+            // 查詢學生資料
+            $response_students = $supabaseClient->get('學生', [
+                'query' => [
+                    '隊伍編號' => 'eq.' . $team_id
+                ]
+            ]);
+            $students_data = json_decode($response_students->getBody(), true);
+
+            // 顯示學生資料（表格 + 卡片）
+            include 'components/student_table.php';  // 表格與卡片統一顯示（可選擇外部化）
+
+            // 顯示指導教授資料
+            include 'components/professor_table.php'; // 外部檔案呈現樣式（可選）
+
+            echo "</div></section>";
+        } else {
+            echo "<div class='error-message'><h2>未找到符合的隊伍資料</h2></div>";
+        }
+    } else {
+        echo "<div class='error-message'><h2>登入驗證失敗，請重新登入</h2></div>";
+    }
+} catch (Exception $e) {
+    echo "<div class='error-message'><h2>系統錯誤：" . htmlspecialchars($e->getMessage()) . "</h2></div>";
+}
+?>
+
 
         <div class="return-section">
             <form action="teacher_dashboard.php" method="POST">
