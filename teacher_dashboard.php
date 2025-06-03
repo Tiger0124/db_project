@@ -53,6 +53,11 @@
                     <input type="hidden" name="password" value="' . $_POST['password'] . '">
                     <input type="submit" value="編輯個人資料">
                 </form>
+                <form action="teacher_viewfeedback.php" method="post">
+                    <input type="hidden" name="username" value="' . $_POST['username'] . '">
+                    <input type="hidden" name="password" value="' . $_POST['password'] . '">
+                    <input type="submit" value="查看評分及評語">
+                </form>
 
 
 

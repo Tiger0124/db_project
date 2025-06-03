@@ -1,0 +1,65 @@
+body {
+  font-family: "Noto Sans TC", "微軟正黑體", sans-serif;
+  background: linear-gradient(to bottom right, #f5f3ff, #ffffff);
+  margin: 0;
+  padding: 40px 20px;
+}
+
+.container {
+  max-width: 880px;
+  margin: auto;
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 12px 30px rgba(128, 0, 128, 0.15);
+}
+
+h2 {
+  text-align: center;
+  color: #5e2b97;
+  font-size: 28px;
+  margin-bottom: 30px;
+}
+
+.feedback-box {
+  background: #f9f5ff;
+  border-left: 6px solid #8e44ad;
+  border-radius: 12px;
+  padding: 20px 25px;
+  margin-bottom: 20px;
+  transition: box-shadow 0.3s ease;
+}
+
+.feedback-box:hover {
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+.feedback-box p {
+  margin: 10px 0;
+  font-size: 17px;
+  color: #4a235a;
+}
+
+.feedback-box strong {
+  display: inline-block;
+  width: 100px;
+  color: #4a235a;
+}
+
+button {
+  display: block;
+  margin: 30px auto 0 auto;
+  padding: 12px 32px;
+  background: linear-gradient(to right, #9b59b6, #8e44ad);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+button:hover {
+  transform: scale(1.05);
+  background: linear-gradient(to right, #8e44ad, #732d91);
+}

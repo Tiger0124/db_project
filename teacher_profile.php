@@ -31,9 +31,6 @@
       <label>職稱
         <input type="text" id="title">
       </label>
-      <label>密碼 (不可修改)
-        <input type="password" id="password" disabled>
-      </label>
       <label>參加年份 (不可修改)
         <input type="number" id="year" disabled>
       </label>
@@ -79,7 +76,6 @@
     document.getElementById('phone').value = data.電話;
     document.getElementById('email').value = data.電子郵件;
     document.getElementById('title').value = data.職稱;
-    document.getElementById('password').value = data.密碼;
     document.getElementById('year').value = data.參加年份;
     document.getElementById('team').value = data.隊伍編號;
   }
