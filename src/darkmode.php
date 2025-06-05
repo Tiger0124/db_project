@@ -11,19 +11,59 @@ if (isset($_GET['toggle_dm'])) {
 // Inject necessary elements if dark mode is active
 if ($_SESSION['darkmode'] ?? false): ?>
     <style>
-        /* ===== Enhanced Dark Mode ===== */
+        /* ===== Universal Dark Mode Styles ===== */
         body {
             background: #121826 !important;
             color: #e0e4ec !important;
         }
 
+        header {
+            background: linear-gradient(to right,
+                    #2a3a55 0%,
+                    #2a3a55 30%,
+                    #1e3a5f 60%,
+                    #1e3a5f 100%) !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+        }
+
+        header h1 {
+            color: #ffffff !important;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8) !important;
+        }
+
+        main,
         main#content {
             background: linear-gradient(135deg, #0d1525 0%, #1a2439 100%) !important;
+        }
+
+        h2,
+        main h2 {
+            color: #e0e4ec !important;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
         }
 
         .rounded-box {
             background: linear-gradient(135deg, #1e3a5f 0%, #2a4d7a 100%) !important;
             box-shadow: 0 15px 40px rgba(30, 58, 95, 0.4) !important;
+        }
+
+        .rounded-box:hover {
+            box-shadow: 0 20px 50px rgba(30, 58, 95, 0.6) !important;
+        }
+
+        .system-button,
+        .admin-buttons button {
+            background: linear-gradient(135deg, #2a4d7a 0%, #1e3a5f 100%) !important;
+            color: #ffffff !important;
+            box-shadow: 0 8px 25px rgba(30, 58, 95, 0.4) !important;
+        }
+
+        .system-button:hover,
+        .admin-buttons button:hover {
+            background: linear-gradient(135deg, #3a6ea5 0%, #2a4d7a 100%) !important;
+            box-shadow: 0 12px 35px rgba(58, 110, 165, 0.6) !important;
+            color: white !important;
+            border-color: #3a6ea5 !important;
         }
 
         table {
@@ -38,22 +78,187 @@ if ($_SESSION['darkmode'] ?? false): ?>
 
         tbody td {
             color: #d0d8e8 !important;
-            border-color: #2a3a55 !important;
+            border-bottom: 1px solid #2a3a55 !important;
         }
 
         tbody tr:hover {
             background-color: #222e45 !important;
         }
 
-        .system-button {
+        a[download] {
+            background: linear-gradient(135deg, #3a6ea5 0%, #2a4d7a 100%) !important;
+            box-shadow: 0 6px 20px rgba(42, 77, 122, 0.5) !important;
+        }
+
+        a[download]:hover {
+            box-shadow: 0 10px 30px rgba(42, 77, 122, 0.7) !important;
+        }
+
+        .site-footer {
+            background: #1a2439 !important;
+        }
+
+        .footer-links li a:hover {
+            color: #3a6ea5 !important;
+        }
+
+        /* ===== Form Page Specific Styles ===== */
+        form {
+            background: #1a2439 !important;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3) !important;
+        }
+
+        form:hover {
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4) !important;
+        }
+
+        h3 {
+            color: #4caf50 !important;
+            border-bottom: 3px solid #4caf50 !important;
+        }
+
+        h3::before {
+            background: linear-gradient(135deg, #2a4d7a 0%, #1e3a5f 100%) !important;
+        }
+
+        .member-btn {
+            background: linear-gradient(135deg, #2a3a55 0%, #1a2439 100%) !important;
+            color: #d0d8e8 !important;
+            border: 2px solid #2a3a55 !important;
+        }
+
+        .member-btn.active {
+            background: linear-gradient(135deg, #2a4d7a 0%, #1e3a5f 100%) !important;
+            color: white !important;
+            box-shadow: 0 4px 15px rgba(42, 77, 122, 0.3) !important;
+        }
+
+        .member-btn.optional {
+            background: linear-gradient(135deg, #3a1b6a 0%, #2a0a5a 100%) !important;
+            color: #d0d8e8 !important;
+        }
+
+        .member-btn.optional.active {
+            background: linear-gradient(135deg, #4a2b8a 0%, #3a1b6a 100%) !important;
+            box-shadow: 0 4px 15px rgba(74, 43, 138, 0.3) !important;
+        }
+
+        .form-group {
+            background: linear-gradient(135deg, #2a4d7a 0%, #1e3a5f 100%) !important;
+            box-shadow: 0 8px 25px rgba(30, 58, 95, 0.4) !important;
+        }
+
+        .student-info {
+            background: linear-gradient(135deg, #2a4d7a 0%, #1e3a5f 100%) !important;
+            box-shadow: 0 8px 25px rgba(30, 58, 95, 0.4) !important;
+        }
+
+        .student-info.optional-member {
+            background: linear-gradient(135deg, #3a1b6a 0%, #2a0a5a 100%) !important;
+            box-shadow: 0 8px 25px rgba(58, 27, 106, 0.4) !important;
+        }
+
+        h4,
+        label {
+            color: #e0e4ec !important;
+        }
+
+        .required-badge {
+            background: rgba(220, 53, 69, 0.7) !important;
+        }
+
+        .optional-badge {
+            background: rgba(255, 255, 255, 0.2) !important;
+            color: #e0e4ec !important;
+        }
+
+        input[type="text"],
+        input[type="email"] {
+            background: rgba(26, 36, 57, 0.8) !important;
+            color: #e0e4ec !important;
+            border: 2px solid #2a4d7a !important;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus {
+            border-color: #3a6ea5 !important;
+            background: rgba(30, 40, 60, 0.9) !important;
+            box-shadow: 0 4px 15px rgba(58, 110, 165, 0.3) !important;
+        }
+
+        input::placeholder {
+            color: #9aacd0 !important;
+        }
+
+        button[type="submit"] {
             background: linear-gradient(135deg, #2a4d7a 0%, #1e3a5f 100%) !important;
             color: #ffffff !important;
             box-shadow: 0 8px 25px rgba(30, 58, 95, 0.4) !important;
         }
 
-        a[download] {
+        button[type="submit"]:hover {
             background: linear-gradient(135deg, #3a6ea5 0%, #2a4d7a 100%) !important;
-            box-shadow: 0 6px 20px rgba(42, 77, 122, 0.5) !important;
+            box-shadow: 0 12px 35px rgba(58, 110, 165, 0.6) !important;
+        }
+
+        /* ===== Admin Page Specific Styles ===== */
+        .content-wrapper {
+            background: #1a2439 !important;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3) !important;
+        }
+
+        .admin-buttons {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2a4d7a 100%) !important;
+            box-shadow: 0 15px 40px rgba(30, 58, 95, 0.4) !important;
+        }
+
+        .admin-buttons:hover {
+            box-shadow: 0 20px 50px rgba(30, 58, 95, 0.6) !important;
+        }
+
+        body>h2 {
+            /* Error messages */
+            background: #1a2439 !important;
+            color: #ff6b6b !important;
+            border-left: 4px solid #ff6b6b !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
+        }
+
+        body>p {
+            /* Error messages */
+            background: #1a2439 !important;
+            color: #e0e4ec !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
+        }
+
+        .student-fieldset {
+            background: linear-gradient(135deg, #2a4d7a 0%, #1e3a5f 100%) !important;
+            box-shadow: 0 8px 25px rgba(30, 58, 95, 0.4) !important;
+        }
+
+        .professor-fieldset {
+            background: linear-gradient(135deg, #3a1b6a 0%, #2a0a5a 100%) !important;
+            box-shadow: 0 8px 25px rgba(58, 27, 106, 0.4) !important;
+        }
+
+        fieldset:hover {
+            box-shadow: 0 10px 30px rgba(30, 58, 95, 0.5) !important;
+        }
+
+        .professor-fieldset:hover {
+            box-shadow: 0 10px 30px rgba(58, 27, 106, 0.5) !important;
+        }
+
+        .rounded-box,
+        .edit-team-section,
+        .error-section {
+            background: #1a2439 !important;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3) !important;
+        }
+
+        .rounded-box:hover,
+        .edit-team-section:hover {
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4) !important;
         }
 
         /* ===== Toggle Button - Light Mode Style ===== */
@@ -78,9 +283,8 @@ if ($_SESSION['darkmode'] ?? false): ?>
         }
     </style>
     <script>
-        // Add toggle button and dark mode class
+        // Add toggle button and animations
         document.addEventListener('DOMContentLoaded', function() {
-            document.body.classList.add('dark-mode');
             const navbar = document.querySelector('.navbar');
             if (navbar && !document.querySelector('.darkmode-btn')) {
                 const toggleBtn = document.createElement('button');
@@ -88,6 +292,24 @@ if ($_SESSION['darkmode'] ?? false): ?>
                 toggleBtn.innerHTML = '☀️ 切換亮色模式';
                 toggleBtn.onclick = () => window.location.href = '?toggle_dm=1';
                 navbar.appendChild(toggleBtn);
+            }
+
+            // Apply animations if they exist
+            const animatedElements = document.querySelectorAll(
+                '.form-group, .student-info, .admin-buttons,.edit-team-section, h2');
+            if (animatedElements.length > 0) {
+                animatedElements.forEach(el => {
+                    el.style.opacity = '0';
+                    el.style.transform = 'translateY(20px)';
+                });
+
+                setTimeout(() => {
+                    animatedElements.forEach(el => {
+                        el.style.transition = 'all 0.6s ease-out';
+                        el.style.opacity = '1';
+                        el.style.transform = 'translateY(0)';
+                    });
+                }, 100);
             }
         });
     </script>
@@ -115,7 +337,7 @@ if ($_SESSION['darkmode'] ?? false): ?>
         }
     </style>
     <script>
-        // Just add toggle button
+        // Add toggle button
         document.addEventListener('DOMContentLoaded', function() {
             const navbar = document.querySelector('.navbar');
             if (navbar && !document.querySelector('.darkmode-btn')) {
