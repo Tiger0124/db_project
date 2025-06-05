@@ -36,26 +36,26 @@
         echo '
         <div class="admin-buttons">
             <form action="edit_judge.php" method="POST">
-                <input type="hidden" name="username" value="' . $_POST['username'] . '">
-                <input type="hidden" name="password" value="' . $_POST['password'] . '">
+                <input type="hidden" name="username" value="' .$filename. '">
+                <input type="hidden" name="password" value="' .$filepasswd. '">
                 <button type="submit">修改個人資料</button>
             </form>
             <form action="judgement.php" method="POST">
-                <input type="hidden" name="username" value="' . $_POST['username'] . '">
-                <input type="hidden" name="password" value="' . $_POST['password'] . '">
+                <input type="hidden" name="username" value="' .$filename. '">
+                <input type="hidden" name="password" value="' .$filepasswd. '">
                 <button type="submit">填寫評分分數</button>
             </form>
             <form action="student_history.php" method="POST">
-                <input type="hidden" name="username" value="' . $_POST['username'] . '">
-                <input type="hidden" name="password" value="' . $_POST['password'] . '">
+                <input type="hidden" name="username" value="' .$filename. '">
+                <input type="hidden" name="password" value="' .$filepasswd. '">
                 <button type="submit">查看歷屆作品</button>
             </form>
             </div>';
     } else {
         echo '<h2>登入失敗，請返回並重試。</h2>';
         echo '<P>評審帳號密碼提示</P>';
-        echo '<p>評審帳號：姓名</p>';
-        echo '<p>評審密碼：身分證字號</p>';
+        echo '<p>評審帳號：身分證字號</p>';
+        echo '<p>評審密碼：密碼</p>';
         echo '
             <div class="button-container">    
                 <a href="judge.php" class="system-button">返回</a>

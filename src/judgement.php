@@ -28,7 +28,10 @@
                             <th>海報</th>
                             <th>影片網址</th>
                             <th>程式碼網址</th>
-                            <th>評分</th>
+                            <th>創意性</th>
+                            <th>實用性</th>
+                            <th>完整性</th>
+                            <th>評語</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -36,33 +39,91 @@
                         <?php
                         include 'conn.php';
                         $currentYear = date("Y");
-                        $select_db = @mysqli_select_db($link, "db_project");
-                        $sql = "SELECT 隊伍.屆數, 隊伍.隊伍編號, 隊伍.隊伍名稱, 作品.作品名稱, 作品.說明書, 作品.海報, 作品.作品展示_youtube連結, 作品.程式碼_Github連結 
-                                FROM 隊伍 
-                                NATURAL JOIN 作品 
-                                WHERE 隊伍.參加年份 = '$currentYear'";
-                        $result = mysqli_query($link, $sql);
+                        
+                        // 查詢所有今年的隊伍
+                        $teamsResponse = $supabaseClient->get("隊伍?參加年份=eq.$currentYear");
+                        $teams = json_decode($teamsResponse->getBody(), true);
 
-                        while ($row = mysqli_fetch_assoc($result)) {
-                            echo "<tr>";
-                            echo "<td>" . $row['隊伍名稱'] . "</td>";
-                            echo "<td>" . $row['作品名稱'] . "</td>";
-                            $blob = base64_encode($row['說明書']);
-                            echo "<td><a href='data:application/pdf;base64," . $blob . "' download>下載說明書</a></td>";
-                            $blob = base64_encode($row['海報']);
-                            echo "<td><a href='data:application/pdf;base64," . $blob . "' download>下載海報</a></td>";
-                            echo "<td><a href='" . $row['作品展示_youtube連結'] . "' target='_blank'>影片連結</a></td>";
-                            echo "<td><a href='" . $row['程式碼_Github連結'] . "' target='_blank'>程式碼連結</a></td>";
-                            echo "<td>";
-                            echo "<input type='number' name='scores[" . $row['隊伍編號'] . "]' min='1' max='100' required>";
-                            echo "<input type='hidden' name='team_ids[" . $row['隊伍編號'] . "]' value='" . $row['隊伍編號'] . "'>";
-                            echo "<input type='hidden' name='sessions[" . $row['隊伍編號'] . "]' value='" . $row['屆數'] . "'>";
-                            echo "<input type='hidden' name='username' value='" . $_POST['username'] . "'>";
-                            echo "<input type='hidden' name='judge_id' value='" . $_POST['password'] . "'>";
-                            echo "</td>";
-                            echo "</tr>";
+                        // 查詢所有作品
+                        $worksResponse = $supabaseClient->get("作品");
+                        $works = json_decode($worksResponse->getBody(), true);
+
+                        // 建立以隊伍編號為 key 的作品 map
+                        $workMap = [];
+                        foreach ($works as $work) {
+                            $workMap[$work['隊伍編號']] = $work;
                         }
                         ?>
+
+                        <?php foreach ($teams as $team): ?>
+                            <?php $work = $workMap[$team['隊伍編號']] ?? null; ?>
+                            <tr>
+                                <td><?= htmlspecialchars($team['隊伍名稱']) ?></td>
+                                <td><?= htmlspecialchars($work['作品名稱'] ?? '無') ?></td>
+
+                                <!-- 說明書 -->
+                                <td>
+                                    <?php if (!empty($work['說明書'])): ?>
+                                        <?php $pdf = base64_encode($work['說明書']); ?>
+                                        <a href="data:application/pdf;base64,<?= $pdf ?>" download>下載</a>
+                                    <?php else: ?>
+                                        無
+                                    <?php endif; ?>
+                                </td>
+
+                                <!-- 海報 -->
+                                <td>
+                                    <?php if (!empty($work['海報'])): ?>
+                                        <?php $pdf = base64_encode($work['海報']); ?>
+                                        <a href="data:application/pdf;base64,<?= $pdf ?>" download>下載</a>
+                                    <?php else: ?>
+                                        無
+                                    <?php endif; ?>
+                                </td>
+
+                                <!-- YouTube 連結 -->
+                                <td>
+                                    <?php if (!empty($work['作品展示(youtube連結)'])): ?>
+                                        <a href="<?= htmlspecialchars($work['作品展示(youtube連結)']) ?>" target="_blank">觀看</a>
+                                    <?php else: ?>
+                                        無
+                                    <?php endif; ?>
+                                </td>
+
+                                <!-- GitHub 連結 -->
+                                <td>
+                                    <?php if (!empty($work['程式碼(Github連結)'])): ?>
+                                        <a href="<?= htmlspecialchars($work['程式碼(Github連結)']) ?>" target="_blank">查看</a>
+                                    <?php else: ?>
+                                        無
+                                    <?php endif; ?>
+                                </td>
+
+                                <!-- 評分輸入 - 創意性 -->
+                                <td>
+                                    <input type="number" name="scores_new[<?= $team['隊伍編號'] ?>]" placeholder="1-100" min="1" max="100" required>
+                                    <input type="hidden" name="team_ids[<?= $team['隊伍編號'] ?>]" value="<?= $team['隊伍編號'] ?>">
+                                    <input type="hidden" name="sessions[<?= $team['隊伍編號'] ?>]" value="<?= $team['屆數'] ?>">
+                                    <input type="hidden" name="username" value="<?= htmlspecialchars($_POST['username'] ?? '') ?>">
+                                    <input type="hidden" name="password" value="<?= htmlspecialchars($_POST['password'] ?? '') ?>">
+                                </td>
+
+                                <!-- 評分輸入 - 實用性 -->
+                                <td>
+                                    <input type="number" name="scores_use[<?= $team['隊伍編號'] ?>]" placeholder="1-100" min="1" max="100" required>
+                                </td>
+
+                                <!-- 評分輸入 - 完整性 -->
+                                <td>
+                                    <input type="number" name="scores_integrity[<?= $team['隊伍編號'] ?>]" placeholder="1-100" min="1" max="100" required>
+                                </td>
+
+                                <!-- 評語輸入 -->
+                                <td>
+                                    <input type="text" name="comments[<?= $team['隊伍編號'] ?>]" placeholder="請輸入評語" required>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
                     </tbody>
                 </table>
                 <div style="text-align: right;">
