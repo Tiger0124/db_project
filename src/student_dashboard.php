@@ -30,6 +30,14 @@
             'select' => '*',
         ]
     ]);
+
+    // $response = $supabaseClient->from('學生')
+    //                 ->update($student_data)
+    //                 ->eq('身分證字號', $student_id)
+    //                 ->eq('隊伍編號', $team_id)
+    //                 ->execute();
+
+
     $data = json_decode($response->getBody(), true);
 
     if (count($data) === 1) {
