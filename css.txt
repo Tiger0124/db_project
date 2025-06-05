@@ -1,2 +1,0 @@
-box-shadow: 0 15px 40px rgba(240, 147, 251, 0.4);
-background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
