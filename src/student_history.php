@@ -87,10 +87,10 @@ foreach ($teams as $team) {
                 <a href="data:application/pdf;base64,<?= base64_encode($row['海報']) ?>" download>下載海報</a>
             </td>
             <td>
-                <a href="<?= htmlspecialchars($row['作品展示_youtube連結']) ?>" target="_blank">影片連結</a>
+                <a href="<?= htmlspecialchars($row['作品展示(youtube連結)']) ?>" target="_blank">影片連結</a>
             </td>
             <td>
-                <a href="<?= htmlspecialchars($row['程式碼_Github連結']) ?>" target="_blank">程式碼連結</a>
+                <a href="<?= htmlspecialchars($row['程式碼(Github連結)']) ?>" target="_blank">程式碼連結</a>
             </td>
         </tr>
     <?php endforeach; ?>
