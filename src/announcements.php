@@ -39,7 +39,7 @@
         echo "<textarea id='competition-rules' name='competition_rules' rows='5' required>" . htmlspecialchars($data[0]['比賽規則']) . "</textarea>";
 
         echo "<label for='announcement-file'>上傳檔案：</label>";
-        echo "<input type='file' id='announcement-file' name='announcement_file' accept='.pdf' required>";
+        echo "<input type='file' id='announcement-file' name='announcement_file' accept='.pdf'>";
         ?>
         
         <!-- 提交按鈕 -->

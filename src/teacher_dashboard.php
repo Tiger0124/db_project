@@ -26,7 +26,7 @@
         // 查詢 Supabase「指導老師」資料表中是否有符合的紀錄
         $response = $supabaseClient->get('指導老師', [
             'query' => [
-                '隊伍編號' => 'eq.' . $filename,
+                '身分證字號' => 'eq.' . $filename,
                 '密碼' => 'eq.' . $filepasswd
             ]
         ]);

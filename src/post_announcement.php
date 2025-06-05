@@ -22,43 +22,30 @@ include 'conn.php';
 $announcement_content = $_POST['announcement_content'];
 $competition_rules = $_POST['competition_rules'];
 
-// 2. 檢查檔案是否存在並處理
+// 2. 準備更新內容
+$update_data = [
+    '比賽規則' => $competition_rules,
+    '公告內容' => $announcement_content
+];
+
+// 3. 若有檔案上傳，才加入宣傳海報欄位
 if (isset($_FILES['announcement_file']) && $_FILES['announcement_file']['error'] === UPLOAD_ERR_OK) {
-    // 檔案資訊
-    $file_tmp_name = $_FILES['announcement_file']['tmp_name']; // 臨時檔案路徑
-    $file_name = $_FILES['announcement_file']['name'];         // 原始檔名
-    $file_size = $_FILES['announcement_file']['size'];         // 檔案大小
-    $file_type = $_FILES['announcement_file']['type'];         // 檔案類型
+    $file_tmp_name = $_FILES['announcement_file']['tmp_name'];
+    $update_data['宣傳海報'] = base64_encode(file_get_contents($file_tmp_name));
+}
 
-    // 檢查檔案大小 (可選)
-    if ($file_size > 10 * 1024 * 1024) { // 限制 10MB
-        die("檔案過大，請上傳小於 10MB 的檔案。");
-    }
+// 4. 執行 PATCH 更新
+$response = $supabaseClient->patch('創意競賽', [
+    'query' => [
+        '屆數' => 'eq.13'
+    ],
+    'json' => $update_data
+]);
 
-    // 讀取檔案內容並轉換為 BLOB
-    $response = $supabaseClient->patch('創意競賽', [
-        'query' => [
-            '屆數' => 'eq.13'  // 條件：屆數 = 13
-        ],
-        'json' => [
-            '比賽規則' => $competition_rules,
-            '公告內容' => $announcement_content,
-            '宣傳海報' => base64_encode(file_get_contents($file_tmp_name)) // 將檔案內容轉換為 Base64 編碼
-            // 可以加入你要更新的其他欄位
-        ]
-    ]);
-    // $file_content = file_get_contents($file_tmp_name);
-    // $file_content = mysqli_real_escape_string($link, $file_content);
-
-    // $sql="Update 創意競賽 set 公告內容 = '".$announcement_content."', 比賽規則 = '".$competition_rules."', 宣傳海報 = '".$file_content."' where 屆數 = '第13屆'";
-    // $result = mysqli_query($link, $sql);
-    if ($response->getStatusCode() >= 200 && $response->getStatusCode() < 300) {
-        echo "<h2>公告發布成功！</h2>";
-    } else {
-        echo "<h2>公告發布失敗！</h2>";
-    }
+if ($response->getStatusCode() >= 200 && $response->getStatusCode() < 300) {
+    echo "<h2>公告發布成功！</h2>";
 } else {
-    echo "<h2>檔案上傳失敗！</h2>";
+    echo "<h2>公告發布失敗！</h2>";
 }
 
 //回主畫面
