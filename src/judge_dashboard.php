@@ -16,23 +16,23 @@
         </div>
     </header>
     <?php
-include 'conn.php';
+    include 'conn.php';
+    $filename=$_POST["username"];
+    $filepasswd=$_POST["password"];
 
-$filename=$_POST["username"];
-$filepasswd=$_POST["password"];
+    // 發送 GET 請求查詢符合條件的使用者
+    $response = $supabaseClient->get('評審委員', [
+            'query' => [
+                '身分證字號' => 'eq.' . $filename,
+                '密碼' => 'eq.' . $filepasswd,
+                'select' => '*',
+            ]
+    ]);
+    $data = json_decode($response->getBody(), true);
 
-// 發送 GET 請求查詢符合條件的使用者
-$response = $supabaseClient->get('評審委員', [
-        'query' => [
-            '姓名' => 'eq.' . $filename,
-            '身分證字號' => 'eq.' . $filepasswd,
-            'select' => '*',
-        ]
-]);
-$data = json_decode($response->getBody(), true);
-
-if (count($data) === 1) {
-    echo '<h2>歡迎，'.$filename.'評審！</h2>';
+    if (count($data) === 1) {
+        $name = $data[0]['姓名'];
+        echo '<h2>歡迎，'.$name.' 評審！</h2>';
         echo '
         <div class="admin-buttons">
             <form action="edit_judge.php" method="POST">
