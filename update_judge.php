@@ -48,19 +48,7 @@
                         '頭銜' => $student1_department
                     ]
                 ]);
-
-                $bodyContents = $response->getBody()->getContents();
-                var_dump($bodyContents); // 先看回傳結果
-                $data = json_decode($bodyContents, true); // 再 decode
-                var_dump($data); // 檢查解碼後的資料
-
-                if ($data !== null) {
-                    echo "✅ 查到 " . count($data) . " 筆資料<br>";
-                    $success = true;
-                    $updated_data = $data[0]; // 更新後回傳的第一筆資料
-                } else {
-                    $error_message = "沒有資料被更新，請確認資料是否正確。";
-                }
+                $success = true;
 
             } catch (Exception $e) {
                 $error_message = "更新失敗：" . $e->getMessage();
