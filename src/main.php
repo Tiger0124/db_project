@@ -36,9 +36,20 @@
                     <tr>
                         <?php
                             include 'conn.php';
-                            $sql = "SELECT * FROM 創意競賽 where 屆數 = '第13屆'";
-                            $result = mysqli_query($link, $sql);
-                            while ($row = mysqli_fetch_array($result)) {
+
+                            // 發送 GET 請求到 Supabase
+                            $response = $supabaseClient->get('創意競賽', [
+                                'query' => [
+                                    '屆數' => 'eq.13',
+                                    'select' => '*'
+                                ]
+                            ]);
+
+                            // 解析 JSON 回應
+                            $data = json_decode($response->getBody(), true);
+
+                            // 輸出結果
+                            foreach ($data as $row) {
                                 echo "<td>" . $row['公告內容'] . "</td>";
                             }
                         ?>
@@ -54,9 +65,20 @@
                     <tr>
                         <?php
                             include 'conn.php';
-                            $sql = "SELECT * FROM 創意競賽 where 屆數 = '第13屆'";
-                            $result = mysqli_query($link, $sql);
-                            while ($row = mysqli_fetch_array($result)) {
+
+                            // 發送 GET 請求到 Supabase
+                            $response = $supabaseClient->get('創意競賽', [
+                                'query' => [
+                                    '屆數' => 'eq.13',
+                                    'select' => '*'
+                                ]
+                            ]);
+
+                            // 解析 JSON 回應
+                            $data = json_decode($response->getBody(), true);
+
+                            // 輸出結果
+                            foreach ($data as $row) {
                                 echo "<td>" . $row['比賽規則'] . "</td>";
                             }
                         ?>
@@ -64,11 +86,25 @@
         </table>
         <?php
             include 'conn.php';
-            $sql = "SELECT * FROM 創意競賽 where 屆數 = '第13屆'";
-            $result = mysqli_query($link, $sql);
-            while ($row = mysqli_fetch_array($result)) {
-                $blob = base64_encode($row['宣傳海報']);
-                echo "<a href='data:application/pdf;base64," . $blob . "' download>宣傳海報.pdf</a>";
+            // 從 Supabase 查詢第13屆的資料
+            $response = $supabaseClient->get('創意競賽', [
+                'query' => [
+                    '屆數' => 'eq.13',
+                    'select' => '*'
+                ]
+            ]);
+
+            // 解析回傳結果
+            $data = json_decode($response->getBody(), true);
+
+            foreach ($data as $row) {
+                // 從資料表取得 base64 的 blob 資料
+                $blob = $row['宣傳海報']; // 假設 Supabase 資料表儲存的就是 base64 字串
+
+                // 如果 Supabase 儲存的是純二進位 (binary)，則可能需要 base64_encode()
+                // $blob = base64_encode($row['宣傳海報']);
+
+                echo "<a href='data:application/pdf;base64," . $blob . "' download='宣傳海報.pdf'>下載宣傳海報</a><br>";
             }
         ?>
     </main>

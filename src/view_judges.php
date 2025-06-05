@@ -36,46 +36,58 @@
         <input type="hidden" name="password" value="<?php echo $_POST['password']; ?>">
     </form>
     <table>
-        <tr>
+        <!-- <tr>
             <th>身分證字號</th>
             <th>電子郵件</th>
             <th>頭銜</th>
             <th>姓名</th>
             <th>電話</th>
-        </tr>
+        </tr> -->
         <?php
-            include 'conn.php';
-            $yearToSession = [
-              2013 => "第1屆",
-              2014 => "第2屆",
-              2015 => "第3屆",
-              2016 => "第4屆",
-              2017 => "第5屆",
-              2018 => "第6屆",
-              2019 => "第7屆",
-              2020 => "第8屆",
-              2021 => "第9屆",
-              2022 => "第10屆",
-              2023 => "第11屆",
-              2024 => "第12屆",
-              2025 => "第13屆"
-          ];
-            $select_db = @mysqli_select_db($link, "db_project"); //選擇資料庫
-            if (isset($_POST['year'])&& array_key_exists($_POST['year'], $yearToSession)) { // 確認是否有提交表單
-              $session = $yearToSession[$_POST['year']];
-              $sql = "SELECT * FROM 評審委員 WHERE 評審委員.屆數 = '".$session."'";
-              $result = mysqli_query($link, $sql);
-              while($row = mysqli_fetch_assoc($result)){
-                  echo "<tr>";
-                  echo "<td>".$row['身分證字號']."</td>";
-                  echo "<td>".$row['電子郵件']."</td>";
-                  echo "<td>".$row['頭銜']."</td>";
-                  echo "<td>".$row['姓名']."</td>";
-                  echo "<td>".$row['電話']."</td>";
-                  echo "</tr>";
-              }
+        require_once 'conn.php'; // 引入連線設定
+        $yearToSession = [2013 => "第1屆", 2014 => "第2屆", 2015 => "第3屆", 2016 => "第4屆",
+            2017 => "第5屆", 2018 => "第6屆", 2019 => "第7屆", 2020 => "第8屆",
+            2021 => "第9屆", 2022 => "第10屆", 2023 => "第11屆", 2024 => "第12屆",
+            2025 => "第13屆"];
+        // 移除原本的 MySQL 連線程式碼
+        // $link = mysqli_connect(...);
+        // mysqli_select_db(...);
+
+        // 使用 $supabaseClient 進行資料庫查詢
+        try {
+            if (isset($_POST['year']) && array_key_exists($_POST['year'], $yearToSession)) {
+                $session = $yearToSession[$_POST['year']];
+                $selectedYear = $_POST['year']; // $sessionTextForDisplay = $yearToSession[$selectedYear]; // 如果需要在標題等地方顯示 "第X屆"
+
+                $response = $supabaseClient->get('評審委員', [
+                    'query' => [
+                        '參加年份' => 'eq.' . $selectedYear, // <--- 修正點：使用 '參加年份' 欄位
+                        'select' => '*', // 選擇所有欄位
+                    ]
+                ]);
+                //$judgesData = json_decode($response->getBody()->getContents(), true);
+                $data = json_decode($response->getBody(), true);
+
+                echo "<table border='1'>";
+                echo "<tr><th>身分證字號</th><th>電子郵件</th><th>頭銜</th><th>姓名</th><th>電話</th></tr>";
+
+                foreach ($data as $row) {
+                    echo "<tr>";
+                    echo "<td>" . htmlspecialchars($row['身分證字號']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['電子郵件']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['頭銜']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['姓名']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['電話']) . "</td>";
+                    echo "</tr>";
+                }
+
+                echo "</table>";
             }
+        } catch (Exception $e) {
+            echo "查詢評審資料錯誤: " . $e->getMessage();
+        }
         ?>
+
     </table>
     
     <form action="admin_dashboard.php" method="POST">

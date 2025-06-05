@@ -17,15 +17,23 @@
     </header>
     <?php
         include 'conn.php';
-        $select_db = @mysqli_select_db($link, "db_project"); //選擇資料庫
         $filename=$_POST["username"];
         $filepasswd=$_POST["password"];
-
-        $sql = "SELECT * FROM 管理員_研發處 WHERE 員工編號 = '".$filename."' and 密碼 = '".$filepasswd."'";
-        $result = mysqli_query($link, $sql);
-        $name = mysqli_fetch_array($result);
-    if (mysqli_num_rows($result)==1) {
-        echo '<h2>歡迎，'.$name['姓名'].' 管理員！</h2>';
+        // 發送 GET 請求查詢符合條件的使用者
+        $response = $supabaseClient->get('管理員_研發處', [
+            'query' => [
+                '員工編號' => 'eq.' . $filename,
+                '密碼' => 'eq.' . $filepasswd,
+                'select' => '*',
+            ]
+        ]);
+        $data = json_decode($response->getBody(), true);
+        
+        // $sql = "SELECT * FROM 管理員_研發處 WHERE 員工編號 = '".$filename."' and 密碼 = '".$filepasswd."'";
+        // $result = mysqli_query($link, $sql);
+        // $name = mysqli_fetch_array($result);
+    if (count($data) === 1) {
+        echo '<h2>歡迎，'.$filename.' 管理員！</h2>';
         echo '
         <div class="admin-buttons">
             <form action="view_students.php" method="POST">
@@ -37,6 +45,11 @@
                 <input type="hidden" name="username" value="' . $_POST['username'] . '">
                 <input type="hidden" name="password" value="' . $_POST['password'] . '">
                 <button type="submit">查詢評審資料</button>
+            </form>
+            <form action="view_teachers.php" method="POST">
+                <input type="hidden" name="username" value="' . $_POST['username'] . '">
+                <input type="hidden" name="password" value="' . $_POST['password'] . '">
+                <button type="submit">查詢指導老師資料</button>
             </form>
             <form action="view_scores.php" method="POST">
                 <input type="hidden" name="username" value="' . $_POST['username'] . '">
