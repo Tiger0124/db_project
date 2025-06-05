@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // 報名成功訊息
     echo "<h2>報名成功！</h2>";
-    echo "<p>隊伍名稱：$team_name</p>";
+    echo "<p>隊伍編號：$team_num</p>";
     echo "<a href='main.php'>返回主頁</a>";
 } else {
     // 如果不是 POST 提交，跳轉回表單頁面
