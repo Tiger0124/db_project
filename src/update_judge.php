@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>評審資料更新結果 - 高雄大學創意競賽管理系統</title>
     <link rel="stylesheet" href="../asset/update_judge.css">
 </head>
+
 <body>
     <header>
         <div class="navbar">
@@ -19,7 +21,7 @@
     <main id="content">
         <?php
         include 'conn.php';
-        
+
         $success = false;
         $error_message = "";
         $updated_data = [];
@@ -38,8 +40,8 @@
                 // 發送 PATCH 請求到 Supabase
                 $response = $supabaseClient->patch('評審委員', [
                     'query' => [
-                        '身分證字號' => 'eq.'.$student1_id,
-                        '密碼' => 'eq.'.$password,
+                        '身分證字號' => 'eq.' . $student1_id,
+                        '密碼' => 'eq.' . $password,
                     ],
                     'json' => [
                         '姓名' => $student1_name,
@@ -49,8 +51,6 @@
                     ]
                 ]);
                 $success = true;
-                
-
             } catch (Exception $e) {
                 $error_message = "更新失敗：" . $e->getMessage();
             }
@@ -91,8 +91,8 @@
                 <form action="judge_dashboard.php" method="POST">
                     <?php
                     // 傳遞使用者名稱和密碼到評審系統
-                    echo '<input type="hidden" name="username" value="'.$_POST['username'].'">
-                    <input type="hidden" name="password" value="'.$_POST['password'].'">
+                    echo '<input type="hidden" name="username" value="' . $_POST['username'] . '">
+                    <input type="hidden" name="password" value="' . $_POST['password'] . '">
                     <button type="submit" class="dashboard-btn">返回評審系統</button>';
                     ?>
 
@@ -106,7 +106,7 @@
 
     <footer class="site-footer">
         <div class="footer-content">
-            <p>&copy; Copyright © 2025 XC Lee Tiger Lin  How Ho. All rights reserved.</p>
+            <p>&copy; Copyright © 2025 XC Lee Tiger Lin How Ho. All rights reserved.</p>
             <div class="footer-row">
                 <div class="footer-container">
                     <p>聯絡我們 : <a href="mailto:wylin@nuk.edu.tw">wylin@nuk.edu.tw</a></p>
@@ -118,4 +118,5 @@
         </div>
     </footer>
 </body>
+
 </html>

@@ -1,0 +1,369 @@
+/* Reset & 基本設定 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: "Microsoft JhengHei", "Noto Sans TC", Arial, sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
+  line-height: 1.6;
+  padding-top: 100px;
+  padding-bottom: 80px;
+}
+
+/* Header 樣式 - 固定在頂部 */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 80px;
+  background: linear-gradient(
+    to right,
+    #ffffff 0%,
+    #ffffff 30%,
+    #ffd700 60%,
+    #f5be11 100%
+  );
+  color: #2c3e50;
+  padding: 1rem 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.navbar {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  padding: 0 2rem;
+  gap: 1.5rem;
+  height: 100%;
+}
+
+.logo img {
+  height: 50px;
+  width: auto;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+header h1 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: #2c3e50;
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8);
+}
+
+/* Main 內容區塊 */
+main {
+  flex: 1;
+  width: 100%;
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.upload-section {
+  width: 100%;
+  max-width: 800px;
+  background: white;
+  border-radius: 20px;
+  padding: 3rem;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.upload-section h2 {
+  text-align: center;
+  font-size: 2rem;
+  color: #2c3e50;
+  margin-bottom: 2rem;
+}
+
+/* 表單樣式 */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.form-group input[type="text"],
+.form-group input[type="url"],
+.form-group input[type="file"],
+.form-group textarea {
+  padding: 0.8rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="url"]:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+.form-group textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.form-group input[type="file"] {
+  padding: 0.5rem 0;
+}
+
+button[type="submit"],
+button[type="button"] {
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+  margin-top: 1rem;
+}
+
+button[type="submit"]:hover,
+button[type="button"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(52, 152, 219, 0.5);
+  background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+}
+
+/* 返回按鈕樣式 */
+form[action="student_dashboard.php"] {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  z-index: 999;
+}
+
+form[action="student_dashboard.php"] button {
+  padding: 0.8rem 1.5rem;
+  background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(108, 117, 125, 0.3);
+}
+
+form[action="student_dashboard.php"] button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(108, 117, 125, 0.5);
+  background: linear-gradient(135deg, #495057 0%, #6c757d 100%);
+}
+
+/* Footer 樣式 */
+.site-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  height: 70px;
+  background: #2c3e50;
+  color: white;
+  padding: 1rem 0;
+  font-size: 0.9rem;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  text-align: center;
+  width: 100%;
+}
+
+.footer-content > p {
+  margin-bottom: 0.5rem;
+}
+
+.footer-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.footer-container {
+  flex: 1;
+}
+
+.footer-container p {
+  margin: 0;
+}
+
+.footer-container a {
+  color: #3498db;
+  text-decoration: none;
+}
+
+.footer-container a:hover {
+  color: #5dade2;
+}
+
+.footer-links {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+}
+
+.footer-links li a {
+  color: #ecf0f1;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.footer-links li a:hover {
+  color: #3498db;
+}
+
+/* 動畫效果 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+  body {
+    padding-top: 130px;
+    padding-bottom: 100px;
+  }
+
+  header {
+    height: 110px;
+    background: linear-gradient(to bottom, #ffffff 0%, #f5be11 100%);
+  }
+
+  .navbar {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+    padding: 0 1rem;
+  }
+
+  header h1 {
+    font-size: 1.4rem;
+  }
+
+  main {
+    padding: 1rem;
+  }
+
+  .upload-section {
+    padding: 2rem;
+    max-width: 90vw;
+  }
+
+  .upload-section h2 {
+    font-size: 1.7rem;
+  }
+
+  .site-footer {
+    height: 90px;
+  }
+
+  .footer-row {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+  }
+
+  .footer-links {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding-top: 150px;
+    padding-bottom: 120px;
+  }
+
+  header {
+    height: 130px;
+  }
+
+  header h1 {
+    font-size: 1.2rem;
+  }
+
+  .upload-section {
+    padding: 1.5rem;
+    max-width: 95vw;
+  }
+
+  .upload-section h2 {
+    font-size: 1.5rem;
+  }
+
+  .site-footer {
+    height: 110px;
+  }
+
+  form[action="student_dashboard.php"] {
+    bottom: 110px;
+    right: 10px;
+  }
+
+  form[action="student_dashboard.php"] button {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+  }
+}

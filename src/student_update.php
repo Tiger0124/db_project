@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>修改結果 - 高雄大學創意競賽管理系統</title>
     <link rel="stylesheet" href="../asset/student_update.css">
 </head>
+
 <body>
     <header>
         <div class="navbar">
@@ -17,9 +19,9 @@
     </header>
 
     <main id="content">
+
         <?php
         include 'conn.php';
-        $select_db = @mysqli_select_db($link, "db_project");
 
         $team_id = $_POST['team_id'];
         $username = $_POST['username'];
@@ -30,81 +32,59 @@
         $error_messages = [];
         $updated_items = [];
 
-        // 開始交易
-        mysqli_autocommit($link, false);
-
         try {
-            // 更新學生資料
+            // Update student data
             for ($i = 0; $i < $member_count; $i++) {
                 if (isset($_POST["student{$i}_id"])) {
                     $student_id = $_POST["student{$i}_id"];
-                    $student_num = $_POST["student{$i}_studentid"];
-                    $student_name = $_POST["student{$i}_name"];
-                    $student_email = $_POST["student{$i}_email"];
-                    $student_phone = $_POST["student{$i}_phone"];
-                    $student_department = $_POST["student{$i}_department"];
-                    $student_grade = $_POST["student{$i}_grade"];
+                    $student_data = [
+                        '學號' => $_POST["student{$i}_studentid"],
+                        '姓名' => $_POST["student{$i}_name"],
+                        '電子郵件' => $_POST["student{$i}_email"],
+                        '電話' => $_POST["student{$i}_phone"],
+                        '科系' => $_POST["student{$i}_department"]
+                    ];
 
-                    $update_sql = "UPDATE 學生 SET 
-                                   學號 = ?, 
-                                   姓名 = ?, 
-                                   電子郵件 = ?, 
-                                   電話 = ?, 
-                                   科系 = ?, 
-                                   年級 = ? 
-                                   WHERE 身分證字號 = ? AND 隊伍編號 = ?";
-                    
-                    $stmt = mysqli_prepare($link, $update_sql);
-                    mysqli_stmt_bind_param($stmt, "ssssssss", 
-                        $student_num, $student_name, $student_email, 
-                        $student_phone, $student_department, $student_grade,
-                        $student_id, $team_id);
-                    
-                    if (mysqli_stmt_execute($stmt)) {
-                        $updated_items[] = "學生 " . ($i + 1) . " (" . $student_name . ")";
-                    } else {
-                        throw new Exception("更新學生 " . ($i + 1) . " 資料失敗");
-                    }
+                    // Convert update to PATCH request format
+                    $response = $supabaseClient->patch('學生', [
+                        'query' => [
+                            '身分證字號' => 'eq.' . $student_id,
+                            '隊伍編號' => 'eq.' . $team_id
+                        ],
+                        'json' => $student_data
+                    ]);
+
+                    $data = json_decode($response->getBody(), true);
+
+                    $updated_items[] = "學生 " . ($i + 1) . " (" . $student_data['姓名'] . ")";
                 }
             }
 
-            // 更新指導老師資料
+            // Update professor data
             if (isset($_POST['professor_id'])) {
                 $professor_id = $_POST['professor_id'];
-                $professor_name = $_POST['professor_name'];
-                $professor_email = $_POST['professor_email'];
-                $professor_phone = $_POST['professor_phone'];
+                $professor_data = [
+                    '姓名' => $_POST['professor_name'],
+                    '電子郵件' => $_POST['professor_email'],
+                    '電話' => $_POST['professor_phone']
+                ];
 
-                $update_professor_sql = "UPDATE 指導老師 SET 
-                                        姓名 = ?, 
-                                        電子郵件 = ?, 
-                                        電話 = ? 
-                                        WHERE 身分證字號 = ? AND 隊伍編號 = ?";
-                
-                $stmt = mysqli_prepare($link, $update_professor_sql);
-                mysqli_stmt_bind_param($stmt, "sssss", 
-                    $professor_name, $professor_email, $professor_phone,
-                    $professor_id, $team_id);
-                
-                if (mysqli_stmt_execute($stmt)) {
-                    $updated_items[] = "指導老師 (" . $professor_name . ")";
-                } else {
-                    throw new Exception("更新指導老師資料失敗");
-                }
+                $response = $supabaseClient->patch('指導老師', [
+                    'query' => [
+                        '身分證字號' => 'eq.' . $professor_id,
+                        '隊伍編號' => 'eq.' . $team_id
+                    ],
+                    'json' => $professor_data
+                ]);
+
+                $data = json_decode($response->getBody(), true);
+
+                $updated_items[] = "指導老師 (" . $professor_data['姓名'] . ")";
             }
-
-            // 提交交易
-            mysqli_commit($link);
-            
         } catch (Exception $e) {
-            // 回滾交易
-            mysqli_rollback($link);
             $success = false;
             $error_messages[] = $e->getMessage();
         }
-
-        // 恢復自動提交
-        mysqli_autocommit($link, true);
         ?>
 
         <div class="result-container">
@@ -136,7 +116,6 @@
                     </div>
                 </div>
             <?php endif; ?>
-
             <div class="action-buttons">
                 <form action="student_edit.php" method="POST" class="inline-form">
                     <input type="hidden" name="username" value="<?= htmlspecialchars($username) ?>">
@@ -155,7 +134,7 @@
 
     <footer class="site-footer">
         <div class="footer-content">
-            <p>&copy; Copyright © 2025 XC Lee Tiger Lin  How Ho. All rights reserved.</p>
+            <p>&copy; Copyright © 2025 XC Lee Tiger Lin How Ho. All rights reserved.</p>
             <div class="footer-row">
                 <div class="footer-container">
                     <p>聯絡我們 : <a href="mailto:wylin@nuk.edu.tw">wylin@nuk.edu.tw</a></p>
@@ -169,4 +148,5 @@
 
     <script src="student_update.js"></script>
 </body>
+
 </html>
