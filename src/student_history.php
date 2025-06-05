@@ -1,7 +1,7 @@
 <?php
 include 'conn.php';
 
-// 預設年份為 2024，或根據使用者選擇的年份
+// 預設年份為 2025，或根據使用者選擇的年份
 $year = isset($_GET['year']) ? (int)$_GET['year'] : 2024;
 
 // 安全性檢查（允許的年份範圍）
@@ -87,10 +87,10 @@ foreach ($teams as $team) {
                 <a href="data:application/pdf;base64,<?= base64_encode($row['海報']) ?>" download>下載海報</a>
             </td>
             <td>
-                <a href="<?= htmlspecialchars($row['作品展示_youtube連結']) ?>" target="_blank">影片連結</a>
+                <a href="<?= htmlspecialchars($row['作品展示(youtube連結)']) ?>" target="_blank">影片連結</a>
             </td>
             <td>
-                <a href="<?= htmlspecialchars($row['程式碼_Github連結']) ?>" target="_blank">程式碼連結</a>
+                <a href="<?= htmlspecialchars($row['程式碼(Github連結)']) ?>" target="_blank">程式碼連結</a>
             </td>
         </tr>
     <?php endforeach; ?>
