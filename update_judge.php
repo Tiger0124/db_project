@@ -24,8 +24,7 @@
         $error_message = "";
         $updated_data = [];
 
-        // 檢查是否是 POST 請求
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // 從表單獲取資料
             $student1_id = $_POST['student1_id'];
             $student1_name = $_POST['student1_name'];
@@ -33,43 +32,39 @@
             $student1_phone = $_POST['student1_phone'];
             $student1_department = $_POST['student1_department'];
             $student1_session = $_POST['student1_session'];
-            $username = $_POST['student1_name'];
-            $password = $_POST['student1_id'];
+            $password = $_POST['password'];
 
-            // 使用預處理語句防止SQL注入
-            $sql = "UPDATE 評審委員 
-                    SET 姓名 = ?, 
-                        電子郵件 = ?, 
-                        電話 = ?, 
-                        頭銜 = ? 
-                    WHERE 身分證字號 = ? AND 屆數 = ?";
-
-            $stmt = mysqli_prepare($link, $sql);
-            mysqli_stmt_bind_param($stmt, "ssssss", 
-                $student1_name, $student1_email, $student1_phone, 
-                $student1_department, $student1_id, $student1_session);
-
-            if (mysqli_stmt_execute($stmt)) {
-                $affected_rows = mysqli_stmt_affected_rows($stmt);
-                if ($affected_rows > 0) {
-                    $success = true;
-                    $updated_data = [
+            try {
+                // 發送 PATCH 請求到 Supabase
+                $response = $supabaseClient->patch('評審委員', [
+                    'query' => [
+                        '身分證字號' => 'eq.'.$student1_id,
+                        '密碼' => 'eq.'.$password,
+                    ],
+                    'json' => [
                         '姓名' => $student1_name,
                         '電子郵件' => $student1_email,
                         '電話' => $student1_phone,
-                        '頭銜' => $student1_department,
-                        '身分證字號' => $student1_id,
-                        '屆數' => $student1_session
-                    ];
-                } else {
-                    $error_message = "沒有資料被更新，請檢查身分證字號和屆數是否正確。";
-                }
-            } else {
-                $error_message = "資料庫更新失敗：" . mysqli_error($link);
-            }
+                        '頭銜' => $student1_department
+                    ]
+                ]);
 
-            mysqli_stmt_close($stmt);
-            mysqli_close($link);
+                $bodyContents = $response->getBody()->getContents();
+                var_dump($bodyContents); // 先看回傳結果
+                $data = json_decode($bodyContents, true); // 再 decode
+                var_dump($data); // 檢查解碼後的資料
+
+                if ($data !== null) {
+                    echo "✅ 查到 " . count($data) . " 筆資料<br>";
+                    $success = true;
+                    $updated_data = $data[0]; // 更新後回傳的第一筆資料
+                } else {
+                    $error_message = "沒有資料被更新，請確認資料是否正確。";
+                }
+
+            } catch (Exception $e) {
+                $error_message = "更新失敗：" . $e->getMessage();
+            }
         } else {
             $error_message = "無效的請求方式。";
         }
@@ -104,7 +99,17 @@
             <?php endif; ?>
 
             <div class="action-buttons">
-                <a href="judge_dashboard.php" class="dashboard-btn">返回評審系統</a>
+                <form action="judge_dashboard.php" method="POST">
+                    <?php
+                    // 傳遞使用者名稱和密碼到評審系統
+                    echo '<input type="hidden" name="username" value="'.$_POST['username'].'">
+                    <input type="hidden" name="password" value="'.$_POST['password'].'">
+                    <button type="submit" class="dashboard-btn">返回評審系統</button>';
+                    ?>
+
+                    <!-- <a href="judge_dashboard.php" class="dashboard-btn">返回評審系統</a> -->
+                </form>
+
                 <a href="main.php" class="main-btn">返回首頁</a>
             </div>
         </div>

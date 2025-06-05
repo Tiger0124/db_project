@@ -17,15 +17,22 @@
     </header>
     <?php
     include 'conn.php';
-    $select_db = @mysqli_select_db($link, "db_project"); //選擇資料庫
     $filename=$_POST["username"];
     $filepasswd=$_POST["password"];
 
-    // 查詢資料
-    $sql = "SELECT * FROM 評審委員 WHERE 姓名 = '".$filename."' and 身分證字號 = '".$filepasswd."' and 屆數 = '第13屆'";
-    $result = mysqli_query($link, $sql);
-    if(mysqli_num_rows($result)==1){
-        echo '<h2>歡迎，'.$filename.' 評審！</h2>';
+    // 發送 GET 請求查詢符合條件的使用者
+    $response = $supabaseClient->get('評審委員', [
+            'query' => [
+                '身分證字號' => 'eq.' . $filename,
+                '密碼' => 'eq.' . $filepasswd,
+                'select' => '*',
+            ]
+    ]);
+    $data = json_decode($response->getBody(), true);
+
+    if (count($data) === 1) {
+        $name = $data[0]['姓名'];
+        echo '<h2>歡迎，'.$name.' 評審！</h2>';
         echo '
         <div class="admin-buttons">
             <form action="edit_judge.php" method="POST">
