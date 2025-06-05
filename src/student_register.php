@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>高雄大學創意競賽報名系統</title>
     <link rel="stylesheet" href="../asset/student_register.css">
 </head>
+
 <body>
     <header>
         <div class="navbar">
@@ -36,7 +38,7 @@
                         <button type="button" class="member-btn optional" data-member="4">組員四 (選填)</button>
                     </div>
                 </div>
-                
+
                 <div id="studentsContainer">
                     <!-- 組員一表單 -->
                     <div class="student-info active" data-student="1">
@@ -44,27 +46,25 @@
                             <h4>組員一資料</h4>
                             <span class="required-badge">必填</span>
                         </div>
-                        
+
                         <label for="student1-id">身分證字號：</label>
                         <input type="text" id="student1-id" name="student1_id" required>
-                        
+
                         <label for="student1-num">學號：</label>
                         <input type="text" id="student1-num" name="student1_num" required>
-                        
+
                         <label for="student1-name">姓名：</label>
                         <input type="text" id="student1-name" name="student1_name" required>
-                        
+
                         <label for="student1-email">電子郵件：</label>
                         <input type="email" id="student1-email" name="student1_email" required>
-                        
+
                         <label for="student1-phone">電話：</label>
                         <input type="text" id="student1-phone" name="student1_phone" required>
-                        
+
                         <label for="student1-department">科系：</label>
                         <input type="text" id="student1-department" name="student1_department" required>
-                        
-                        <label for="student1-grade">年級：</label>
-                        <input type="text" id="student1-grade" name="student1_grade" required>
+
                     </div>
 
                     <!-- 組員二表單 -->
@@ -73,27 +73,25 @@
                             <h4>組員二資料</h4>
                             <span class="required-badge">必填</span>
                         </div>
-                        
+
                         <label for="student2-id">身分證字號：</label>
                         <input type="text" id="student2-id" name="student2_id" required>
-                        
+
                         <label for="student2-num">學號：</label>
                         <input type="text" id="student2-num" name="student2_num" required>
-                        
+
                         <label for="student2-name">姓名：</label>
                         <input type="text" id="student2-name" name="student2_name" required>
-                        
+
                         <label for="student2-email">電子郵件：</label>
                         <input type="email" id="student2-email" name="student2_email" required>
-                        
+
                         <label for="student2-phone">電話：</label>
                         <input type="text" id="student2-phone" name="student2_phone" required>
-                        
+
                         <label for="student2-department">科系：</label>
                         <input type="text" id="student2-department" name="student2_department" required>
-                        
-                        <label for="student2-grade">年級：</label>
-                        <input type="text" id="student2-grade" name="student2_grade" required>
+
                     </div>
 
                     <!-- 組員三表單 -->
@@ -102,27 +100,25 @@
                             <h4>組員三資料</h4>
                             <span class="required-badge">必填</span>
                         </div>
-                        
+
                         <label for="student3-id">身分證字號：</label>
                         <input type="text" id="student3-id" name="student3_id" required>
-                        
+
                         <label for="student3-num">學號：</label>
                         <input type="text" id="student3-num" name="student3_num" required>
-                        
+
                         <label for="student3-name">姓名：</label>
                         <input type="text" id="student3-name" name="student3_name" required>
-                        
+
                         <label for="student3-email">電子郵件：</label>
                         <input type="email" id="student3-email" name="student3_email" required>
-                        
+
                         <label for="student3-phone">電話：</label>
                         <input type="text" id="student3-phone" name="student3_phone" required>
-                        
+
                         <label for="student3-department">科系：</label>
                         <input type="text" id="student3-department" name="student3_department" required>
-                        
-                        <label for="student3-grade">年級：</label>
-                        <input type="text" id="student3-grade" name="student3_grade" required>
+
                     </div>
 
                     <!-- 組員四表單 (選填) -->
@@ -131,27 +127,25 @@
                             <h4>組員四資料</h4>
                             <span class="optional-badge">選填</span>
                         </div>
-                        
+
                         <label for="student4-id">身分證字號：</label>
                         <input type="text" id="student4-id" name="student4_id">
-                        
+
                         <label for="student4-num">學號：</label>
                         <input type="text" id="student4-num" name="student4_num">
-                        
+
                         <label for="student4-name">姓名：</label>
                         <input type="text" id="student4-name" name="student4_name">
-                        
+
                         <label for="student4-email">電子郵件：</label>
                         <input type="email" id="student4-email" name="student4_email">
-                        
+
                         <label for="student4-phone">電話：</label>
                         <input type="text" id="student4-phone" name="student4_phone">
-                        
+
                         <label for="student4-department">科系：</label>
                         <input type="text" id="student4-department" name="student4_department">
-                        
-                        <label for="student4-grade">年級：</label>
-                        <input type="text" id="student4-grade" name="student4_grade">
+
                     </div>
                 </div>
             </div>
@@ -160,13 +154,13 @@
             <div class="form-group">
                 <label for="professor-id">身分證字號：</label>
                 <input type="text" id="professor-id" name="professor_id" required>
-                
+
                 <label for="professor-name">姓名：</label>
                 <input type="text" id="professor-name" name="professor_name" required>
-                
+
                 <label for="professor-email">電子郵件：</label>
                 <input type="email" id="professor-email" name="professor_email" required>
-                
+
                 <label for="professor-phone">電話：</label>
                 <input type="text" id="professor-phone" name="professor_phone" required>
             </div>
@@ -179,7 +173,7 @@
 
     <footer class="site-footer">
         <div class="footer-content">
-            <p>&copy; Copyright © 2025 XC Lee Tiger Lin  How Ho. All rights reserved.</p>
+            <p>&copy; Copyright © 2025 XC Lee Tiger Lin How Ho. All rights reserved.</p>
             <div class="footer-row">
                 <div class="footer-container">
                     <p>聯絡我們 : <a href="mailto:wylin@nuk.edu.tw">wylin@nuk.edu.tw</a></p>
@@ -193,4 +187,5 @@
 
     <script src="student_register.js"></script>
 </body>
+
 </html>
