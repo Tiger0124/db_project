@@ -49,10 +49,10 @@
             2017 => "第5屆", 2018 => "第6屆", 2019 => "第7屆", 2020 => "第8屆",
             2021 => "第9屆", 2022 => "第10屆", 2023 => "第11屆", 2024 => "第12屆",
             2025 => "第13屆"];
-        // 移除原本的 MySQL 連線程式碼
-        // $link = mysqli_connect(...);
-        // mysqli_select_db(...);
 
+            echo "<table border='1'>";
+            echo "<tr><th>身分證字號</th><th>電子郵件</th><th>頭銜</th><th>姓名</th><th>電話</th></tr>";
+            
         // 使用 $supabaseClient 進行資料庫查詢
         try {
             if (isset($_POST['year']) && array_key_exists($_POST['year'], $yearToSession)) {
@@ -68,8 +68,7 @@
                 //$judgesData = json_decode($response->getBody()->getContents(), true);
                 $data = json_decode($response->getBody(), true);
 
-                echo "<table border='1'>";
-                echo "<tr><th>身分證字號</th><th>電子郵件</th><th>頭銜</th><th>姓名</th><th>電話</th></tr>";
+                
 
                 foreach ($data as $row) {
                     echo "<tr>";

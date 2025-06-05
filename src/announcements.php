@@ -23,14 +23,20 @@
         <!-- 公告標題 -->
         <?php
         include 'conn.php';
-        $sql = "SELECT * FROM 創意競賽 where 屆數 = '第13屆'";
-        $result = mysqli_query($link, $sql);
-        $row = mysqli_fetch_array($result);
+        $response = $supabaseClient->get('創意競賽', [
+          'query' => [
+              '屆數' => 'eq.13',
+              'select' => '*',
+          ]
+        ]);
+        $data = json_decode($response->getBody(), true);
+
+
         echo "<label for='announcement-content'>公告內容：</label>";
-        echo "<textarea id='announcement-content' name='announcement_content' rows='5' required>" . htmlspecialchars($row['公告內容']) . "</textarea>";
+        echo "<textarea id='announcement-content' name='announcement_content' rows='5' required>" . htmlspecialchars($data[0]['公告內容']) . "</textarea>";
 
         echo "<label for='competition-rules'>比賽規則：</label>";
-        echo "<textarea id='competition-rules' name='competition_rules' rows='5' required>" . htmlspecialchars($row['比賽規則']) . "</textarea>";
+        echo "<textarea id='competition-rules' name='competition_rules' rows='5' required>" . htmlspecialchars($data[0]['比賽規則']) . "</textarea>";
 
         echo "<label for='announcement-file'>上傳檔案：</label>";
         echo "<input type='file' id='announcement-file' name='announcement_file' accept='.pdf' required>";

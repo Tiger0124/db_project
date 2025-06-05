@@ -36,12 +36,23 @@ if (isset($_FILES['announcement_file']) && $_FILES['announcement_file']['error']
     }
 
     // 讀取檔案內容並轉換為 BLOB
-    $file_content = file_get_contents($file_tmp_name);
-    $file_content = mysqli_real_escape_string($link, $file_content);
+    $response = $supabaseClient->patch('創意競賽', [
+        'query' => [
+            '屆數' => 'eq.13'  // 條件：屆數 = 13
+        ],
+        'json' => [
+            '比賽規則' => $competition_rules,
+            '公告內容' => $announcement_content,
+            '宣傳海報' => base64_encode(file_get_contents($file_tmp_name)) // 將檔案內容轉換為 Base64 編碼
+            // 可以加入你要更新的其他欄位
+        ]
+    ]);
+    // $file_content = file_get_contents($file_tmp_name);
+    // $file_content = mysqli_real_escape_string($link, $file_content);
 
-    $sql="Update 創意競賽 set 公告內容 = '".$announcement_content."', 比賽規則 = '".$competition_rules."', 宣傳海報 = '".$file_content."' where 屆數 = '第13屆'";
-    $result = mysqli_query($link, $sql);
-    if ($result) {
+    // $sql="Update 創意競賽 set 公告內容 = '".$announcement_content."', 比賽規則 = '".$competition_rules."', 宣傳海報 = '".$file_content."' where 屆數 = '第13屆'";
+    // $result = mysqli_query($link, $sql);
+    if ($response->getStatusCode() >= 200 && $response->getStatusCode() < 300) {
         echo "<h2>公告發布成功！</h2>";
     } else {
         echo "<h2>公告發布失敗！</h2>";

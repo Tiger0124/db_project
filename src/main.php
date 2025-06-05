@@ -101,9 +101,6 @@
                 // 從資料表取得 base64 的 blob 資料
                 $blob = $row['宣傳海報']; // 假設 Supabase 資料表儲存的就是 base64 字串
 
-                // 如果 Supabase 儲存的是純二進位 (binary)，則可能需要 base64_encode()
-                // $blob = base64_encode($row['宣傳海報']);
-
                 echo "<a href='data:application/pdf;base64," . $blob . "' download='宣傳海報.pdf'>下載宣傳海報</a><br>";
             }
         ?>
