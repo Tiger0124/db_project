@@ -22,32 +22,40 @@
             <form action="update_judge.php" method="POST">
                 <h2 style="margin-left: -70px;">評審資料</h2>
 
-                <!-- 學生 1 資料 -->
+                <!-- 評審資料 -->
                 <div class="student-info">
-                    <label for="student1-id">身分證字號：</label>
                     <?php
                     include 'conn.php';
-                    $select_db = @mysqli_select_db($link, "db_project");
-                    $password = $_POST['password'];
-                    echo '<input type="text" id="student1-id" name="student1_id" value="'.$password.'" required readonly>';
-
-                    echo '<label for="student1-name">姓名：</label>';
                     $username = $_POST['username'];
-                    echo '<input type="text" id="student1-name" name="student1_name" value="'.$username.'" required>';
+                    $password = $_POST['password'];
 
-                    $sql1 = "SELECT * FROM 評審委員 WHERE 身分證字號 = '$password' and 屆數 = '第13屆'";
-                    $result1 = mysqli_query($link, $sql1);
-                    $row1 = mysqli_fetch_assoc($result1);
+                    // 發送 GET 請求查詢符合條件的使用者
+                    $response = $supabaseClient->get('評審委員', [
+                            'query' => [
+                                '身分證字號' => 'eq.' . $username,
+                                '密碼' => 'eq.' . $password,
+                                'select' => '*',
+                            ]
+                    ]);
+                    $data = json_decode($response->getBody(), true);
+                    
+                    echo '<label for="student1-id">姓名：</label>';
+                    echo '<input type="text" id="student1-name" name="student1_name" value="'.$data[0]['姓名'].'" required>';
+
+                    echo '<label for="student1-name">身分證字號：</label>';
+                    echo '<input type="text" id="student1-id" name="student1_id" value="'.$username.'" required readonly>';
+
+                    
 
                     echo '<label for="student1-email">電子郵件：</label>';     
-                    echo '<input type="email" id="student1-email" name="student1_email" value="'.$row1['電子郵件'].'" required>';
+                    echo '<input type="email" id="student1-email" name="student1_email" value="'.$data[0]['電子郵件'].'" required>';
 
                     echo '<label for="student1-phone">電話：</label>';
-                    echo '<input type="tel" id="student1-phone" name="student1_phone" value="'.$row1['電話'].'" required>';
+                    echo '<input type="tel" id="student1-phone" name="student1_phone" value="'.$data[0]['電話'].'" required>';
 
                     echo '<label for="student1-department">頭銜：</label>';
-                    echo '<input type="text" id="student1-department" name="student1_department" value="'.$row1['頭銜'].'" required>';
-                    echo '<input type="hidden" id="student1-department" name="student1_session" value="'.$row1['屆數'].'">';
+                    echo '<input type="text" id="student1-department" name="student1_department" value="'.$data[0]['頭銜'].'" required>';
+                    echo '<input type="hidden" id="student1-department" name="student1_session" value="'.$data[0]['屆數'].'">';
                 ?>
                 
                 <input type="hidden" name="username" value="<?php echo $_POST['username']; ?>">
