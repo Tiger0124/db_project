@@ -74,7 +74,7 @@
                                 </div>
                             <?php endforeach; ?>
                         </div>
-                        <p class="update-time">更新時間：<?= date('Y-m-d H:i:s') ?></p>
+                        <p class="update-time">更新時間：<?= (new DateTime())->modify('+6 hours')->format('Y-m-d H:i:s') ?></p>
                     </div>
                 </div>
             <?php else: ?>
