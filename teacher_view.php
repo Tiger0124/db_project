@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>老師指導隊伍資料</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="teacher_view.css">
 </head>
 <body>
     <header>
@@ -16,159 +16,101 @@
         </div>
     </header>
 
-    <?php
-    include 'conn.php';
-    $select_db = @mysqli_select_db($link, "db_project"); // 選擇資料庫
-    // 從表單中獲取用戶傳送過來的資料
-    $filename = $_POST["username"];
-    $filepasswd = $_POST["password"];
+    <main>
+        <?php
+include 'conn.php';
 
-    // 使用 Prepared Statement 查詢指導老師資料
-    $sql = "SELECT * FROM 指導老師 WHERE 隊伍編號 = ? AND 身分證字號 = ?";
-    $stmt = mysqli_prepare($link, $sql);
-    mysqli_stmt_bind_param($stmt, "ss", $filename, $filepasswd);
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
+$filename = $_POST["username"];
+$filepasswd = $_POST["password"];
 
-    // 取得隊伍編號
-    $row = mysqli_fetch_assoc($result);
-    $team_id = $row['隊伍編號'];
+try {
+    // 查詢指導老師是否存在
+    $response = $supabaseClient->get('指導老師', [
+        'query' => [
+            '隊伍編號' => 'eq.' . $filename,
+            '身分證字號' => 'eq.' . $filepasswd
+        ]
+    ]);
+    $data = json_decode($response->getBody(), true);
 
-    // 取得隊伍和學生資料
-    $team_sql = "
-    SELECT 隊伍.隊伍編號, 說明書, 作品展示_youtube連結, 程式碼_Github連結, 隊伍名稱
-    FROM 作品 join 隊伍 on 作品.隊伍編號 = 隊伍.隊伍編號
-    WHERE 隊伍.隊伍編號 = ?";
+    if (count($data) === 1) {
+        $row = $data[0];  // 指導老師資料
+        $team_id = $row['隊伍編號'];
 
-    if ($team_stmt = mysqli_prepare($link, $team_sql)) {
-        // 綁定參數
-        mysqli_stmt_bind_param($team_stmt, "s", $team_id);
+        // 查詢隊伍與作品資料
+        $response_team = $supabaseClient->get('作品', [
+            'query' => ['隊伍編號' => 'eq.' . $team_id]
+        ]);
+        $作品 = json_decode($response_team->getBody(), true);
 
-        // 執行查詢
-        mysqli_stmt_execute($team_stmt);
+        $response_team2 = $supabaseClient->get('隊伍', [
+            'query' => ['隊伍編號' => 'eq.' . $team_id]
+        ]);
+        $隊伍 = json_decode($response_team2->getBody(), true);
 
-        // 取得結果
-        $team_result = mysqli_stmt_get_result($team_stmt);
-        
-        if (mysqli_num_rows($team_result) > 0) {
-            // 顯示隊伍資訊
-            echo "<main><section class='team-info'><h2>指導的隊伍資訊</h2>";
-            
-            // 顯示隊伍資料
-            $team_row = mysqli_fetch_assoc($team_result);
+        if (count($作品) > 0 && count($隊伍) > 0) {
+            $team_row = array_merge($作品[0], $隊伍[0]); // 合併資料
             $blob = base64_encode($team_row['說明書']);
-            echo "
-            <div class='team'>
-                <p><strong>隊伍名稱：" . $team_row['隊伍名稱'] . "</strong></p>
-                <p><strong>作品說明書：</strong>
-                    <a href='data:application/pdf;base64," . $blob . "' download>下載說明書</a>
-                </p>
-                <p><strong>作品影片網址：</strong> 
-                    <a href='" . $team_row['作品展示_youtube連結'] . "' target='_blank'>" . $team_row['作品展示_youtube連結'] . "</a>
-                </p>
-                <p><strong>作品程式碼網址：</strong> 
-                    <a href='" . $team_row['程式碼_Github連結'] . "' target='_blank'>" . $team_row['程式碼_Github連結'] . "</a>
-                </p>";
 
-            // 取得學生資料
-            $student_sql = "
-            SELECT 身分證字號, 學號, 姓名, 電子郵件, 電話, 科系, 年級
-            FROM 學生
-            WHERE 隊伍編號 = ?";
-            
-            if ($student_stmt = mysqli_prepare($link, $student_sql)) {
-                // 綁定參數
-                mysqli_stmt_bind_param($student_stmt, "s", $team_id);
+            echo "<section class='team-info'>";
+            echo "<h2>指導的隊伍資訊</h2>";
+            echo "<div class='team-details'>";
+            echo "<div class='team-basic-info'>";
+            echo "<h3>隊伍基本資料</h3>";
+            echo "<div class='info-item'><span class='label'>隊伍名稱：</span><span class='value'>" . htmlspecialchars($team_row['隊伍名稱']) . "</span></div>";
+            echo "<div class='info-item'><span class='label'>作品說明書：</span><a href='data:application/pdf;base64," . $blob . "' download class='download-link'>下載說明書</a></div>";
+            echo "<div class='info-item'><span class='label'>作品影片網址：</span><a href='" . htmlspecialchars($team_row['作品展示_youtube連結']) . "' target='_blank' class='external-link'>" . htmlspecialchars($team_row['作品展示_youtube連結']) . "</a></div>";
+            echo "<div class='info-item'><span class='label'>作品程式碼網址：</span><a href='" . htmlspecialchars($team_row['程式碼_Github連結']) . "' target='_blank' class='external-link'>" . htmlspecialchars($team_row['程式碼_Github連結']) . "</a></div>";
+            echo "</div>";
 
-                // 執行查詢
-                mysqli_stmt_execute($student_stmt);
+            // 查詢學生資料
+            $response_students = $supabaseClient->get('學生', [
+                'query' => [
+                    '隊伍編號' => 'eq.' . $team_id
+                ]
+            ]);
+            $students_data = json_decode($response_students->getBody(), true);
 
-                // 取得學生結果
-                $student_result = mysqli_stmt_get_result($student_stmt);
+            // 顯示學生資料（表格 + 卡片）
+            include 'components/student_table.php';  // 表格與卡片統一顯示（可選擇外部化）
 
-                // 顯示學生資料
-                echo "<h4>學生資料</h4>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>姓名</th>
-                            <th>學號</th>
-                            <th>身分證字號</th>
-                            <th>科系</th>
-                            <th>年級</th>
-                            <th>電子郵件</th>
-                            <th>電話</th>
-                        </tr>
-                    </thead>
-                    <tbody>";
-                
-                while ($student_row = mysqli_fetch_assoc($student_result)) {
-                    echo "<tr>
-                        <td>" . $student_row['姓名'] . "</td>
-                        <td>" . $student_row['學號'] . "</td>
-                        <td>" . $student_row['身分證字號'] . "</td>
-                        <td>" . $student_row['科系'] . "</td>
-                        <td>" . $student_row['年級'] . "</td>
-                        <td>" . $student_row['電子郵件'] . "</td>
-                        <td>" . $student_row['電話'] . "</td>
-                    </tr>";
-                }
+            // 顯示指導教授資料
+            include 'components/professor_table.php'; // 外部檔案呈現樣式（可選）
 
-                echo "</tbody></table>";
-
-                // 顯示指導教授資料
-                echo "<h4>指導教授</h4>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>姓名</th>
-                            <th>身分證字號</th>
-                            <th>電子郵件</th>
-                            <th>電話</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>" . $row['姓名'] . "</td>
-                            <td>" . $row['身分證字號'] . "</td>
-                            <td>" . $row['電子郵件'] . "</td>
-                            <td>" . $row['電話'] . "</td>
-                        </tr>
-                    </tbody>
-                </table>";
-            }
-
-            echo "</div></section></main>";
+            echo "</div></section>";
         } else {
-            echo "<p>未找到符合的隊伍資料。</p>";
+            echo "<div class='error-message'><h2>未找到符合的隊伍資料</h2></div>";
         }
     } else {
-        echo "查詢錯誤: " . mysqli_error($link);
+        echo "<div class='error-message'><h2>登入驗證失敗，請重新登入</h2></div>";
     }
+} catch (Exception $e) {
+    echo "<div class='error-message'><h2>系統錯誤：" . htmlspecialchars($e->getMessage()) . "</h2></div>";
+}
+?>
 
-    // 關閉資料庫連線
-    mysqli_stmt_close($stmt);
-    mysqli_stmt_close($team_stmt);
-    mysqli_close($link);
-    ?>
 
-    <form action="teacher_dashboard.php" method="POST">
-        <input type="hidden" name="username" value="<?php echo $_POST['username']; ?>">
-        <input type="hidden" name="password" value="<?php echo $_POST['password']; ?>">
-        <button type="submit">返回</button>
-    </form>
+        <div class="return-section">
+            <form action="teacher_dashboard.php" method="POST">
+                <input type="hidden" name="username" value="<?php echo htmlspecialchars($_POST['username']); ?>">
+                <input type="hidden" name="password" value="<?php echo htmlspecialchars($_POST['password']); ?>">
+                <button type="submit" class="return-btn">返回</button>
+            </form>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <p>&copy; Copyright © 2025 XC Lee Tiger Lin How Ho. All rights reserved.</p>
+            <div class="footer-row">
+                <div class="footer-container">
+                    <p>聯絡我們 : <a href="mailto:wylin@nuk.edu.tw">wylin@nuk.edu.tw</a></p>
+                </div>
+                <ul class="footer-links">
+                    <li><a href="https://github.com/Tiger0124/db_project.git">關於我們</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
 </body>
-<footer class="site-footer">
-    <div class="footer-content">
-        <p>&copy; Copyright © 2025 XC Lee Tiger Lin How Ho. All rights reserved.</p>
-        <div class="footer-row">
-        <div class="footer-container">
-            <p>聯絡我們 : <a href="mailto:wylin@nuk.edu.tw">wylin@nuk.edu.tw</a></p>
-        </div>
-        <ul class="footer-links">
-            <li><a href="https://github.com/Tiger0124/db_project.git">關於我們</a></li>
-        </ul>
-        </div>
-    </div>
-</footer>
 </html>

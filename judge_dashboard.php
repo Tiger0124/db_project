@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>高雄大學創意競賽管理系統</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="judge_dashboard.css">
 </head>
 <body>
     <header>
@@ -16,16 +16,23 @@
         </div>
     </header>
     <?php
-    include 'conn.php';
-    $select_db = @mysqli_select_db($link, "db_project"); //選擇資料庫
-    $filename=$_POST["username"];
-    $filepasswd=$_POST["password"];
+include 'conn.php';
 
-    // 查詢資料
-    $sql = "SELECT * FROM 評審委員 WHERE 姓名 = '".$filename."' and 身分證字號 = '".$filepasswd."' and 屆數 = '第13屆'";
-    $result = mysqli_query($link, $sql);
-    if(mysqli_num_rows($result)==1){
-        echo '<h2>歡迎，'.$filename.' 評審！</h2>';
+$filename=$_POST["username"];
+$filepasswd=$_POST["password"];
+
+// 發送 GET 請求查詢符合條件的使用者
+$response = $supabaseClient->get('評審委員', [
+        'query' => [
+            '姓名' => 'eq.' . $filename,
+            '身分證字號' => 'eq.' . $filepasswd,
+            'select' => '*',
+        ]
+]);
+$data = json_decode($response->getBody(), true);
+
+if (count($data) === 1) {
+    echo '<h2>歡迎，'.$filename.'評審！</h2>';
         echo '
         <div class="admin-buttons">
             <form action="edit_judge.php" method="POST">

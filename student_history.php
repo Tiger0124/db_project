@@ -5,23 +5,34 @@ include 'conn.php';
 $year = isset($_GET['year']) ? (int)$_GET['year'] : 2024;
 
 // 安全性檢查（允許的年份範圍）
-$allowedYears = range(2013, 2024); // 從 2013 到 2024
+$allowedYears = range(2013, 2024);
 if (!in_array($year, $allowedYears, true)) {
-    $year = 2024; // 預設年份
+    $year = 2024;
 }
 
-$sql = "
-    SELECT 
-        隊伍.屆數, 隊伍.隊伍編號, 隊伍.隊伍名稱, 
-        作品.作品名稱, 作品.說明書, 作品.海報, 
-        作品.作品展示_youtube連結, 作品.程式碼_Github連結 
-    FROM 隊伍 
-    NATURAL JOIN 作品 
-    WHERE 隊伍.參加年份 = '$year'
-";
+// 查詢該年份的所有隊伍資料
+$response_team = $supabaseClient->get('隊伍', [
+    'query' => ['參加年份' => 'eq.' . $year]
+]);
+$teams = json_decode($response_team->getBody(), true);
 
-$result = mysqli_query($link, $sql);
+// 查詢所有作品資料（等下做比對）
+$response_work = $supabaseClient->get('作品');
+$works = json_decode($response_work->getBody(), true);
+
+// 合併：以隊伍編號為 key 對應作品
+$merged = [];
+foreach ($teams as $team) {
+    $team_id = $team['隊伍編號'];
+    foreach ($works as $work) {
+        if ($work['隊伍編號'] === $team_id) {
+            $merged[] = array_merge($team, $work);
+            break;
+        }
+    }
+}
 ?>
+
 
 <!DOCTYPE html>
 <html lang="zh-TW">
@@ -29,7 +40,7 @@ $result = mysqli_query($link, $sql);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>高雄大學創意競賽管理系統</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="student_history.css">
 </head>
 <body>
 <header>
@@ -63,30 +74,32 @@ $result = mysqli_query($link, $sql);
             </tr>
         </thead>
         <tbody>
-            <?php if ($result && mysqli_num_rows($result) > 0): ?>
-                <?php while ($row = mysqli_fetch_assoc($result)): ?>
-                    <tr>
-                        <td><?= htmlspecialchars($row['隊伍名稱']) ?></td>
-                        <td><?= htmlspecialchars($row['作品名稱']) ?></td>
-                        <td>
-                            <a href="data:application/pdf;base64,<?= base64_encode($row['說明書']) ?>" download>下載說明書</a>
-                        </td>
-                        <td>
-                            <a href="data:application/pdf;base64,<?= base64_encode($row['海報']) ?>" download>下載海報</a>
-                        </td>
-                        <td>
-                            <a href="<?= htmlspecialchars($row['作品展示_youtube連結']) ?>" target="_blank">影片連結</a>
-                        </td>
-                        <td>
-                            <a href="<?= htmlspecialchars($row['程式碼_Github連結']) ?>" target="_blank">程式碼連結</a>
-                        </td>
-                    </tr>
-                <?php endwhile; ?>
-            <?php else: ?>
-                <tr>
-                    <td colspan="6">該年份無資料。</td>
-                </tr>
-            <?php endif; ?>
+
+<?php if (!empty($merged)): ?>
+    <?php foreach ($merged as $row): ?>
+        <tr>
+            <td><?= htmlspecialchars($row['隊伍名稱']) ?></td>
+            <td><?= htmlspecialchars($row['作品名稱']) ?></td>
+            <td>
+                <a href="data:application/pdf;base64,<?= base64_encode($row['說明書']) ?>" download>下載說明書</a>
+            </td>
+            <td>
+                <a href="data:application/pdf;base64,<?= base64_encode($row['海報']) ?>" download>下載海報</a>
+            </td>
+            <td>
+                <a href="<?= htmlspecialchars($row['作品展示_youtube連結']) ?>" target="_blank">影片連結</a>
+            </td>
+            <td>
+                <a href="<?= htmlspecialchars($row['程式碼_Github連結']) ?>" target="_blank">程式碼連結</a>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+<?php else: ?>
+    <tr>
+        <td colspan="6">該年份無資料。</td>
+    </tr>
+<?php endif; ?>
+
         </tbody>
     </table>
 </main>

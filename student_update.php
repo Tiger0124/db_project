@@ -3,157 +3,170 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>高雄大學創意競賽管理系統</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>修改結果 - 高雄大學創意競賽管理系統</title>
+    <link rel="stylesheet" href="student_update.css">
 </head>
 <body>
     <header>
-    <div class="navbar">
-        <a href="main.php" alt="Logo" class="logo">
+        <div class="navbar">
+            <a href="main.php" alt="Logo" class="logo">
                 <img src="images/logo.png" alt="Logo" class="logo">
-        </a>
-        <h1>高雄大學激發學生創意競賽管理系統</h1>
-    </div>
+            </a>
+            <h1>高雄大學激發學生創意競賽管理系統</h1>
+        </div>
     </header>
-<main id="content">
-<?php
-include 'conn.php';
-$select_db = @mysqli_select_db($link, "db_project");
 
-// 從 POST 請求中接收資料
-$team_id = $_POST['team_id']; // 假設隊伍編號已從表單傳入
-$students = [];
-$professor = []; // 指導老師資料
-$currentYear = date("Y");
+    <main id="content">
+        <?php
+        include 'conn.php';
+        $select_db = @mysqli_select_db($link, "db_project");
 
-// 收集學生資料
-foreach ($_POST as $key => $value) {
-    if (strpos($key, 'student') !== false) {
-        preg_match('/student(\d+)_(.+)/', $key, $matches);
-        if (!empty($matches)) {
-            $index = $matches[1];
-            $field = $matches[2];
-            $students[$index][$field] = $value;
+        $team_id = $_POST['team_id'];
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+        $member_count = $_POST['member_count'];
+
+        $success = true;
+        $error_messages = [];
+        $updated_items = [];
+
+        // 開始交易
+        mysqli_autocommit($link, false);
+
+        try {
+            // 更新學生資料
+            for ($i = 0; $i < $member_count; $i++) {
+                if (isset($_POST["student{$i}_id"])) {
+                    $student_id = $_POST["student{$i}_id"];
+                    $student_num = $_POST["student{$i}_studentid"];
+                    $student_name = $_POST["student{$i}_name"];
+                    $student_email = $_POST["student{$i}_email"];
+                    $student_phone = $_POST["student{$i}_phone"];
+                    $student_department = $_POST["student{$i}_department"];
+                    $student_grade = $_POST["student{$i}_grade"];
+
+                    $update_sql = "UPDATE 學生 SET 
+                                   學號 = ?, 
+                                   姓名 = ?, 
+                                   電子郵件 = ?, 
+                                   電話 = ?, 
+                                   科系 = ?, 
+                                   年級 = ? 
+                                   WHERE 身分證字號 = ? AND 隊伍編號 = ?";
+                    
+                    $stmt = mysqli_prepare($link, $update_sql);
+                    mysqli_stmt_bind_param($stmt, "ssssssss", 
+                        $student_num, $student_name, $student_email, 
+                        $student_phone, $student_department, $student_grade,
+                        $student_id, $team_id);
+                    
+                    if (mysqli_stmt_execute($stmt)) {
+                        $updated_items[] = "學生 " . ($i + 1) . " (" . $student_name . ")";
+                    } else {
+                        throw new Exception("更新學生 " . ($i + 1) . " 資料失敗");
+                    }
+                }
+            }
+
+            // 更新指導老師資料
+            if (isset($_POST['professor_id'])) {
+                $professor_id = $_POST['professor_id'];
+                $professor_name = $_POST['professor_name'];
+                $professor_email = $_POST['professor_email'];
+                $professor_phone = $_POST['professor_phone'];
+
+                $update_professor_sql = "UPDATE 指導老師 SET 
+                                        姓名 = ?, 
+                                        電子郵件 = ?, 
+                                        電話 = ? 
+                                        WHERE 身分證字號 = ? AND 隊伍編號 = ?";
+                
+                $stmt = mysqli_prepare($link, $update_professor_sql);
+                mysqli_stmt_bind_param($stmt, "sssss", 
+                    $professor_name, $professor_email, $professor_phone,
+                    $professor_id, $team_id);
+                
+                if (mysqli_stmt_execute($stmt)) {
+                    $updated_items[] = "指導老師 (" . $professor_name . ")";
+                } else {
+                    throw new Exception("更新指導老師資料失敗");
+                }
+            }
+
+            // 提交交易
+            mysqli_commit($link);
+            
+        } catch (Exception $e) {
+            // 回滾交易
+            mysqli_rollback($link);
+            $success = false;
+            $error_messages[] = $e->getMessage();
         }
-    }
-}
 
-// 收集指導老師資料
-$professor['id'] = $_POST['professor_id'] ?? null;
-$professor['name'] = $_POST['professor_name'] ?? null;
-$professor['email'] = $_POST['professor_email'] ?? null;
-$professor['phone'] = $_POST['professor_phone'] ?? null;
+        // 恢復自動提交
+        mysqli_autocommit($link, true);
+        ?>
 
-try {
-    // 開啟交易
-    mysqli_begin_transaction($link);
+        <div class="result-container">
+            <?php if ($success): ?>
+                <div class="success-section">
+                    <div class="success-icon">✓</div>
+                    <h2>資料修改成功！</h2>
+                    <div class="success-details">
+                        <h3>已更新的資料：</h3>
+                        <ul class="updated-list">
+                            <?php foreach ($updated_items as $item): ?>
+                                <li><?= htmlspecialchars($item) ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                        <p class="update-time">更新時間：<?= date('Y-m-d H:i:s') ?></p>
+                    </div>
+                </div>
+            <?php else: ?>
+                <div class="error-section">
+                    <div class="error-icon">✗</div>
+                    <h2>資料修改失敗</h2>
+                    <div class="error-details">
+                        <h3>錯誤訊息：</h3>
+                        <ul class="error-list">
+                            <?php foreach ($error_messages as $error): ?>
+                                <li><?= htmlspecialchars($error) ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                </div>
+            <?php endif; ?>
 
-    // 先檢查隊伍編號和參加年份是否存在於隊伍表中
-    $check_team_sql = "SELECT * FROM 隊伍 WHERE 隊伍編號 = ? AND 參加年份 = ?";
-    $check_team_stmt = mysqli_prepare($link, $check_team_sql);
-    mysqli_stmt_bind_param($check_team_stmt, "si", $team_id, $currentYear);
-    mysqli_stmt_execute($check_team_stmt);
-    $check_result = mysqli_stmt_get_result($check_team_stmt);
-    
-    if (mysqli_num_rows($check_result) == 0) {
-        throw new Exception('隊伍編號或參加年份不存在於隊伍表中，無法新增指導老師資料');
-    }
+            <div class="action-buttons">
+                <form action="student_edit.php" method="POST" class="inline-form">
+                    <input type="hidden" name="username" value="<?= htmlspecialchars($username) ?>">
+                    <input type="hidden" name="password" value="<?= htmlspecialchars($password) ?>">
+                    <button type="submit" class="edit-again-btn">重新修改</button>
+                </form>
 
-    // 刪除該隊伍的所有學生資料
-    $delete_students_sql = "DELETE FROM 學生 WHERE 隊伍編號 = ?";
-    $delete_students_stmt = mysqli_prepare($link, $delete_students_sql);
-    mysqli_stmt_bind_param($delete_students_stmt, "s", $team_id);
-    mysqli_stmt_execute($delete_students_stmt);
+                <form action="student_dashboard.php" method="POST" class="inline-form">
+                    <input type="hidden" name="username" value="<?= htmlspecialchars($username) ?>">
+                    <input type="hidden" name="password" value="<?= htmlspecialchars($password) ?>">
+                    <button type="submit" class="dashboard-btn">返回主頁</button>
+                </form>
+            </div>
+        </div>
+    </main>
 
-    // 刪除該隊伍的指導老師資料
-    $delete_professor_sql = "DELETE FROM 指導老師 WHERE 隊伍編號 = ?";
-    $delete_professor_stmt = mysqli_prepare($link, $delete_professor_sql);
-    mysqli_stmt_bind_param($delete_professor_stmt, "s", $team_id);
-    mysqli_stmt_execute($delete_professor_stmt);
+    <footer class="site-footer">
+        <div class="footer-content">
+            <p>&copy; Copyright © 2025 XC Lee Tiger Lin  How Ho. All rights reserved.</p>
+            <div class="footer-row">
+                <div class="footer-container">
+                    <p>聯絡我們 : <a href="mailto:wylin@nuk.edu.tw">wylin@nuk.edu.tw</a></p>
+                </div>
+                <ul class="footer-links">
+                    <li><a href="https://github.com/Tiger0124/db_project.git">關於我們</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
 
-    // 新增學生資料
-    $insert_student_sql = "
-        INSERT INTO 學生 (身分證字號, 學號, 姓名, 電子郵件, 電話, 科系, 年級, 隊伍編號, 參加年份) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    $insert_student_stmt = mysqli_prepare($link, $insert_student_sql);
-
-    foreach ($students as $student) {
-        mysqli_stmt_bind_param(
-            $insert_student_stmt,
-            "ssssssssi",
-            $student['id'],
-            $student['studentid'],
-            $student['name'],
-            $student['email'],
-            $student['phone'],
-            $student['department'],
-            $student['grade'],
-            $team_id,
-            $currentYear
-        );
-        mysqli_stmt_execute($insert_student_stmt);
-    }
-
-    // 新增指導老師資料
-    if (!empty($professor['id']) && !empty($professor['name'])) {
-        $insert_professor_sql = "
-            INSERT INTO 指導老師 (身分證字號, 姓名, 電子郵件, 電話, 隊伍編號, 參加年份) 
-            VALUES (?, ?, ?, ?, ?, ?)";
-        $insert_professor_stmt = mysqli_prepare($link, $insert_professor_sql);
-        mysqli_stmt_bind_param(
-            $insert_professor_stmt,
-            "sssssi",
-            $professor['id'],
-            $professor['name'],
-            $professor['email'],
-            $professor['phone'],
-            $team_id,
-            $currentYear
-        );
-        mysqli_stmt_execute($insert_professor_stmt);
-    }
-
-    // 提交交易
-    mysqli_commit($link);
-
-    echo '<h2>資料更新成功！</h2>';
-    echo '<form action="student_dashboard.php" method="POST">';
-    echo '<input type="hidden" name="username" value="'. $_POST['username'] . '">';
-    echo '<input type="hidden" name="password" value="'. $_POST['password'] . '">';
-    echo '<button type="submit">返回儀表板</button>';
-    echo '</form>';
-
-    echo '</form>';
-} catch (Exception $e) {
-    // 回滾交易
-    mysqli_rollback($link);
-
-    echo '<h2>資料更新失敗，請稍後再試。</h2>';
-    echo '<p>錯誤訊息：' . htmlspecialchars($e->getMessage()) . '</p>';
-    echo '
-        <div class="button-container">    
-            <a href="student_dashboard.php" class="system-button">返回儀表板</a>
-        </div>';
-}
-
-// 關閉連線
-mysqli_close($link);
-?>
-</main>
+    <script src="student_update.js"></script>
 </body>
-<footer class="site-footer">
-  <div class="footer-content">
-    <p>&copy; Copyright © 2025 XC Lee Tiger Lin  How Ho. All rights reserved.</p>
-    <div class="footer-row">
-    <div class="footer-container">
-        <p>聯絡我們 : <a href="mailto:wylin@nuk.edu.tw">wylin@nuk.edu.tw</a></p>
-    </div>
-      <ul class="footer-links">
-        <li><a href="https://github.com/Tiger0124/db_project.git">關於我們</a></li>
-      </ul>
-    </div>
-  </div>
-</footer>
-
-
 </html>
