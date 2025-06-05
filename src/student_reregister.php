@@ -1,3 +1,5 @@
+<?php include 'darkmode.php'; ?>
+
 <?php
 // 在 HTML 渲染之前，先執行所有資料庫操作
 include 'conn.php'; // 引入您的 Supabase 連線設定

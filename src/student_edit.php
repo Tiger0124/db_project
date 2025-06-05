@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
+<?php include 'darkmode.php'; ?>
 
 <head>
     <meta charset="UTF-8">
