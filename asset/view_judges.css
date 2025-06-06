@@ -70,7 +70,7 @@ header h1 {
 }
 
 /* Main 內容區塊 */
-main {
+main#content {
   flex: 1;
   width: 100vw;
   padding: 3rem 2rem 2rem 2rem;
@@ -80,7 +80,7 @@ main {
 }
 
 /* 查詢表單樣式 */
-body > form:first-of-type {
+main > form:first-of-type {
   width: 100%;
   max-width: 600px;
   margin: 2rem auto 3rem auto;
@@ -117,7 +117,7 @@ select:focus {
 }
 
 /* 查詢按鈕 */
-body > form:first-of-type button {
+main > form:first-of-type button {
   padding: 0.8rem 1.5rem;
   background: linear-gradient(135deg, #FFD700 0%, #f5be11 100%);
   color: #2c3e50;
@@ -130,23 +130,41 @@ body > form:first-of-type button {
   box-shadow: 0 4px 15px rgba(245, 190, 17, 0.3);
 }
 
-body > form:first-of-type button:hover {
+main > form:first-of-type button:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(245, 190, 17, 0.5);
   background: linear-gradient(135deg, #f5be11 0%, #e6a800 100%);
   color: white;
 }
 
+/* 圓角卡片區塊 */
+.rounded-box {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  margin-bottom: 3rem;
+  max-width: 1400px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+  transform: translateY(0);
+  transition: all 0.3s ease;
+  overflow-x: auto;
+}
+
+.rounded-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+}
+
 /* 表格樣式 */
 table {
   width: 100%;
-  max-width: 1200px;
-  margin: 0 auto 3rem auto;
+  min-width: 1000px;
   border-collapse: collapse;
   background: white;
-  border-radius: 15px;
-  overflow: hidden;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+  font-size: 0.9rem;
 }
 
 /* 表格標題 */
@@ -159,6 +177,9 @@ thead th, table tr:first-child th {
   text-align: center;
   border: none;
   white-space: nowrap;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 /* 表格內容 */
@@ -169,6 +190,46 @@ tbody td, table td {
   border-bottom: 1px solid #f0f0f0;
   text-align: center;
   vertical-align: middle;
+  word-wrap: break-word;
+}
+
+/* 隊伍名稱欄位 */
+table td:nth-child(1) {
+  font-weight: 600;
+  color: #2c3e50;
+  background: rgba(220, 53, 69, 0.05);
+  min-width: 150px;
+}
+
+/* 指導老師欄位 */
+table td:nth-child(2) {
+  font-weight: 500;
+  color: #8e44ad;
+  min-width: 120px;
+}
+
+/* 學生名單欄位 */
+table td:nth-child(3) {
+  text-align: left;
+  max-width: 250px;
+  word-break: break-word;
+  line-height: 1.4;
+}
+
+/* 作品名稱欄位 */
+table td:nth-child(4) {
+  font-weight: 500;
+  color: #28a745;
+  min-width: 150px;
+}
+
+/* 作品描述欄位 */
+table td:nth-child(5) {
+  text-align: left;
+  max-width: 300px;
+  word-break: break-word;
+  line-height: 1.4;
+  font-size: 0.85rem;
 }
 
 table tr:last-child td {
@@ -177,12 +238,12 @@ table tr:last-child td {
 
 table tr:hover {
   background-color: #f8f9fa;
-  transform: scale(1.005);
+  transform: scale(1.002);
   transition: all 0.2s ease;
 }
 
 /* 返回表單樣式 */
-body > form:last-of-type {
+main > form:last-of-type {
   width: 100%;
   max-width: 400px;
   margin: 2rem auto;
@@ -194,7 +255,7 @@ body > form:last-of-type {
 }
 
 /* 返回按鈕樣式 */
-body > form:last-of-type button {
+main > form:last-of-type button {
   width: 100%;
   padding: 1.2rem 2rem;
   background: linear-gradient(135deg, #FFD700 0%, #f5be11 100%);
@@ -209,7 +270,7 @@ body > form:last-of-type button {
   margin: 0;
 }
 
-body > form:last-of-type button:hover {
+main > form:last-of-type button:hover {
   transform: translateY(-3px);
   box-shadow: 0 10px 30px rgba(245, 190, 17, 0.6);
   background: linear-gradient(135deg, #f5be11 0%, #e6a800 100%);
@@ -292,12 +353,13 @@ body > form:last-of-type button:hover {
 
 /* 響應式設計 */
 @media (max-width: 1200px) {
-  main {
-    overflow-x: auto;
+  .rounded-box {
+    margin: 0 -1rem 3rem -1rem;
+    border-radius: 0;
   }
   
   table {
-    min-width: 800px;
+    min-width: 1100px;
   }
 }
 
@@ -327,11 +389,11 @@ body > form:last-of-type button:hover {
     font-size: 1.4rem;
   }
   
-  main {
+  main#content {
     padding: 2rem 1rem;
   }
   
-  body > form:first-of-type {
+  main > form:first-of-type {
     padding: 1.5rem;
     flex-direction: column;
     gap: 1rem;
@@ -343,13 +405,19 @@ body > form:last-of-type button:hover {
     max-width: 200px;
   }
   
-  body > form:first-of-type button {
+  main > form:first-of-type button {
     width: 100%;
     max-width: 200px;
   }
   
+  .rounded-box {
+    margin: 0 -2rem 3rem -2rem;
+    padding: 1rem;
+    border-radius: 0;
+  }
+  
   table {
-    min-width: 600px;
+    min-width: 900px;
   }
   
   thead th, table tr:first-child th,
@@ -358,12 +426,18 @@ body > form:last-of-type button:hover {
     font-size: 0.8rem;
   }
   
-  body > form:last-of-type {
+  table td:nth-child(3),
+  table td:nth-child(5) {
+    max-width: 200px;
+    font-size: 0.75rem;
+  }
+  
+  main > form:last-of-type {
     max-width: 90vw;
     padding: 1.5rem;
   }
   
-  body > form:last-of-type button {
+  main > form:last-of-type button {
     font-size: 1.1rem;
     padding: 1rem;
   }
@@ -397,13 +471,18 @@ body > form:last-of-type button:hover {
     font-size: 1.2rem;
   }
   
-  body > form:first-of-type {
+  main > form:first-of-type {
     padding: 1rem;
     max-width: 95vw;
   }
   
+  .rounded-box {
+    margin: 0 -1.5rem 3rem -1.5rem;
+    padding: 0.5rem;
+  }
+  
   table {
-    min-width: 500px;
+    min-width: 700px;
   }
   
   thead th, table tr:first-child th,
@@ -412,12 +491,18 @@ body > form:last-of-type button:hover {
     font-size: 0.7rem;
   }
   
-  body > form:last-of-type {
+  table td:nth-child(3),
+  table td:nth-child(5) {
+    max-width: 150px;
+    font-size: 0.65rem;
+  }
+  
+  main > form:last-of-type {
     max-width: 95vw;
     padding: 1rem;
   }
   
-  body > form:last-of-type button {
+  main > form:last-of-type button {
     font-size: 1rem;
     padding: 0.8rem;
   }
@@ -439,33 +524,472 @@ body > form:last-of-type button:hover {
   }
 }
 
-body > form:first-of-type {
+main > form:first-of-type {
   animation: fadeInUp 0.6s ease-out;
 }
 
-table {
+.rounded-box {
   animation: fadeInUp 0.8s ease-out 0.2s both;
 }
 
-body > form:last-of-type {
+main > form:last-of-type {
   animation: fadeInUp 1s ease-out 0.4s both;
 }
 
 /* 表格滾動條樣式 */
-main::-webkit-scrollbar {
+.rounded-box::-webkit-scrollbar {
   height: 8px;
 }
 
-main::-webkit-scrollbar-track {
+.rounded-box::-webkit-scrollbar-track {
   background: #f1f1f1;
   border-radius: 4px;
 }
 
-main::-webkit-scrollbar-thumb {
+.rounded-box::-webkit-scrollbar-thumb {
   background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
   border-radius: 4px;
 }
 
-main::-webkit-scrollbar-thumb:hover {
+.rounded-box::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(135deg, #c82333 0%, #dc3545 100%);
 }
+
+/* 空資料提示 */
+.no-data {
+  text-align: center;
+  padding: 3rem;
+  color: #6c757d;
+  font-size: 1.2rem;
+  font-style: italic;
+}
+/* 編輯表單樣式 */
+.edit-form-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.edit-form {
+  background: white;
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.edit-form h3 {
+  margin-bottom: 1.5rem;
+  color: #2c3e50;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 0.8rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #dc3545;
+}
+
+.form-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.btn-save,
+.btn-cancel {
+  padding: 0.8rem 2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-save {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+}
+
+.btn-save:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+}
+
+.btn-cancel {
+  background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+  color: white;
+}
+
+.btn-cancel:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(108, 117, 125, 0.4);
+}
+
+/* 編輯按鈕樣式 */
+.btn-edit {
+  padding: 0.5rem 1rem;
+  background: linear-gradient(135deg, #FFD700 0%, #f5be11 100%);
+  color: #2c3e50;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-edit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(245, 190, 17, 0.4);
+}
+
+/* 操作欄位樣式 */
+table th:last-child,
+table td:last-child {
+  min-width: 80px;
+  text-align: center;
+}
+/* 新增和編輯按鈕樣式 */
+.btn-add {
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-left: 1rem;
+}
+
+.btn-add:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.4);
+}
+
+.btn-edit {
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, #FFD700 0%, #f5be11 100%);
+    color: #2c3e50;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-edit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(245, 190, 17, 0.4);
+}
+
+/* 編輯表單樣式 */
+.edit-form-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.edit-form {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.edit-form h3 {
+    margin-bottom: 1.5rem;
+    color: #2c3e50;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 0.8rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #dc3545;
+}
+
+.form-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1.5rem;
+}
+
+.btn-save,
+.btn-cancel {
+    padding: 0.8rem 2rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-save {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+}
+
+.btn-save:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+}
+
+.btn-cancel {
+    background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+    color: white;
+}
+
+.btn-cancel:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(108, 117, 125, 0.4);
+}
+
+/* 操作欄位樣式 */
+table th:last-child,
+table td:last-child {
+    min-width: 80px;
+    text-align: center;
+}
+/* 新增和編輯按鈕樣式 */
+.btn-add {
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-left: 1rem;
+}
+
+.btn-add:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.4);
+}
+
+.btn-edit {
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, #FFD700 0%, #f5be11 100%);
+    color: #2c3e50;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-edit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(245, 190, 17, 0.4);
+}
+
+/* 編輯表單樣式 */
+.edit-form-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.edit-form {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.edit-form h3 {
+    margin-bottom: 1.5rem;
+    color: #2c3e50;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 0.8rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #dc3545;
+}
+
+.form-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1.5rem;
+}
+
+.btn-save,
+.btn-cancel {
+    padding: 0.8rem 2rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-save {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+}
+
+.btn-save:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+}
+
+.btn-cancel {
+    background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+    color: white;
+}
+
+.btn-cancel:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(108, 117, 125, 0.4);
+}
+
+/* 操作欄位樣式 */
+table th:last-child,
+table td:last-child {
+    min-width: 80px;
+    text-align: center;
+}
+
+.btn-delete {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 12px;
+  margin-left: 5px;
+}
+
+.btn-delete:hover {
+  background-color: #c82333;
+}
+
+.alert {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.alert-success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.alert-error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
