@@ -4,6 +4,8 @@
 include 'conn.php';
 
 
+$filename = $_POST["username"];
+$filepasswd = $_POST["password"];
 
 // 預設年份為 2024，或根據使用者選擇的年份
 $year = isset($_GET['year']) ? (int)$_GET['year'] : 2024;
@@ -110,6 +112,13 @@ foreach ($teams as $team) {
 
             </tbody>
         </table>
+        <div class="return-section">
+            <form action="student_dashboard.php" method="POST">
+                <input type="hidden" name="username" value="<?= htmlspecialchars($_POST['username']) ?>">
+                <input type="hidden" name="password" value="<?= htmlspecialchars($_POST['password']) ?>">
+                <button type="submit" class="return-btn">返回</button>
+            </form>
+        </div>
     </main>
     <footer class="site-footer">
         <div class="footer-content">

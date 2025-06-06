@@ -78,7 +78,7 @@
 
         echo '
 
-        <form action="student_history.php" method="POST">
+        <form action="student_history_login.php" method="POST">
             <input type="hidden" name="username" value="' . $_POST['username'] . '">
             <input type="hidden" name="password" value="' . $_POST['password'] . '">
             <button type="submit">歷屆作品瀏覽</button>
