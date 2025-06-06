@@ -42,7 +42,7 @@
 
     if (count($data) === 1) {
         $name = $data[0]['姓名'];
-        echo '<h2>歡迎，' . $name . ' 參賽同學！</h2>';
+        echo '<h2>歡迎，' . $name . ' 同學！</h2>';
         echo '
     <div class="admin-buttons">
         <form action="student_edit.php" method="POST">
@@ -60,12 +60,17 @@
             <input type="hidden" name="password" value="' . $_POST['password'] . '">
             <button type="submit">歷屆作品瀏覽</button>
         </form>
+        <form action="student_register.php" method="POST">
+            <input type="hidden" name="username" value="' . $_POST['username'] . '">
+            <input type="hidden" name="password" value="' . $_POST['password'] . '">
+            <button type="submit">報名參賽</button>
+        </form>
     </div>';
     } else {
         echo '<h2>登入失敗，請返回並重試。</h2>';
         echo '<P>隊伍帳號密碼提示</P>';
-        echo '<p>隊伍帳號：隊伍編號</p>';
-        echo '<p>隊伍密碼：身分證字號</p>';
+        echo '<p>帳號：學號</p>';
+        echo '<p>密碼：身分證字號</p>';
         echo '
         <div class="button-container">    
             <a href="student_login.php" class="system-button">返回</a>

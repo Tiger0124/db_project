@@ -20,7 +20,7 @@
         <div class="rounded-box">
             <div class="button-container">
                 <a href="admin.php" class="system-button">管理員系統</a>
-                <a href="student.php" class="system-button">學生系統</a>
+                <a href="student_login.php" class="system-button">學生系統</a>
                 <a href="teacher.php" class="system-button">指導老師系統</a>
                 <a href="judge.php" class="system-button">評審系統</a>
             </div>

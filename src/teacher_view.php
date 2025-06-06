@@ -27,8 +27,8 @@ try {
     // 查詢指導老師是否存在
     $response = $supabaseClient->get('指導老師', [
         'query' => [
-            '隊伍編號' => 'eq.' . $filename,
-            '身分證字號' => 'eq.' . $filepasswd
+            '身分證字號' => 'eq.' . $filename,
+            '密碼' => 'eq.' . $filepasswd
         ]
     ]);
     $data = json_decode($response->getBody(), true);
@@ -50,7 +50,7 @@ try {
 
         if (count($作品) > 0 && count($隊伍) > 0) {
             $team_row = array_merge($作品[0], $隊伍[0]); // 合併資料
-            $blob = base64_encode($team_row['說明書']);
+            $blob = $team_row['說明書'];
 
             echo "<section class='team-info'>";
             echo "<h2>指導的隊伍資訊</h2>";
@@ -59,8 +59,8 @@ try {
             echo "<h3>隊伍基本資料</h3>";
             echo "<div class='info-item'><span class='label'>隊伍名稱：</span><span class='value'>" . htmlspecialchars($team_row['隊伍名稱']) . "</span></div>";
             echo "<div class='info-item'><span class='label'>作品說明書：</span><a href='data:application/pdf;base64," . $blob . "' download class='download-link'>下載說明書</a></div>";
-            echo "<div class='info-item'><span class='label'>作品影片網址：</span><a href='" . htmlspecialchars($team_row['作品展示_youtube連結']) . "' target='_blank' class='external-link'>" . htmlspecialchars($team_row['作品展示_youtube連結']) . "</a></div>";
-            echo "<div class='info-item'><span class='label'>作品程式碼網址：</span><a href='" . htmlspecialchars($team_row['程式碼_Github連結']) . "' target='_blank' class='external-link'>" . htmlspecialchars($team_row['程式碼_Github連結']) . "</a></div>";
+            echo "<div class='info-item'><span class='label'>作品影片網址：</span><a href='" . htmlspecialchars($team_row['作品展示(youtube連結)']) . "' target='_blank' class='external-link'>" . htmlspecialchars($team_row['作品展示(youtube連結)']) . "</a></div>";
+            echo "<div class='info-item'><span class='label'>作品程式碼網址：</span><a href='" . htmlspecialchars($team_row['程式碼(Github連結)']) . "' target='_blank' class='external-link'>" . htmlspecialchars($team_row['程式碼(Github連結)']) . "</a></div>";
             echo "</div>";
 
             // 查詢學生資料
@@ -70,12 +70,6 @@ try {
                 ]
             ]);
             $students_data = json_decode($response_students->getBody(), true);
-
-            // 顯示學生資料（表格 + 卡片）
-            include 'components/student_table.php';  // 表格與卡片統一顯示（可選擇外部化）
-
-            // 顯示指導教授資料
-            include 'components/professor_table.php'; // 外部檔案呈現樣式（可選）
 
             echo "</div></section>";
         } else {

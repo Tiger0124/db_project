@@ -83,10 +83,10 @@ foreach ($teams as $team) {
                     <td><?= htmlspecialchars($row['隊伍名稱']) ?></td>
                     <td><?= htmlspecialchars($row['作品名稱']) ?></td>
                     <td>
-                        <a href="data:application/pdf;base64,<?= base64_encode($row['說明書']) ?>" download>下載說明書</a>
+                        <a href="data:application/pdf;base64,<?= $row['說明書'] ?>" download>下載說明書</a>
                     </td>
                     <td>
-                        <a href="data:application/pdf;base64,<?= base64_encode($row['海報']) ?>" download>下載海報</a>
+                        <a href="data:application/pdf;base64,<?= $row['海報'] ?>" download>下載海報</a>
                     </td>
                     <td>
                         <a href="<?= htmlspecialchars($row['作品展示(youtube連結)']) ?>" target="_blank">影片連結</a>
