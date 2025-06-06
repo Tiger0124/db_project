@@ -17,6 +17,15 @@
   </header>
 
   <main id="content">
+  <?php
+    // 顯示刪除結果訊息
+    if (isset($_POST['delete_success']) && $_POST['delete_success'] === '1') {
+        echo '<div class="alert alert-success" style="background-color: #d4edda; color: #155724; padding: 10px; margin: 10px 0; border: 1px solid #c3e6cb; border-radius: 4px;">評審委員刪除成功！</div>';
+    }
+    if (isset($_POST['delete_error'])) {
+        echo '<div class="alert alert-error" style="background-color: #f8d7da; color: #721c24; padding: 10px; margin: 10px 0; border: 1px solid #f5c6cb; border-radius: 4px;">刪除失敗：' . htmlspecialchars($_POST['delete_error']) . '</div>';
+    }
+    ?>
     <form action="view_judges.php" method="POST">
         <select name="year">
           <option value="2013">2013</option>
@@ -241,6 +250,8 @@
                                     'session' => $row['屆數'] ?? ''
                                 ]);
                                 echo "<button class='btn-edit' onclick='openEditForm(" . htmlspecialchars($edit_data, ENT_QUOTES, 'UTF-8') . ")'>編輯</button>";
+                                // 新增刪除按鈕
+                                echo "<button class='btn-delete' onclick='confirmDelete(\"" . htmlspecialchars($row['身分證字號'], ENT_QUOTES, 'UTF-8') . "\", \"" . htmlspecialchars($row['姓名'], ENT_QUOTES, 'UTF-8') . "\", \"" . htmlspecialchars($row['屆數'], ENT_QUOTES, 'UTF-8') . "\")' style='background-color: #dc3545; margin-left: 5px; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 12px;'>刪除</button>";
                                 echo "</td>";
                                 
                                 echo "</tr>";
@@ -317,6 +328,53 @@
 
     function closeEditForm() {
         document.getElementById('editForm').style.display = 'none';
+    }
+
+    // 在現有的 JavaScript 函數後面新增
+    function confirmDelete(idNumber, judgeName, session) {
+        if (confirm('確定要刪除評審委員「' + judgeName + '」嗎？\n身分證字號：' + idNumber + '\n屆數：第' + session + '屆\n此操作無法復原！')) {
+            // 創建隱藏表單來提交刪除請求
+            var form = document.createElement('form');
+            form.method = 'POST';
+            form.action = 'delete_judge.php';
+            
+            // 添加身分證字號
+            var idInput = document.createElement('input');
+            idInput.type = 'hidden';
+            idInput.name = 'id_number';
+            idInput.value = idNumber;
+            form.appendChild(idInput);
+            
+            // 添加屆數
+            var sessionInput = document.createElement('input');
+            sessionInput.type = 'hidden';
+            sessionInput.name = 'session';
+            sessionInput.value = session;
+            form.appendChild(sessionInput);
+            
+            // 添加用戶名和密碼（保持會話）
+            var usernameInput = document.createElement('input');
+            usernameInput.type = 'hidden';
+            usernameInput.name = 'username';
+            usernameInput.value = document.querySelector('input[name="username"]').value;
+            form.appendChild(usernameInput);
+            
+            var passwordInput = document.createElement('input');
+            passwordInput.type = 'hidden';
+            passwordInput.name = 'password';
+            passwordInput.value = document.querySelector('input[name="password"]').value;
+            form.appendChild(passwordInput);
+            
+            // 添加年份
+            var yearInput = document.createElement('input');
+            yearInput.type = 'hidden';
+            yearInput.name = 'year';
+            yearInput.value = document.querySelector('select[name="year"]').value;
+            form.appendChild(yearInput);
+            
+            document.body.appendChild(form);
+            form.submit();
+        }
     }
 
     // 點擊背景關閉表單
