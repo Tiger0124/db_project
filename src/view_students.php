@@ -47,30 +47,145 @@
               <th>作品描述</th>
           </tr>
           <?php
-              include 'conn.php';
-              $select_db = @mysqli_select_db($link, "db_project"); //選擇資料庫
-              if (isset($_POST['year'])) { // 確認是否有提交表單
-                $sql = "SELECT 指導老師.姓名 AS 指導老師姓名, GROUP_CONCAT(學生.姓名 SEPARATOR ', ') AS 學生名單, 隊伍.隊伍名稱, 作品.作品名稱, 作品.作品描述
-                        FROM 隊伍 
-                        JOIN 指導老師 ON 隊伍.隊伍編號 = 指導老師.隊伍編號 
-                        JOIN 學生 ON 隊伍.隊伍編號 = 學生.隊伍編號
-                        JOIN 作品 ON 隊伍.隊伍編號 = 作品.隊伍編號 
-                        WHERE 隊伍.參加年份 = '".$_POST['year']."' 
-                        GROUP BY 隊伍.隊伍編號;
-                      ";
-                $result = mysqli_query($link, $sql);
-                //result長度
-                while($row = mysqli_fetch_assoc($result)){
+session_start();
+require_once 'conn.php';
+
+// 年份到屆數的對應陣列
+$yearToSession = [
+    2013 => "第1屆", 2014 => "第2屆", 2015 => "第3屆", 2016 => "第4屆",
+    2017 => "第5屆", 2018 => "第6屆", 2019 => "第7屆", 2020 => "第8屆",
+    2021 => "第9屆", 2022 => "第10屆", 2023 => "第11屆", 2024 => "第12屆",
+    2025 => "第13屆"
+];
+
+// 檢查是否有提交表單並且選擇的年份是有效的
+if (isset($_POST['year']) && array_key_exists($_POST['year'], $yearToSession)) {
+    $selectedYear = $_POST['year'];
+
+    try {
+        // 第一步：查詢隊伍資料
+        $response = $supabaseClient->get('隊伍', [
+            'query' => [
+                '參加年份' => 'eq.' . $selectedYear,
+                'select' => '*',
+            ]
+        ]);
+
+        $status_code = $response->getStatusCode();
+        
+        if ($status_code == 200) {
+            $teamsData = json_decode($response->getBody()->getContents(), true);
+
+            if (!empty($teamsData)) {
+                foreach ($teamsData as $row) {
                     echo "<tr>";
-                    echo "<td>".$row['隊伍名稱']."</td>";
-                    echo "<td>".$row['指導老師姓名']."</td>";
-                    echo "<td>".$row['學生名單']."</td>";
-                    echo "<td>".$row['作品名稱']."</td>";
-                    echo "<td>".$row['作品描述']."</td>";
+                    
+                    // 隊伍名稱
+                    $team_name = isset($row['隊伍名稱']) ? htmlspecialchars($row['隊伍名稱'], ENT_QUOTES, 'UTF-8') : 'N/A';
+                    echo "<td>" . $team_name . "</td>";
+                    
+                    // 取得隊伍編號
+                    $team_id = isset($row['隊伍編號']) ? $row['隊伍編號'] : null;
+                    
+                    // 查詢指導老師 - 使用隊伍編號
+                    $teacher_name = 'N/A';
+                    if ($team_id !== null) {
+                        try {
+                            $teacherResponse = $supabaseClient->get('指導老師', [
+                                'query' => [
+                                    '隊伍編號' => 'eq.' . $team_id,
+                                    'select' => '姓名',
+                                ]
+                            ]);
+                            
+                            if ($teacherResponse->getStatusCode() == 200) {
+                                $teacherData = json_decode($teacherResponse->getBody()->getContents(), true);
+                                if (!empty($teacherData)) {
+                                    $teacher_name = htmlspecialchars($teacherData[0]['姓名'], ENT_QUOTES, 'UTF-8');
+                                }
+                            }
+                        } catch (Exception $e) {
+                            // 查詢指導老師失敗，保持 N/A
+                        }
+                    }
+                    echo "<td>" . $teacher_name . "</td>";
+                    
+                    // 查詢學生資料 - 使用隊伍編號
+                    $students_display = 'N/A';
+                    if ($team_id !== null) {
+                        try {
+                            $studentResponse = $supabaseClient->get('學生', [
+                                'query' => [
+                                    '隊伍編號' => 'eq.' . $team_id,
+                                    'select' => '姓名',
+                                ]
+                            ]);
+                            
+                            if ($studentResponse->getStatusCode() == 200) {
+                                $studentData = json_decode($studentResponse->getBody()->getContents(), true);
+                                if (!empty($studentData)) {
+                                    $student_names = [];
+                                    foreach ($studentData as $student) {
+                                        $student_names[] = htmlspecialchars($student['姓名'], ENT_QUOTES, 'UTF-8');
+                                    }
+                                    $students_display = implode(', ', $student_names);
+                                }
+                            }
+                        } catch (Exception $e) {
+                            // 查詢學生失敗，保持 N/A
+                        }
+                    }
+                    echo "<td>" . $students_display . "</td>";
+                    
+                    // 查詢作品資料 - 使用隊伍編號
+                    $project_name = 'N/A';
+                    $project_description = 'N/A';
+                    if ($team_id !== null) {
+                        try {
+                            $projectResponse = $supabaseClient->get('作品', [
+                                'query' => [
+                                    '隊伍編號' => 'eq.' . $team_id,
+                                    'select' => '作品名稱,作品描述',
+                                ]
+                            ]);
+                            
+                            if ($projectResponse->getStatusCode() == 200) {
+                                $projectData = json_decode($projectResponse->getBody()->getContents(), true);
+                                if (!empty($projectData)) {
+                                    $project_name = htmlspecialchars($projectData[0]['作品名稱'], ENT_QUOTES, 'UTF-8');
+                                    $project_description = htmlspecialchars($projectData[0]['作品描述'], ENT_QUOTES, 'UTF-8');
+                                }
+                            }
+                        } catch (Exception $e) {
+                            // 查詢作品失敗，保持 N/A
+                        }
+                    }
+                    echo "<td>" . $project_name . "</td>";
+                    echo "<td>" . $project_description . "</td>";
+                    
                     echo "</tr>";
                 }
-              }
-          ?>
+            } else {
+                echo "<tr><td colspan='5'>查無 " . htmlspecialchars($selectedYear, ENT_QUOTES, 'UTF-8') . " 年度的隊伍資料。</td></tr>";
+            }
+        } else {
+            echo "<tr><td colspan='5'>查詢隊伍資料失敗，HTTP 狀態碼：" . $status_code . "</td></tr>";
+        }
+    } catch (GuzzleHttp\Exception\RequestException $e) {
+        echo "<tr><td colspan='5'>Guzzle 請求錯誤: ";
+        if ($e->hasResponse()) {
+            echo htmlspecialchars($e->getResponse()->getBody()->getContents(), ENT_QUOTES, 'UTF-8');
+        } else {
+            echo htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
+        }
+        echo "</td></tr>";
+    } catch (Exception $e) {
+        echo "<tr><td colspan='5'>執行查詢時發生例外狀況: " . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8') . "</td></tr>";
+    }
+}
+?>
+
+
       </table>
     </div>
     <form action="admin_dashboard.php" method="POST">

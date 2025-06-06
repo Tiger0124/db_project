@@ -35,60 +35,93 @@
         <input type="hidden" name="username" value="<?php echo $_POST['username']; ?>">
         <input type="hidden" name="password" value="<?php echo $_POST['password']; ?>">
     </form>
-    <table>
-        <!-- <tr>
-            <th>身分證字號</th>
-            <th>電子郵件</th>
-            <th>頭銜</th>
-            <th>姓名</th>
-            <th>電話</th>
-        </tr> -->
-        <?php
-        require_once 'conn.php'; // 引入連線設定
-        $yearToSession = [2013 => "第1屆", 2014 => "第2屆", 2015 => "第3屆", 2016 => "第4屆",
-            2017 => "第5屆", 2018 => "第6屆", 2019 => "第7屆", 2020 => "第8屆",
-            2021 => "第9屆", 2022 => "第10屆", 2023 => "第11屆", 2024 => "第12屆",
-            2025 => "第13屆"];
-        // 移除原本的 MySQL 連線程式碼
-        // $link = mysqli_connect(...);
-        // mysqli_select_db(...);
+    
+    <div class="rounded-box">
+        <table style="width:100%">
+            <tr>
+                <th>身分證字號</th>
+                <th>電子郵件</th>
+                <th>頭銜</th>
+                <th>姓名</th>
+                <th>電話</th>
+            </tr>
+            <?php
+            session_start();
+            require_once 'conn.php';
 
-        // 使用 $supabaseClient 進行資料庫查詢
-        try {
+            // 年份到屆數的對應陣列
+            $yearToSession = [
+                2013 => "第1屆", 2014 => "第2屆", 2015 => "第3屆", 2016 => "第4屆",
+                2017 => "第5屆", 2018 => "第6屆", 2019 => "第7屆", 2020 => "第8屆",
+                2021 => "第9屆", 2022 => "第10屆", 2023 => "第11屆", 2024 => "第12屆",
+                2025 => "第13屆"
+            ];
+
+            // 檢查是否有提交表單並且選擇的年份是有效的
             if (isset($_POST['year']) && array_key_exists($_POST['year'], $yearToSession)) {
-                $session = $yearToSession[$_POST['year']];
-                $selectedYear = $_POST['year']; // $sessionTextForDisplay = $yearToSession[$selectedYear]; // 如果需要在標題等地方顯示 "第X屆"
+                $selectedYear = $_POST['year'];
 
-                $response = $supabaseClient->get('評審委員', [
-                    'query' => [
-                        '參加年份' => 'eq.' . $selectedYear, // <--- 修正點：使用 '參加年份' 欄位
-                        'select' => '*', // 選擇所有欄位
-                    ]
-                ]);
-                //$judgesData = json_decode($response->getBody()->getContents(), true);
-                $data = json_decode($response->getBody(), true);
+                try {
+                    // 使用 $supabaseClient 進行查詢
+                    $response = $supabaseClient->get('評審委員', [
+                        'query' => [
+                            '參加年份' => 'eq.' . $selectedYear,
+                            'select' => '*',
+                        ]
+                    ]);
 
-                echo "<table border='1'>";
-                echo "<tr><th>身分證字號</th><th>電子郵件</th><th>頭銜</th><th>姓名</th><th>電話</th></tr>";
+                    $status_code = $response->getStatusCode();
+                    
+                    if ($status_code == 200) {
+                        $judgesData = json_decode($response->getBody()->getContents(), true);
 
-                foreach ($data as $row) {
-                    echo "<tr>";
-                    echo "<td>" . htmlspecialchars($row['身分證字號']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['電子郵件']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['頭銜']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['姓名']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['電話']) . "</td>";
-                    echo "</tr>";
+                        if (!empty($judgesData)) {
+                            foreach ($judgesData as $row) {
+                                echo "<tr>";
+                                
+                                // 身分證字號
+                                $id_number = isset($row['身分證字號']) ? htmlspecialchars($row['身分證字號'], ENT_QUOTES, 'UTF-8') : 'N/A';
+                                echo "<td>" . $id_number . "</td>";
+                                
+                                // 電子郵件
+                                $email = isset($row['電子郵件']) ? htmlspecialchars($row['電子郵件'], ENT_QUOTES, 'UTF-8') : 'N/A';
+                                echo "<td>" . $email . "</td>";
+                                
+                                // 頭銜
+                                $title = isset($row['頭銜']) ? htmlspecialchars($row['頭銜'], ENT_QUOTES, 'UTF-8') : 'N/A';
+                                echo "<td>" . $title . "</td>";
+                                
+                                // 姓名
+                                $name = isset($row['姓名']) ? htmlspecialchars($row['姓名'], ENT_QUOTES, 'UTF-8') : 'N/A';
+                                echo "<td>" . $name . "</td>";
+                                
+                                // 電話
+                                $phone = isset($row['電話']) ? htmlspecialchars($row['電話'], ENT_QUOTES, 'UTF-8') : 'N/A';
+                                echo "<td>" . $phone . "</td>";
+                                
+                                echo "</tr>";
+                            }
+                        } else {
+                            echo "<tr><td colspan='5'>查無 " . htmlspecialchars($selectedYear, ENT_QUOTES, 'UTF-8') . " 年度的評審委員資料。</td></tr>";
+                        }
+                    } else {
+                        echo "<tr><td colspan='5'>查詢評審委員資料失敗，HTTP 狀態碼：" . $status_code . "</td></tr>";
+                    }
+                } catch (GuzzleHttp\Exception\RequestException $e) {
+                    echo "<tr><td colspan='5'>Guzzle 請求錯誤: ";
+                    if ($e->hasResponse()) {
+                        echo htmlspecialchars($e->getResponse()->getBody()->getContents(), ENT_QUOTES, 'UTF-8');
+                    } else {
+                        echo htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
+                    }
+                    echo "</td></tr>";
+                } catch (Exception $e) {
+                    echo "<tr><td colspan='5'>執行查詢時發生例外狀況: " . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8') . "</td></tr>";
                 }
-
-                echo "</table>";
             }
-        } catch (Exception $e) {
-            echo "查詢評審資料錯誤: " . $e->getMessage();
-        }
-        ?>
-
-    </table>
+            ?>
+        </table>
+    </div>
     
     <form action="admin_dashboard.php" method="POST">
         <input type="hidden" name="username" value="<?php echo $_POST['username']; ?>">
