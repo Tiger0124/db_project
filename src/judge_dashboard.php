@@ -52,6 +52,11 @@
                 <input type="hidden" name="password" value="' .$filepasswd. '">
                 <button type="submit">查看歷屆作品</button>
             </form>
+            <form action="judge_changepassword.php" method="POST">
+                <input type="hidden" name="username" value="' .$filename. '">
+                <input type="hidden" name="password" value="' .$filepasswd. '">
+                <button type="submit">修改密碼</button>
+            </form>
             </div>';
     } else {
         echo '<h2>登入失敗，請返回並重試。</h2>';

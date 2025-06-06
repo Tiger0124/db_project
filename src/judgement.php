@@ -5,6 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>高雄大學創意競賽管理系統 - 隊伍列表與評分</title>
     <link rel="stylesheet" href="../asset/judgement.css">
+    
+    <script>
+    function goBack() {
+        const form = document.createElement("form");
+        form.method = "post";
+        form.action = "judge_dashboard.php";
+
+        form.innerHTML = `
+            <input type="hidden" name="username" value="<?php echo htmlspecialchars($_POST['username']); ?>">
+            <input type="hidden" name="password" value="<?php echo htmlspecialchars($_POST['password']); ?>">
+        `;
+        document.body.appendChild(form);
+        form.submit();
+    }
+    </script>
 </head>
 <body>
     <header>
@@ -39,23 +54,43 @@
                         <?php
                         include 'conn.php';
                         $currentYear = date("Y");
-                        
+                        $reviewerId = $_POST["username"] ?? ""; // 評審的身分證字號（可依實際變數名稱）
+
                         // 查詢所有今年的隊伍
                         $teamsResponse = $supabaseClient->get("隊伍?參加年份=eq.$currentYear");
                         $teams = json_decode($teamsResponse->getBody(), true);
+
+                        // 取得評分資料（只抓該評審的）
+                        $scoreResponse = $supabaseClient->get("評分資料?身分證字號=eq.$reviewerId");
+                        $scoreData = json_decode($scoreResponse->getBody(), true);
+
+                        // 建立 [隊伍編號] => true 的 map（該評審已評過的隊伍）
+                        $scoredTeamMap = [];
+                        foreach ($scoreData as $score) {
+                            $scoredTeamMap[$score['隊伍編號']] = true;
+                        }
+
+                        // 過濾出尚未被評分的隊伍
+                        $unscoredTeams = array_filter($teams, function ($team) use ($scoredTeamMap) {
+                            return !isset($scoredTeamMap[$team['隊伍編號']]);
+                        });
+
+                        if (empty($unscoredTeams)) {
+                            echo "<script>alert('您已評分所有隊伍'); goBack();</script>";
+                            exit;
+                        }
 
                         // 查詢所有作品
                         $worksResponse = $supabaseClient->get("作品");
                         $works = json_decode($worksResponse->getBody(), true);
 
-                        // 建立以隊伍編號為 key 的作品 map
+                        // 建立作品 map
                         $workMap = [];
                         foreach ($works as $work) {
                             $workMap[$work['隊伍編號']] = $work;
                         }
                         ?>
-
-                        <?php foreach ($teams as $team): ?>
+                        <?php foreach ($unscoredTeams as $team): ?>
                             <?php $work = $workMap[$team['隊伍編號']] ?? null; ?>
                             <tr>
                                 <td><?= htmlspecialchars($team['隊伍名稱']) ?></td>
