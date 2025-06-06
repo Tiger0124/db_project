@@ -34,6 +34,7 @@
           <option value="2025">2025</option>
         </select>
         <button type="submit">查詢</button>
+        <button type="button" class="btn-add" onclick="openAddForm()">新增教師</button>
         <?php
         $username_from_post = isset($_POST['username']) ? htmlspecialchars($_POST['username'], ENT_QUOTES, 'UTF-8') : '';
         $password_from_post = isset($_POST['password']) ? htmlspecialchars($_POST['password'], ENT_QUOTES, 'UTF-8') : '';
@@ -41,6 +42,79 @@
         <input type="hidden" name="username" value="<?php echo $username_from_post; ?>">
         <input type="hidden" name="password" value="<?php echo $password_from_post; ?>">
     </form>
+
+    <!-- 新增教師表單 (預設隱藏) -->
+    <div id="addForm" class="edit-form-container" style="display: none;">
+        <div class="edit-form">
+            <h3>新增指導老師</h3>
+            <form id="addTeacherForm" method="POST" action="add_teacher.php">
+                <input type="hidden" name="username" value="<?php echo $username_from_post; ?>">
+                <input type="hidden" name="password" value="<?php echo $password_from_post; ?>">
+                <input type="hidden" name="year" value="<?php echo isset($_POST['year']) ? htmlspecialchars($_POST['year'], ENT_QUOTES, 'UTF-8') : ''; ?>">
+                
+                <div class="form-group">
+                    <label for="add_id_number">身分證字號:</label>
+                    <input type="text" id="add_id_number" name="id_number" required maxlength="10" pattern="[A-Z][0-9]{9}" placeholder="例：A123456789">
+                </div>
+                
+                <div class="form-group">
+                    <label for="add_teacher_name">姓名:</label>
+                    <input type="text" id="add_teacher_name" name="teacher_name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="add_phone">電話:</label>
+                    <input type="tel" id="add_phone" name="phone" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="add_email">電子郵件:</label>
+                    <input type="email" id="add_email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="add_title">職稱:</label>
+                    <input type="text" id="add_title" name="title" required placeholder="例：教授、副教授、助理教授">
+                </div>
+                
+                <div class="form-group">
+                    <label for="add_teacher_password">密碼:</label>
+                    <input type="password" id="add_teacher_password" name="teacher_password" required minlength="6" placeholder="請輸入至少6位密碼">
+                </div>
+                
+                <div class="form-group">
+                    <label for="add_participate_year">參加年份:</label>
+                    <select id="add_participate_year" name="participate_year" required>
+                        <option value="">請選擇參加年份</option>
+                        <option value="2013">2013</option>
+                        <option value="2014">2014</option>
+                        <option value="2015">2015</option>
+                        <option value="2016">2016</option>
+                        <option value="2017">2017</option>
+                        <option value="2018">2018</option>
+                        <option value="2019">2019</option>
+                        <option value="2020">2020</option>
+                        <option value="2021">2021</option>
+                        <option value="2022">2022</option>
+                        <option value="2023">2023</option>
+                        <option value="2024">2024</option>
+                        <option value="2025">2025</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="add_team_id">隊伍編號:</label>
+                    <input type="text" id="add_team_id" name="team_id" required placeholder="請輸入隊伍編號">
+                    <small class="form-text">請確認隊伍編號是否存在</small>
+                </div>
+                
+                <div class="form-buttons">
+                    <button type="submit" class="btn-save">新增</button>
+                    <button type="button" class="btn-cancel" onclick="closeAddForm()">取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <!-- 編輯教師表單 (預設隱藏) -->
     <div id="editForm" class="edit-form-container" style="display: none;">
@@ -102,6 +176,7 @@
               <th>操作</th>
           </tr>
           <?php
+
           require_once 'conn.php';
 
           // 年份到屆數的對應陣列
@@ -270,6 +345,25 @@
   </main>
 
   <script>
+    function openAddForm() {
+        // 如果有選擇年份，自動設定對應的參加年份
+        const yearSelect = document.querySelector('select[name="year"]');
+        const participateYearSelect = document.getElementById('add_participate_year');
+        
+        if (yearSelect.value) {
+            participateYearSelect.value = yearSelect.value;
+        }
+        
+        // 顯示新增表單
+        document.getElementById('addForm').style.display = 'flex';
+    }
+
+    function closeAddForm() {
+        document.getElementById('addForm').style.display = 'none';
+        // 清空表單
+        document.getElementById('addTeacherForm').reset();
+    }
+
     function openEditForm(data) {
         // 填入表單資料
         document.getElementById('edit_team_id').value = data.team_id;
@@ -289,6 +383,12 @@
     }
 
     // 點擊背景關閉表單
+    document.getElementById('addForm').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeAddForm();
+        }
+    });
+
     document.getElementById('editForm').addEventListener('click', function(e) {
         if (e.target === this) {
             closeEditForm();

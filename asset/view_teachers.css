@@ -803,3 +803,28 @@ table td:last-child {
     min-width: 80px;
     text-align: center;
 }
+/* 密碼輸入框樣式 */
+input[type="password"] {
+  font-family: 'Courier New', monospace;
+}
+
+input[type="password"]:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* 表單驗證提示 */
+.form-group input:invalid {
+  border-color: #dc3545;
+}
+
+.form-group input:valid {
+  border-color: #28a745;
+}
+
+/* 必填欄位標記 */
+.form-group label::after {
+  content: " *";
+  color: #dc3545;
+  font-weight: bold;
+}

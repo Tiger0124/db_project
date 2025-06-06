@@ -10,7 +10,7 @@
     <header>
         <div class="navbar">
             <a href="main.php" alt="Logo" class="logo">
-                <img src="images/logo.png" alt="Logo" class="logo">
+                <img src="../asset/images/logo.png" alt="Logo" class="logo">
             </a>
             <h1>高雄大學激發學生創意競賽管理系統</h1>
         </div>
@@ -39,18 +39,18 @@
             <form action="announcements.php" method="POST">
                 <input type="hidden" name="username" value="' . $_POST['username'] . '">
                 <input type="hidden" name="password" value="' . $_POST['password'] . '">
-                <button type="submit">查詢</button>
+                <button type="submit">公告</button>
             </form>
             <form action="main.php" method="POST">
                 <input type="hidden" name="username" value="' . $_POST['username'] . '">
                 <input type="hidden" name="password" value="' . $_POST['password'] . '">
-                <button type="submit">新增</button>
+                <button type="submit">修改</button>
             </form> 
             <form action="main.php" method="POST">
                 <input type="hidden" name="username" value="' . $_POST['username'] . '">
                 <input type="hidden" name="password" value="' . $_POST['password'] . '">
-                <button type="submit">刪除</button>
-            </form>
+                <button type="submit">修改</button>
+            </form> 
             </div>';
     } else {
         echo '<h2>登入失敗，請返回並重試。</h2>';
