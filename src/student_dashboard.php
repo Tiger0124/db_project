@@ -1,3 +1,5 @@
+<?php include 'darkmode.php'; ?>
+
 <!DOCTYPE html>
 <html lang="zh-TW">
 
@@ -31,31 +33,52 @@
         ]
     ]);
 
-    // $response = $supabaseClient->from('學生')
-    //                 ->update($student_data)
-    //                 ->eq('身分證字號', $student_id)
-    //                 ->eq('隊伍編號', $team_id)
-    //                 ->execute();
-
 
     $data = json_decode($response->getBody(), true);
 
     if (count($data) === 1) {
         $name = $data[0]['姓名'];
-        echo '<h2>歡迎，' . $name . ' 同學！</h2>';
+        $team_id = $data[0]['隊伍編號'];
+
+        $team_response = $supabaseClient->get('隊伍', [
+            'query' => [
+                '隊伍編號' => 'eq.' . $team_id,
+                'select' => '報名進度'
+            ]
+        ]);
+        $members = json_decode($team_response->getBody(), true);
+
+
+        echo '<h2>歡迎，' . $name . ' 參賽同學！<br>目前狀態: ' . $members[0]['報名進度'] . '</h2>';
         echo '
     <div class="admin-buttons">
         <form action="student_edit.php" method="POST">
             <input type="hidden" name="username" value="' . $_POST['username'] . '">
             <input type="hidden" name="password" value="' . $_POST['password'] . '">
             <button type="submit">修改團隊資訊</button>
-        </form>
+        </form>';
+
+
+        if ($members[0]['報名進度'] != '退件') {
+            echo '
         <form action="student_upload.php" method="POST">
             <input type="hidden" name="username" value="' . $_POST['username'] . '">
             <input type="hidden" name="password" value="' . $_POST['password'] . '">
             <button type="submit">上傳作品</button>
-        </form>
-        <form action="student_history.php" method="POST">
+        </form>';
+        } else {
+            echo '
+        <form action="student_reregister.php" method="POST">
+            <input type="hidden" name="username" value="' . $_POST['username'] . '">
+            <input type="hidden" name="password" value="' . $_POST['password'] . '">
+            <button type="submit">重新報名</button>
+        </form>';
+        }
+
+
+        echo '
+
+        <form action="student_history_login.php" method="POST">
             <input type="hidden" name="username" value="' . $_POST['username'] . '">
             <input type="hidden" name="password" value="' . $_POST['password'] . '">
             <button type="submit">歷屆作品瀏覽</button>

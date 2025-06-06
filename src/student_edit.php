@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
+<?php include 'darkmode.php'; ?>
 
 <head>
     <meta charset="UTF-8">
@@ -110,7 +111,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="student<?= $index ?>-email">電子郵件：</label>
-                                            <input type="email" id="student<?= $index ?>-email" name="student<?= $index ?>_email"
+                                            <input type="text" id="student<?= $index ?>-email" name="student<?= $index ?>_email"
                                                 value="<?= htmlspecialchars($member["電子郵件"]) ?>" required>
                                         </div>
                                     </div>
@@ -118,7 +119,7 @@
                                     <div class="form-row">
                                         <div class="form-group">
                                             <label for="student<?= $index ?>-phone">電話：</label>
-                                            <input type="tel" id="student<?= $index ?>-phone" name="student<?= $index ?>_phone"
+                                            <input type="text" id="student<?= $index ?>-phone" name="student<?= $index ?>_phone"
                                                 value="<?= htmlspecialchars($member["電話"]) ?>" required>
                                         </div>
                                         <div class="form-group">
