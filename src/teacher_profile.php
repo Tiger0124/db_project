@@ -31,12 +31,6 @@
       <label>職稱
         <input type="text" id="title">
       </label>
-      <label>參加年份 (不可修改)
-        <input type="number" id="year" disabled>
-      </label>
-      <label>隊伍編號 (不可修改)
-        <input type="text" id="team" disabled>
-      </label>
       <button type="submit">儲存變更</button>
     </form>
 
@@ -76,8 +70,6 @@
     document.getElementById('phone').value = data.電話;
     document.getElementById('email').value = data.電子郵件;
     document.getElementById('title').value = data.職稱;
-    document.getElementById('year').value = data.參加年份;
-    document.getElementById('team').value = data.隊伍編號;
   }
 
   document.getElementById('profileForm').addEventListener('submit', async function (e) {
@@ -88,8 +80,6 @@
       電話: document.getElementById('phone').value,
       電子郵件: document.getElementById('email').value,
       職稱: document.getElementById('title').value,
-      參加年份: parseInt(document.getElementById('year').value),
-      隊伍編號: document.getElementById('team').value,
     };
 
     const { error } = await supabaseClient
