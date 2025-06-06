@@ -74,8 +74,8 @@
       if (error) {
         alert("密碼更新失敗：" + error.message);
       } else {
-        alert("密碼已更新，返回主頁！");
-        goBack(newPassword);
+        alert("密碼已更新，請重新登入。");
+        window.location.href="judge.php";
       }
     });
 

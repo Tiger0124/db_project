@@ -45,6 +45,41 @@ foreach ($teams as $team) {
 </head>
 
 <body>
+    <script>
+    function goBackWithPost() {
+        // 取得上一頁的 URL
+        const prevUrl = document.referrer;
+
+        if (!prevUrl) {
+            alert("找不到上一頁的網址");
+            return;
+        }
+
+        // 建立一個表單元素
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = prevUrl;
+
+        // 加入要帶回去的 hidden 欄位
+        const usernameInput = document.createElement('input');
+        usernameInput.type = 'hidden';
+        usernameInput.name = 'username';
+        usernameInput.value = "<?php echo $_POST['username']; ?>";
+
+        const passwordInput = document.createElement('input');
+        passwordInput.type = 'hidden';
+        passwordInput.name = 'password';
+        passwordInput.value = "<?php echo $_POST['password']; ?>";
+
+        // 加進 form 裡
+        form.appendChild(usernameInput);
+        form.appendChild(passwordInput);
+
+        // 加進 body 並送出
+        document.body.appendChild(form);
+        form.submit();
+    }
+    </script>
     <header>
         <div class="navbar">
             <a href="main.php" alt="Logo" class="logo">
@@ -104,6 +139,7 @@ foreach ($teams as $team) {
 
             </tbody>
         </table>
+        <button onclick="goBackWithPost()">返回</button>
     </main>
     <footer class="site-footer">
         <div class="footer-content">
