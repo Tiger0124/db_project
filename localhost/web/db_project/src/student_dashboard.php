@@ -1,15 +1,3 @@
-<?php
-// Start session and handle dark mode toggle
-if (session_status() === PHP_SESSION_NONE) session_start();
-
-if (isset($_GET['toggle_dm'])) {
-    $_SESSION['darkmode'] = !($_SESSION['darkmode'] ?? false);
-    header('Location: ' . preg_replace('/[?&]toggle_dm(=1)?/i', '', $_SERVER['REQUEST_URI']));
-    exit;
-}
-
-// Inject necessary elements if dark mode is active
-if ($_SESSION['darkmode'] ?? false): ?>
     <style>
         /* ===== Universal Dark Mode Styles ===== */
         body {
@@ -53,6 +41,7 @@ if ($_SESSION['darkmode'] ?? false): ?>
 
         .system-button,
         .admin-buttons button {
+            border-radius: 11px;
             background: linear-gradient(135deg, #2a4d7a 0%, #1e3a5f 100%) !important;
             color: #ffffff !important;
             box-shadow: 0 8px 25px rgba(30, 58, 95, 0.4) !important;
@@ -102,10 +91,47 @@ if ($_SESSION['darkmode'] ?? false): ?>
             color: #3a6ea5 !important;
         }
 
-        /* ===== Form Page Specific Styles ===== */
-        form {
-            border-radius: 20px;
-            background: rgb(63, 73, 143) !important;
+      
+    bac
+            background: rgb(0 0 0) !important;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3) !important;
+            border-radius: 11px;
+            border-radius: 11px;
+            border-radius: 11px;
+            /* box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3) !important; */
+            /* box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3) !important; */
+            /* box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3) !important; */
+            /* box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3) !important; */
+            /* box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3) !important; */
+            /* box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3) !important; */
+            /* box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3) !important; */
+            /* box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3) !important; */
+            /* box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3) !important; */
+            /* box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3) !important; */
+            /* box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3) !important; */
+            /* box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3) !important; */
+            /* box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3) !important; */
+            /* box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3) !important; */
+            /* box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3) !important; */
+            /* box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3) !important; */
+            /* box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3) !important; */
+            /* box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3) !important; */
+            /* box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3) !important; */
+            /* box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3) !important; */
+            /* box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3) !important; */
+            /* box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3) !important; */
+            /* box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3) !important; */
+            /* box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3) !important; */
+            /* box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3) !important; */
+            /* box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3) !important; */
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3) !important;
+            /* box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3) !important; */
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3) !important;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3) !important;
+            /* box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3) !important; */
+            /* box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3) !important; */
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3) !important;
+        sizing: border-box;
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3) !important;
         }
 
@@ -145,16 +171,11 @@ if ($_SESSION['darkmode'] ?? false): ?>
         }
 
         .form-group {
-            border-radius: 10px;
-            padding: 0.8rem 1rem;
-
             background: linear-gradient(135deg, #2a4d7a 0%, #1e3a5f 100%) !important;
             box-shadow: 0 8px 25px rgba(30, 58, 95, 0.4) !important;
         }
 
         /* 修改了這裡 */
-
-
         .form-group input[type="text"],
         .form-group input[type="url"],
         .form-group input[type="file"],
@@ -163,67 +184,22 @@ if ($_SESSION['darkmode'] ?? false): ?>
             /* 新增了這個 */
             padding: 0.8rem 1rem;
             border: 1px solid #ddd;
-            border-radius: 20px;
+            border-radius: 8px;
             font-family: inherit;
             font-size: 1rem;
             transition: all 0.3s ease;
         }
 
         /* 修改了這裡 */
-        .form-group input[type="text"],
-        .form-group input[type="file"],
-        .form-group input[type="url"],
-        .form-group textarea,
-        .form-group input[type="password"] {
-            /* 新增了這個 */
-            outline: none;
-            background: rgba(26, 36, 57, 0.8) !important;
-            border-color: rgb(42, 115, 164);
-            box-shadow: 0 0 0 3px rgba(36, 107, 155, 0.2);
-        }
-
-
-
-
-        /* Style the file selector button */
-        input[type='file']::file-selector-button {
-            background-color: #007bff;
-            /* Blue button */
-            color: white;
-            padding: 8px 12px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            margin-right: 10px;
-            /* Space between button and text */
-        }
-
-        input[type='file']::file-selector-button:hover {
-            background-color: #0056b3;
-            /* Darker blue on hover */
-        }
-
-        input[type='file']::file-selector-button:active {
-            background-color: #004085;
-            /* Even darker on click */
-        }
-
         .form-group input[type="text"]:focus,
-        .form-group input[type="file"]:focus,
         .form-group input[type="url"]:focus,
         .form-group textarea:focus,
         .form-group input[type="password"]:focus {
             /* 新增了這個 */
             outline: none;
-            background: rgba(26, 36, 57, 0.8) !important;
             border-color: rgb(42, 115, 164);
             box-shadow: 0 0 0 3px rgba(36, 107, 155, 0.2);
         }
-
-
-
-
 
 
 
@@ -252,9 +228,7 @@ if ($_SESSION['darkmode'] ?? false): ?>
         }
 
         input[type="text"],
-        input[type="url"],
         input[type="password"],
-        input[type="file"],
         input[type="tel"],
         input[type="email"] {
             background: rgba(26, 36, 57, 0.8) !important;
@@ -277,6 +251,7 @@ if ($_SESSION['darkmode'] ?? false): ?>
         }
 
         button[type="submit"] {
+            border-radius: 11px;
             background: linear-gradient(135deg, #2a4d7a 0%, #1e3a5f 100%) !important;
             color: #ffffff !important;
             box-shadow: 0 8px 25px rgba(30, 58, 95, 0.4) !important;
@@ -293,8 +268,88 @@ if ($_SESSION['darkmode'] ?? false): ?>
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3) !important;
         }
 
-        .admin-buttons {
-
+        .ad
+            border-radius: 11px;
+            /* background: linear-gradient(135deg, #1e3a5f 0%, #2a4d7a 100%) !important; */
+            box-shadow: 0 15px 40px rgba(30, 58, 95, 0.4) !important;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2a4d7a 100%) !important;
+            box-shadow: 0 15px 40px rgba(30, 58, 95, 0.4) !important;
+            /* background: linear-gradient(135deg, #1e3a5f 0%, #2a4d7a 100%) !important; */
+            box-shadow: 0 15px 40px rgba(30, 58, 95, 0.4) !important;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2a4d7a 100%) !important;
+            box-shadow: 0 15px 40px rgba(30, 58, 95, 0.4) !important;
+            /* background: linear-gradient(135deg, #1e3a5f 0%, #2a4d7a 100%) !important; */
+            box-shadow: 0 15px 40px rgba(30, 58, 95, 0.4) !important;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2a4d7a 100%) !important;
+            box-shadow: 0 15px 40px rgba(30, 58, 95, 0.4) !important;
+            /* background: linear-gradient(135deg, #1e3a5f 0%, #2a4d7a 100%) !important; */
+            box-shadow: 0 15px 40px rgba(30, 58, 95, 0.4) !important;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2a4d7a 100%) !important;
+            box-shadow: 0 15px 40px rgba(30, 58, 95, 0.4) !important;
+            /* background: linear-gradient(135deg, #1e3a5f 0%, #2a4d7a 100%) !important; */
+            box-shadow: 0 15px 40px rgba(30, 58, 95, 0.4) !important;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2a4d7a 100%) !important;
+            box-shadow: 0 15px 40px rgba(30, 58, 95, 0.4) !important;
+            /* background: linear-gradient(135deg, #1e3a5f 0%, #2a4d7a 100%) !important; */
+            box-shadow: 0 15px 40px rgba(30, 58, 95, 0.4) !important;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2a4d7a 100%) !important;
+            box-shadow: 0 15px 40px rgba(30, 58, 95, 0.4) !important;
+            /* background: linear-gradient(135deg, #1e3a5f 0%, #2a4d7a 100%) !important; */
+            box-shadow: 0 15px 40px rgba(30, 58, 95, 0.4) !important;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2a4d7a 100%) !important;
+            box-shadow: 0 15px 40px rgba(30, 58, 95, 0.4) !important;
+            /* background: linear-gradient(135deg, #1e3a5f 0%, #2a4d7a 100%) !important; */
+            box-shadow: 0 15px 40px rgba(30, 58, 95, 0.4) !important;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2a4d7a 100%) !important;
+            box-shadow: 0 15px 40px rgba(30, 58, 95, 0.4) !important;
+            /* background: linear-gradient(135deg, #1e3a5f 0%, #2a4d7a 100%) !important; */
+            box-shadow: 0 15px 40px rgba(30, 58, 95, 0.4) !important;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2a4d7a 100%) !important;
+            box-shadow: 0 15px 40px rgba(30, 58, 95, 0.4) !important;
+            /* background: linear-gradient(135deg, #1e3a5f 0%, #2a4d7a 100%) !important; */
+            box-shadow: 0 15px 40px rgba(30, 58, 95, 0.4) !important;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2a4d7a 100%) !important;
+            box-shadow: 0 15px 40px rgba(30, 58, 95, 0.4) !important;
+            /* background: linear-gradient(135deg, #1e3a5f 0%, #2a4d7a 100%) !important; */
+            box-shadow: 0 15px 40px rgba(30, 58, 95, 0.4) !important;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2a4d7a 100%) !important;
+            box-shadow: 0 15px 40px rgba(30, 58, 95, 0.4) !important;
+            /* background: linear-gradient(135deg, #1e3a5f 0%, #2a4d7a 100%) !important; */
+            box-shadow: 0 15px 40px rgba(30, 58, 95, 0.4) !important;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2a4d7a 100%) !important;
+            box-shadow: 0 15px 40px rgba(30, 58, 95, 0.4) !important;
+            /* background: linear-gradient(135deg, #1e3a5f 0%, #2a4d7a 100%) !important; */
+            box-shadow: 0 15px 40px rgba(30, 58, 95, 0.4) !important;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2a4d7a 100%) !important;
+            box-shadow: 0 15px 40px rgba(30, 58, 95, 0.4) !important;
+            /* background: linear-gradient(135deg, #1e3a5f 0%, #2a4d7a 100%) !important; */
+            box-shadow: 0 15px 40px rgba(30, 58, 95, 0.4) !important;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2a4d7a 100%) !important;
+            box-shadow: 0 15px 40px rgba(30, 58, 95, 0.4) !important;
+            /* background: linear-gradient(135deg, #1e3a5f 0%, #2a4d7a 100%) !important; */
+            box-shadow: 0 15px 40px rgba(30, 58, 95, 0.4) !important;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2a4d7a 100%) !important;
+            box-shadow: 0 15px 40px rgba(30, 58, 95, 0.4) !important;
+            /* background: linear-gradient(135deg, #1e3a5f 0%, #2a4d7a 100%) !important; */
+            box-shadow: 0 15px 40px rgba(30, 58, 95, 0.4) !important;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2a4d7a 100%) !important;
+            box-shadow: 0 15px 40px rgba(30, 58, 95, 0.4) !important;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2a4d7a 100%) !important;
+            box-shadow: 0 15px 40px rgba(30, 58, 95, 0.4) !important;
+            /* background: linear-gradient(135deg, #1e3a5f 0%, #2a4d7a 100%) !important; */
+            box-shadow: 0 15px 40px rgba(30, 58, 95, 0.4) !important;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2a4d7a 100%) !important;
+            box-shadow: 0 15px 40px rgba(30, 58, 95, 0.4) !important;
+            /* background: linear-gradient(135deg, #1e3a5f 0%, #2a4d7a 100%) !important; */
+            box-shadow: 0 15px 40px rgba(30, 58, 95, 0.4) !important;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2a4d7a 100%) !important;
+            box-shadow: 0 15px 40px rgba(30, 58, 95, 0.4) !important;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2a4d7a 100%) !important;
+            /* box-shadow: 0 15px 40px rgba(30, 58, 95, 0.4) !important; */
+            background: linear-gradient(135deg, #1e3a5f 0%, #2a4d7a 100%) !important;
+            box-shadow: 0 15px 40px rgba(30, 58, 95, 0.4) !important;
+            /* background: linear-gradient(135deg, #1e3a5f 0%, #2a4d7a 100%) !important; */
+            box-shadow: 0 15px 40px rgba(30, 58, 95, 0.4) !important;
             background: linear-gradient(135deg, #1e3a5f 0%, #2a4d7a 100%) !important;
             box-shadow: 0 15px 40px rgba(30, 58, 95, 0.4) !important;
         }
@@ -306,8 +361,8 @@ if ($_SESSION['darkmode'] ?? false): ?>
         body>h2 {
             /* Error messages */
             background: #1a2439 !important;
-            color: rgb(84, 91, 145) !important;
-            border-left: 4px solidrgb(74, 65, 121) !important;
+            color: #ff6b6b !important;
+            border-left: 4px solid #ff6b6b !important;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
         }
 
@@ -316,18 +371,6 @@ if ($_SESSION['darkmode'] ?? false): ?>
             background: #1a2439 !important;
             color: #e0e4ec !important;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
-        }
-
-        .result-container {
-            background: #1a2439 !important;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3) !important;
-            color: #e0e0e0 !important;
-        }
-
-
-        /* Preserve animation in dark mode */
-        .result-container {
-            animation: fadeInUp 0.6s ease-out !important;
         }
 
         .student-fieldset {
@@ -436,40 +479,58 @@ if ($_SESSION['darkmode'] ?? false): ?>
             }
         });
     </script>
-<?php else: ?>
-    <style>
-        /* ===== Toggle Button - Dark Mode Style ===== */
-        .darkmode-btn {
-            margin-left: auto;
-            padding: 10px 20px !important;
-            background: linear-gradient(135deg, #2a4d7a 0%, #1e3a5f 100%) !important;
-            color: #ffffff !important;
-            border: none !important;
-            border-radius: 50px !important;
-            cursor: pointer !important;
-            font-weight: 600 !important;
-            font-size: 1rem !important;
-            box-shadow: 0 4px 15px rgba(30, 58, 95, 0.4) !important;
-            transition: all 0.3s ease !important;
-            text-align: center;
-        }
 
-        .darkmode-btn:hover {
-            transform: translateY(-3px) !important;
-            box-shadow: 0 6px 20px rgba(30, 58, 95, 0.6) !important;
-        }
-    </style>
-    <script>
-        // Add toggle button
-        document.addEventListener('DOMContentLoaded', function() {
-            const navbar = document.querySelector('.navbar');
-            if (navbar && !document.querySelector('.darkmode-btn')) {
-                const toggleBtn = document.createElement('button');
-                toggleBtn.className = 'darkmode-btn';
-                toggleBtn.innerHTML = '🌙 切換暗色模式';
-                toggleBtn.onclick = () => window.location.href = '?toggle_dm=1';
-                navbar.appendChild(toggleBtn);
-            }
-        });
-    </script>
-<?php endif; ?>
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高雄大學創意競賽管理系統</title>
+    <link rel="stylesheet" href="../asset/student_dashboard.css">
+</head>
+
+<body>
+    <header>
+        <div class="navbar">
+            <a href="main.php" alt="Logo" class="logo">
+                <img src="../images/logo.png" alt="Logo" class="logo">
+            </a>
+            <h1>高雄大學激發學生創意競賽管理系統</h1>
+        </div>
+    </header>
+    <h2>歡迎，ck6 參賽同學！<br>目前狀態: 完成報名</h2>
+    <div class="admin-buttons">
+        <form action="student_edit.php" method="POST">
+            <input type="hidden" name="username" value="stu2">
+            <input type="hidden" name="password" value="123">
+            <button type="submit">修改團隊資訊</button>
+        </form>
+        <form action="student_upload.php" method="POST">
+            <input type="hidden" name="username" value="stu2">
+            <input type="hidden" name="password" value="123">
+            <button type="submit">上傳作品</button>
+        </form>
+
+        <form action="student_history.php" method="POST">
+            <input type="hidden" name="username" value="stu2">
+            <input type="hidden" name="password" value="123">
+            <button type="submit">歷屆作品瀏覽</button>
+        </form>
+    </div>
+</body>
+<footer class="site-footer">
+    <div class="footer-content">
+        <p>&copy; Copyright © 2025 XC Lee Tiger Lin How Ho. All rights reserved.</p>
+        <div class="footer-row">
+            <div class="footer-container">
+                <p>聯絡我們 : <a href="mailto:wylin@nuk.edu.tw">wylin@nuk.edu.tw</a></p>
+            </div>
+            <ul class="footer-links">
+                <li><a href="https://github.com/Tiger0124/db_project.git">關於我們</a></li>
+            </ul>
+        </div>
+    </div>
+</footer>
+
+</html>

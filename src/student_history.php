@@ -65,6 +65,7 @@ foreach ($teams as $team) {
                 <?php endforeach; ?>
             </select>
             <button type="submit">查詢</button>
+
         </form>
         <table border="1">
             <thead>
@@ -106,6 +107,7 @@ foreach ($teams as $team) {
 
             </tbody>
         </table>
+
     </main>
     <footer class="site-footer">
         <div class="footer-content">
