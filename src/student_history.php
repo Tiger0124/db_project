@@ -7,7 +7,7 @@ include 'conn.php';
 $year = isset($_GET['year']) ? (int)$_GET['year'] : 2024;
 
 // 安全性檢查（允許的年份範圍）
-$allowedYears = range(2013, 2024);
+$allowedYears = range(2020, 2025);
 if (!in_array($year, $allowedYears, true)) {
     $year = 2024;
 }

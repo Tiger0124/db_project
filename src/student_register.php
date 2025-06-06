@@ -77,22 +77,22 @@
                         </div>
 
                         <label for="student2-id">身分證字號：</label>
-                        <input type="text" id="student2-id" name="student2_id" required>
+                        <input type="text" id="student2-id" name="student2_id">
 
                         <label for="student2-num">學號：</label>
-                        <input type="text" id="student2-num" name="student2_num" required>
+                        <input type="text" id="student2-num" name="student2_num">
 
                         <label for="student2-name">姓名：</label>
-                        <input type="text" id="student2-name" name="student2_name" required>
+                        <input type="text" id="student2-name" name="student2_name">
 
                         <label for="student2-email">電子郵件：</label>
-                        <input type="email" id="student2-email" name="student2_email" required>
+                        <input type="email" id="student2-email" name="student2_email">
 
                         <label for="student2-phone">電話：</label>
-                        <input type="text" id="student2-phone" name="student2_phone" required>
+                        <input type="text" id="student2-phone" name="student2_phone">
 
                         <label for="student2-department">科系：</label>
-                        <input type="text" id="student2-department" name="student2_department" required>
+                        <input type="text" id="student2-department" name="student2_department">
 
                     </div>
 
@@ -100,26 +100,26 @@
                     <div class="student-info" data-student="3" style="display: none;">
                         <div class="student-header">
                             <h4>組員三資料</h4>
-                            <span class="required-badge">必填</span>
+                            <span class="-badge">必填</span>
                         </div>
 
                         <label for="student3-id">身分證字號：</label>
-                        <input type="text" id="student3-id" name="student3_id" required>
+                        <input type="text" id="student3-id" name="student3_id">
 
                         <label for="student3-num">學號：</label>
-                        <input type="text" id="student3-num" name="student3_num" required>
+                        <input type="text" id="student3-num" name="student3_num">
 
                         <label for="student3-name">姓名：</label>
-                        <input type="text" id="student3-name" name="student3_name" required>
+                        <input type="text" id="student3-name" name="student3_name">
 
                         <label for="student3-email">電子郵件：</label>
-                        <input type="email" id="student3-email" name="student3_email" required>
+                        <input type="email" id="student3-email" name="student3_email">
 
                         <label for="student3-phone">電話：</label>
-                        <input type="text" id="student3-phone" name="student3_phone" required>
+                        <input type="text" id="student3-phone" name="student3_phone">
 
                         <label for="student3-department">科系：</label>
-                        <input type="text" id="student3-department" name="student3_department" required>
+                        <input type="text" id="student3-department" name="student3_department">
 
                     </div>
 

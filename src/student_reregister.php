@@ -168,22 +168,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST["username"]) && isset(
                         </div>
                         <label for="student3-id">身分證字號：</label>
                         <input type="text" id="student3-id" name="student3_id"
-                            value="<?= htmlspecialchars($members[2]['身分證字號'] ?? '') ?>" required>
+                            value="<?= htmlspecialchars($members[2]['身分證字號'] ?? '') ?>">
                         <label for="student3-num">學號：</label>
                         <input type="text" id="student3-num" name="student3_num"
-                            value="<?= htmlspecialchars($members[2]['學號'] ?? '') ?>" required>
+                            value="<?= htmlspecialchars($members[2]['學號'] ?? '') ?>">
                         <label for="student3-name">姓名：</label>
                         <input type="text" id="student3-name" name="student3_name"
-                            value="<?= htmlspecialchars($members[2]['姓名'] ?? '') ?>" required>
+                            value="<?= htmlspecialchars($members[2]['姓名'] ?? '') ?>">
                         <label for="student3-email">電子郵件：</label>
                         <input type="email" id="student3-email" name="student3_email"
-                            value="<?= htmlspecialchars($members[2]['電子郵件'] ?? '') ?>" required>
+                            value="<?= htmlspecialchars($members[2]['電子郵件'] ?? '') ?>">
                         <label for="student3-phone">電話：</label>
                         <input type="text" id="student3-phone" name="student3_phone"
-                            value="<?= htmlspecialchars($members[2]['電話'] ?? '') ?>" required>
+                            value="<?= htmlspecialchars($members[2]['電話'] ?? '') ?>">
                         <label for="student3-department">科系：</label>
                         <input type="text" id="student3-department" name="student3_department"
-                            value="<?= htmlspecialchars($members[2]['科系'] ?? '') ?>" required>
+                            value="<?= htmlspecialchars($members[2]['科系'] ?? '') ?>">
                     </div>
 
                     <div class="student-info optional-member" data-student="4" style="display: none;">
