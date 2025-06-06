@@ -84,83 +84,18 @@
             if (!empty($code_url)) $updateData['程式碼(Github連結)'] = $code_url;
 
             // 處理說明書上傳
+
+
             if (isset($_FILES['manual_file']) && $_FILES['manual_file']['error'] === UPLOAD_ERR_OK) {
                 $file_tmp_name = $_FILES['manual_file']['tmp_name'];
-                $file_name = $_FILES['manual_file']['name'];
-                $file_size = $_FILES['manual_file']['size'];
-                $file_type = $_FILES['manual_file']['type'];
-
-                if ($file_size > 10 * 1024 * 1024) {
-                    throw new Exception("說明書檔案過大，請上傳小於10MB的檔案。");
-                }
-
-                // 刪除舊文件（如果存在）
-                if ($is_update && !empty($existingProject['manual_path'])) {
-                    $deleteResponse = $supabaseClient->delete('storage/v1/object/project_files/' . $existingProject['manual_path']);
-                }
-
-                // 上傳新文件
-                $manual_path = "manuals/{$username}_{$year}_" . uniqid() . ".pdf";
-                $storage_url = $supabaseUrl . '/storage/v1/object/project_files/' . $manual_path;
-
-                $response = $supabaseClient->post($storage_url, [
-                    'multipart' => [
-                        [
-                            'name' => 'file',
-                            'contents' => fopen($file_tmp_name, 'r'),
-                            'filename' => $file_name
-                        ]
-                    ],
-                    'headers' => [
-                        'Content-Type' => 'multipart/form-data'
-                    ]
-                ]);
-
-                if ($response->getStatusCode() !== 200) {
-                    throw new Exception('說明書上傳失敗');
-                }
-
-                $updateData['manual_path'] = $manual_path;
+                $updateData['說明書'] = base64_encode(file_get_contents($file_tmp_name));
             }
 
             // 處理海報上傳
             if (isset($_FILES['poster_file']) && $_FILES['poster_file']['error'] === UPLOAD_ERR_OK) {
                 $file_tmp_name = $_FILES['poster_file']['tmp_name'];
-                $file_name = $_FILES['poster_file']['name'];
-                $file_size = $_FILES['poster_file']['size'];
-                $file_type = $_FILES['poster_file']['type'];
 
-                if ($file_size > 10 * 1024 * 1024) {
-                    throw new Exception("海報檔案過大，請上傳小於10MB的檔案。");
-                }
-
-                // 刪除舊文件（如果存在）
-                if ($is_update && !empty($existingProject['poster_path'])) {
-                    $deleteResponse = $supabaseClient->delete('storage/v1/object/project_files/' . $existingProject['poster_path']);
-                }
-
-                // 上傳新文件
-                $poster_path = "posters/{$username}_{$year}_" . uniqid() . ".pdf";
-                $storage_url = $supabaseUrl . '/storage/v1/object/project_files/' . $poster_path;
-
-                $response = $supabaseClient->post($storage_url, [
-                    'multipart' => [
-                        [
-                            'name' => 'file',
-                            'contents' => fopen($file_tmp_name, 'r'),
-                            'filename' => $file_name
-                        ]
-                    ],
-                    'headers' => [
-                        'Content-Type' => 'multipart/form-data'
-                    ]
-                ]);
-
-                if ($response->getStatusCode() !== 200) {
-                    throw new Exception('海報上傳失敗');
-                }
-
-                $updateData['poster_path'] = $poster_path;
+                $updateData['海報'] = base64_encode(file_get_contents($file_tmp_name));
             }
 
             // 如果有數據需要更新
