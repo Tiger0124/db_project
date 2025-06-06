@@ -48,25 +48,39 @@
         ]);
         $members = json_decode($team_response->getBody(), true);
 
-
-        echo '<h2>歡迎，' . $name . ' 參賽同學！<br>目前狀態: ' . $members[0]['報名進度'] . '</h2>';
+        if(!$team_id)
+        {
+            echo '<h2>歡迎，' . $name . ' 參賽同學！<br>目前狀態: 未報名</h2>';
+            $members = [['報名進度' => '未報名']];
+        }
+        else
+        {
+            echo '<h2>歡迎，' . $name . ' 參賽同學！<br>目前狀態: ' . $members[0]['報名進度'] . '</h2>';
+        }
+        
         echo '
-    <div class="admin-buttons">
+        <div class="admin-buttons">
         <form action="student_edit.php" method="POST">
             <input type="hidden" name="username" value="' . $_POST['username'] . '">
             <input type="hidden" name="password" value="' . $_POST['password'] . '">
             <button type="submit">修改團隊資訊</button>
         </form>';
+        
 
-
-        if ($members[0]['報名進度'] != '退件') {
+        if ($members[0]['報名進度'] == '未報名') {
+            // 如果報名進度是未報名，則禁用上傳作品按鈕
+            echo '<button type="submit" disabled>請先報名</button>';
+        }
+        else if ($members[0]['報名進度'] != '退件')
+        {
             echo '
-        <form action="student_upload.php" method="POST">
-            <input type="hidden" name="username" value="' . $_POST['username'] . '">
-            <input type="hidden" name="password" value="' . $_POST['password'] . '">
-            <button type="submit">上傳作品</button>
-        </form>';
-        } else {
+            <form action="student_upload.php" method="POST">
+                <input type="hidden" name="username" value="' . $_POST['username'] . '">
+                <input type="hidden" name="password" value="' . $_POST['password'] . '">
+                <button type="submit">上傳作品</button>
+            </form>';
+        } 
+        else {
             echo '
         <form action="student_reregister.php" method="POST">
             <input type="hidden" name="username" value="' . $_POST['username'] . '">
