@@ -41,6 +41,54 @@
         <input type="hidden" name="username" value="<?php echo $username_from_post; ?>">
         <input type="hidden" name="password" value="<?php echo $password_from_post; ?>">
     </form>
+
+    <!-- 編輯教師表單 (預設隱藏) -->
+    <div id="editForm" class="edit-form-container" style="display: none;">
+        <div class="edit-form">
+            <h3>編輯教師資料</h3>
+            <form id="updateForm" method="POST" action="update_teachers.php">
+                <input type="hidden" id="edit_team_id" name="team_id" value="">
+                <input type="hidden" name="username" value="<?php echo $username_from_post; ?>">
+                <input type="hidden" name="password" value="<?php echo $password_from_post; ?>">
+                <input type="hidden" name="year" value="<?php echo isset($_POST['year']) ? htmlspecialchars($_POST['year'], ENT_QUOTES, 'UTF-8') : ''; ?>">
+                
+                <div class="form-group">
+                    <label for="edit_teacher_name">指導老師姓名:</label>
+                    <input type="text" id="edit_teacher_name" name="teacher_name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit_teacher_title">職稱:</label>
+                    <input type="text" id="edit_teacher_title" name="teacher_title" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit_team_name">隊伍名稱:</label>
+                    <input type="text" id="edit_team_name" name="team_name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit_students">學生名單:</label>
+                    <textarea id="edit_students" name="students" rows="3" placeholder="請用逗號分隔多個學生姓名"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit_project_name">作品名稱:</label>
+                    <input type="text" id="edit_project_name" name="project_name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit_project_description">作品描述:</label>
+                    <textarea id="edit_project_description" name="project_description" rows="4"></textarea>
+                </div>
+                
+                <div class="form-buttons">
+                    <button type="submit" class="btn-save">儲存</button>
+                    <button type="button" class="btn-cancel" onclick="closeEditForm()">取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
     
     <div class="rounded-box">
       <table style="width:100%">
@@ -51,9 +99,9 @@
               <th>學生名單</th>
               <th>作品名稱</th>
               <th>作品描述</th>
+              <th>操作</th>
           </tr>
           <?php
-          session_start();
           require_once 'conn.php';
 
           // 年份到屆數的對應陣列
@@ -121,6 +169,7 @@
                               
                               // 查詢學生資料 - 使用隊伍編號
                               $students_display = 'N/A';
+                              $students_array = [];
                               if ($team_id !== null) {
                                   try {
                                       $studentResponse = $supabaseClient->get('學生', [
@@ -136,6 +185,7 @@
                                               $student_names = [];
                                               foreach ($studentData as $student) {
                                                   $student_names[] = htmlspecialchars($student['姓名'], ENT_QUOTES, 'UTF-8');
+                                                  $students_array[] = $student['姓名'];
                                               }
                                               $students_display = implode(', ', $student_names);
                                           }
@@ -172,16 +222,32 @@
                               echo "<td>" . $project_name . "</td>";
                               echo "<td>" . $project_description . "</td>";
                               
+                              // 操作按鈕
+                              echo "<td>";
+                              if ($team_id !== null) {
+                                  $edit_data = json_encode([
+                                      'team_id' => $team_id,
+                                      'teacher_name' => $teacher_name === 'N/A' ? '' : str_replace('&quot;', '"', html_entity_decode($teacher_name)),
+                                      'teacher_title' => $teacher_title === 'N/A' ? '' : str_replace('&quot;', '"', html_entity_decode($teacher_title)),
+                                      'team_name' => $row['隊伍名稱'] ?? '',
+                                      'students' => implode(', ', $students_array),
+                                      'project_name' => $project_name === 'N/A' ? '' : str_replace('&quot;', '"', html_entity_decode($project_name)),
+                                      'project_description' => $project_description === 'N/A' ? '' : str_replace('&quot;', '"', html_entity_decode($project_description))
+                                  ]);
+                                  echo "<button class='btn-edit' onclick='openEditForm(" . htmlspecialchars($edit_data, ENT_QUOTES, 'UTF-8') . ")'>編輯</button>";
+                              }
+                              echo "</td>";
+                              
                               echo "</tr>";
                           }
                       } else {
-                          echo "<tr><td colspan='6'>查無 " . htmlspecialchars($selectedYear, ENT_QUOTES, 'UTF-8') . " 年度的隊伍資料。</td></tr>";
+                          echo "<tr><td colspan='7'>查無 " . htmlspecialchars($selectedYear, ENT_QUOTES, 'UTF-8') . " 年度的隊伍資料。</td></tr>";
                       }
                   } else {
-                      echo "<tr><td colspan='6'>查詢隊伍資料失敗，HTTP 狀態碼：" . $status_code . "</td></tr>";
+                      echo "<tr><td colspan='7'>查詢隊伍資料失敗，HTTP 狀態碼：" . $status_code . "</td></tr>";
                   }
               } catch (GuzzleHttp\Exception\RequestException $e) {
-                  echo "<tr><td colspan='6'>Guzzle 請求錯誤: ";
+                  echo "<tr><td colspan='7'>Guzzle 請求錯誤: ";
                   if ($e->hasResponse()) {
                       echo htmlspecialchars($e->getResponse()->getBody()->getContents(), ENT_QUOTES, 'UTF-8');
                   } else {
@@ -189,7 +255,7 @@
                   }
                   echo "</td></tr>";
               } catch (Exception $e) {
-                  echo "<tr><td colspan='6'>執行查詢時發生例外狀況: " . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8') . "</td></tr>";
+                  echo "<tr><td colspan='7'>執行查詢時發生例外狀況: " . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8') . "</td></tr>";
               }
           }
           ?>
@@ -202,6 +268,33 @@
         <button type="submit">返回</button>
     </form>
   </main>
+
+  <script>
+    function openEditForm(data) {
+        // 填入表單資料
+        document.getElementById('edit_team_id').value = data.team_id;
+        document.getElementById('edit_teacher_name').value = data.teacher_name;
+        document.getElementById('edit_teacher_title').value = data.teacher_title;
+        document.getElementById('edit_team_name').value = data.team_name;
+        document.getElementById('edit_students').value = data.students;
+        document.getElementById('edit_project_name').value = data.project_name;
+        document.getElementById('edit_project_description').value = data.project_description;
+        
+        // 顯示編輯表單
+        document.getElementById('editForm').style.display = 'flex';
+    }
+
+    function closeEditForm() {
+        document.getElementById('editForm').style.display = 'none';
+    }
+
+    // 點擊背景關閉表單
+    document.getElementById('editForm').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeEditForm();
+        }
+    });
+  </script>
 </body>
 <footer class="site-footer">
     <div class="footer-content">

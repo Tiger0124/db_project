@@ -51,7 +51,7 @@
                 <input type="hidden" name="password" value="' . $_POST['password'] . '">
                 <button type="submit">查詢指導老師資料</button>
             </form>
-            <form action="admin_announcements.php" method="POST">
+            <form action="announcements.php" method="POST">
                 <input type="hidden" name="username" value="' . $_POST['username'] . '">
                 <input type="hidden" name="password" value="' . $_POST['password'] . '">
                 <button type="submit">公告重要事項</button>
