@@ -33,7 +33,7 @@
       .eq('身分證字號', teamId);
 
     const teamData = data[0];
-    if (!teamData) {
+    if (!teamData.隊伍編號) {
       document.getElementById('feedbackList').innerHTML = '<p style="color:red;">找不到該指導老師的隊伍資料。</p>';
       return;
     }

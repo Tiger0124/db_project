@@ -27,7 +27,7 @@
     const supabaseClient = createClient
         ('https://xlomzrhmzjjfjmsvqxdo.supabase.co',
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhsb216cmhtempqZmptc3ZxeGRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg0OTk3NTcsImV4cCI6MjA2NDA3NTc1N30.AaGloZjC_aqW3OQkn4aDxy7SGymfTsJ6JWNWJYcYbGo');
-        
+
     const name = "<?php echo $_POST['username']; ?>";
 
     async function loadTeamdata() {
@@ -53,6 +53,12 @@
     const work = workData[0];
 
     let html = `<section class='team-info'>`;
+
+    if(!team) {
+        html += '<p>您目前並未指導任何團隊</p>';
+        document.getElementById('teamContent').innerHTML = html;
+        return;
+    }
 
     // 🧑‍🎓 學生資料
     html += `<h2>隊員資料</h2><div class="team-details">`;
@@ -89,6 +95,53 @@
     html += `</div></section>`;
 
     document.getElementById('teamContent').innerHTML = html;
+
+        if(team.報名進度 === '完成報名') {
+            const feedbackButton = document.createElement('button');
+            feedbackButton.textContent = '查看評分';
+            feedbackButton.className = 'feedback-btn';
+            feedbackButton.onclick = () => {
+                window.location.href = `teacher_viewfeedback.php?username=${encodeURIComponent(name)}`;
+            };
+            document.getElementById('teamContent').appendChild(feedbackButton);
+        }
+        else if(team.報名進度 === '送出報名') {
+            const confirmButton = document.createElement('button');
+            confirmButton.textContent = '確認報名';
+            confirmButton.className = 'confirm-btn';
+            confirmButton.onclick = async () => {
+                const { error } = await supabaseClient
+                    .from('隊伍')
+                    .update({ 報名進度: '完成報名' })
+                    .eq('隊伍編號', team.隊伍編號)
+                    .eq('參加年份', team.參加年份);
+
+                if (error) {
+                    alert('確認報名失敗：' + error.message);
+                } else {
+                    alert('報名已確認！');
+                    loadTeamdata(); // 重新載入資料
+                }
+            };
+            const rejectButton = document.createElement('button');
+            rejectButton.textContent = '退件';
+            rejectButton.className = 'reject-btn';
+            rejectButton.onclick = async () => {
+                const { error } = await supabaseClient
+                    .from('隊伍')
+                    .update({ 報名進度: '退件' })
+                    .eq('隊伍編號', team.隊伍編號)
+                    .eq('參加年份', team.參加年份);
+
+                if (error) {
+                    alert('拒絕報名失敗：' + error.message);
+                } else {
+                    alert('報名已拒絕！');
+                }
+            };
+            document.getElementById('teamContent').appendChild(confirmButton);
+            document.getElementById('teamContent').appendChild(rejectButton);
+        }
     }
 
     loadTeamdata();

@@ -56,8 +56,9 @@
     const { data, error } = await supabaseClient
       .from('指導老師')
       .select('*')
-      .eq('身分證字號', userId)
+      .eq('身分證字號', username)
       .single();
+    console.log('讀取資料', data);
 
     if (error) {
       alert('讀取資料失敗：' + error.message);
