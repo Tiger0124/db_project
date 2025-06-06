@@ -17,6 +17,16 @@
   </header>
 
   <main id="content">
+    <?php
+    // 顯示刪除結果訊息
+    if (isset($_POST['delete_success']) && $_POST['delete_success'] === '1') {
+        echo '<div class="alert alert-success" style="background-color: #d4edda; color: #155724; padding: 10px; margin: 10px 0; border: 1px solid #c3e6cb; border-radius: 4px;">隊伍及相關評分資料刪除成功！</div>';
+    }
+    if (isset($_POST['delete_error'])) {
+        echo '<div class="alert alert-error" style="background-color: #f8d7da; color: #721c24; padding: 10px; margin: 10px 0; border: 1px solid #f5c6cb; border-radius: 4px;">刪除失敗：' . htmlspecialchars($_POST['delete_error']) . '</div>';
+    }
+    ?>
+
     <form action="view_scores.php" method="POST">
         <select name="year">
           <option value="2013">2013</option>
@@ -182,7 +192,7 @@
                                       'rank' => $row['名次'] ?? '',
                                       'scores' => $scores_data
                                   ]);
-                                  echo "<button class='btn-edit' onclick='openEditForm(" . htmlspecialchars($edit_data, ENT_QUOTES, 'UTF-8') . ")'>編輯</button>";
+                                  echo "<button class='btn-delete' onclick='confirmDelete(\"" . $team_id . "\", \"" . htmlspecialchars($team_name, ENT_QUOTES, 'UTF-8') . "\")' style='background-color: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 12px;'>刪除</button>";
                               }
                               echo "</td>";
                               
@@ -247,6 +257,45 @@
 
     function closeEditForm() {
         document.getElementById('editForm').style.display = 'none';
+    }
+
+    function confirmDelete(teamId, teamName) {
+        if (confirm('確定要刪除隊伍「' + teamName + '」的所有評分資料嗎？\n此操作將同時刪除該隊伍的所有相關資料，且無法復原！')) {
+            // 創建隱藏表單來提交刪除請求
+            var form = document.createElement('form');
+            form.method = 'POST';
+            form.action = 'delete_score.php';
+            
+            // 添加隊伍編號
+            var teamIdInput = document.createElement('input');
+            teamIdInput.type = 'hidden';
+            teamIdInput.name = 'team_id';
+            teamIdInput.value = teamId;
+            form.appendChild(teamIdInput);
+            
+            // 添加用戶名和密碼（保持會話）
+            var usernameInput = document.createElement('input');
+            usernameInput.type = 'hidden';
+            usernameInput.name = 'username';
+            usernameInput.value = document.querySelector('input[name="username"]').value;
+            form.appendChild(usernameInput);
+            
+            var passwordInput = document.createElement('input');
+            passwordInput.type = 'hidden';
+            passwordInput.name = 'password';
+            passwordInput.value = document.querySelector('input[name="password"]').value;
+            form.appendChild(passwordInput);
+            
+            // 添加年份
+            var yearInput = document.createElement('input');
+            yearInput.type = 'hidden';
+            yearInput.name = 'year';
+            yearInput.value = document.querySelector('select[name="year"]').value;
+            form.appendChild(yearInput);
+            
+            document.body.appendChild(form);
+            form.submit();
+        }
     }
 
     // 點擊背景關閉表單
