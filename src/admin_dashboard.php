@@ -36,7 +36,7 @@
         echo '<h2>歡迎，'.$filename.' 管理員！</h2>';
         echo '
         <div class="admin-buttons">
-            <form action="admin_students.php" method="POST">
+            <form action="view_students.php" method="POST">
                 <input type="hidden" name="username" value="' . $_POST['username'] . '">
                 <input type="hidden" name="password" value="' . $_POST['password'] . '">
                 <button type="submit">查詢隊伍資料</button>
@@ -46,7 +46,7 @@
                 <input type="hidden" name="password" value="' . $_POST['password'] . '">
                 <button type="submit">查詢評審資料</button>
             </form>
-            <form action="admin_teachers.php" method="POST">
+            <form action="view_teachers.php" method="POST">
                 <input type="hidden" name="username" value="' . $_POST['username'] . '">
                 <input type="hidden" name="password" value="' . $_POST['password'] . '">
                 <button type="submit">查詢指導老師資料</button>
