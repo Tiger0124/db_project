@@ -28,32 +28,32 @@
                 <?php
                 echo "<div class='form-group'>";
                 echo "<label for='manual-upload'>上傳說明書：</label>";
-                echo "<input type='file' id='manual-upload' name='manual_file' accept='.pdf' required>";
+                echo "<input type='file' id='manual-upload' name='manual_file' accept='.pdf' >";
                 echo "</div>";
 
                 echo "<div class='form-group'>";
                 echo "<label for='poster-upload'>上傳海報：</label>";
-                echo "<input type='file' id='poster-upload' name='poster_file' accept='.pdf' required>";
+                echo "<input type='file' id='poster-upload' name='poster_file' accept='.pdf' >";
                 echo "</div>";
 
                 echo "<div class='form-group'>";
                 echo "<label for='video-url'>作品影片網址：</label>";
-                echo "<input type='url' id='video-url' name='video_url' placeholder='https://example.com/video' required>";
+                echo "<input type='url' id='video-url' name='video_url' placeholder='https://example.com/video' >";
                 echo "</div>";
 
                 echo "<div class='form-group'>";
                 echo "<label for='code-url'>作品程式碼網址：</label>";
-                echo "<input type='url' id='code-url' name='code_url' placeholder='https://github.com/example' required>";
+                echo "<input type='url' id='code-url' name='code_url' placeholder='https://github.com/example' >";
                 echo "</div>";
 
                 echo "<div class='form-group'>";
                 echo "<label for='pro-name'>作品名稱：</label>";
-                echo "<input type='text' id='pro-name' name='pro_name' required>";
+                echo "<input type='text' id='pro-name' name='pro_name' >";
                 echo "</div>";
 
                 echo "<div class='form-group'>";
                 echo "<label for='pro-des'>作品描述：</label>";
-                echo "<textarea id='pro-des' name='pro_des' row='5' required></textarea>";
+                echo "<textarea id='pro-des' name='pro_des' row='5' ></textarea>";
                 echo "</div>";
 
                 echo "<button type='submit'>提交資料</button>";
