@@ -1,11 +1,14 @@
+<?php include 'darkmode.php'; ?>
 <!DOCTYPE html>
 <html lang="zh-TW">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>作品上傳結果 - 高雄大學創意競賽管理系統</title>
     <link rel="stylesheet" href="../asset/submit_project.css">
 </head>
+
 <body>
     <header>
         <div class="navbar">
@@ -20,22 +23,23 @@
         <?php
         // 設定台灣時區
         date_default_timezone_set('Asia/Taipei');
-        
+
+        // 包含資料庫連接文件
         include 'conn.php';
-        
+
         // 接收表單的文字內容
-        $video_url = $_POST['video_url'];
-        $code_url = $_POST['code_url'];
-        $pro_name = $_POST['pro_name'];
-        $pro_des = $_POST['pro_des'];
-        $file_content = null;
-        $file_content2 = null;
-        $username = $_POST['username'];
-        $password = $_POST['password'];
+        $video_url = $_POST['video_url'] ?? '';
+        $code_url = $_POST['code_url'] ?? '';
+        $pro_name = $_POST['pro_name'] ?? '';
+        $pro_des = $_POST['pro_des'] ?? '';
+        $username = $_POST['username'] ?? '';
+        $password = $_POST['password'] ?? '';
         $year = date("Y");
-        
+
         $upload_success = true;
         $error_message = "";
+        $manual_path = null;
+        $poster_path = null;
 
         // 檢查說明書檔案
         if (isset($_FILES['manual_file']) && $_FILES['manual_file']['error'] === UPLOAD_ERR_OK) {
@@ -48,8 +52,31 @@
                 $upload_success = false;
                 $error_message = "說明書檔案過大，請上傳小於10MB的檔案。";
             } else {
-                $file_content = file_get_contents($file_tmp_name);
-                $file_content = mysqli_real_escape_string($link, $file_content);
+                try {
+                    // 上傳到Supabase Storage
+                    $manual_path = "manuals/{$username}_{$year}_" . uniqid() . ".pdf";
+                    $storage_url = $supabaseUrl . '/storage/v1/object/project_files/' . $manual_path;
+
+                    $response = $supabaseClient->post($storage_url, [
+                        'multipart' => [
+                            [
+                                'name' => 'file',
+                                'contents' => fopen($file_tmp_name, 'r'),
+                                'filename' => $file_name
+                            ]
+                        ],
+                        'headers' => [
+                            'Content-Type' => 'multipart/form-data'
+                        ]
+                    ]);
+
+                    if ($response->getStatusCode() !== 200) {
+                        throw new Exception('檔案上傳失敗');
+                    }
+                } catch (Exception $e) {
+                    $upload_success = false;
+                    $error_message = "說明書上傳失敗: " . $e->getMessage();
+                }
             }
         } else {
             $upload_success = false;
@@ -67,8 +94,31 @@
                 $upload_success = false;
                 $error_message = "海報檔案過大，請上傳小於10MB的檔案。";
             } else {
-                $file_content2 = file_get_contents($file_tmp_name);
-                $file_content2 = mysqli_real_escape_string($link, $file_content2);
+                try {
+                    // 上傳到Supabase Storage
+                    $poster_path = "posters/{$username}_{$year}_" . uniqid() . ".pdf";
+                    $storage_url = $supabaseUrl . '/storage/v1/object/project_files/' . $poster_path;
+
+                    $response = $supabaseClient->post($storage_url, [
+                        'multipart' => [
+                            [
+                                'name' => 'file',
+                                'contents' => fopen($file_tmp_name, 'r'),
+                                'filename' => $file_name
+                            ]
+                        ],
+                        'headers' => [
+                            'Content-Type' => 'multipart/form-data'
+                        ]
+                    ]);
+
+                    if ($response->getStatusCode() !== 200) {
+                        throw new Exception('檔案上傳失敗');
+                    }
+                } catch (Exception $e) {
+                    $upload_success = false;
+                    $error_message = "海報上傳失敗: " . $e->getMessage();
+                }
             }
         } else if ($upload_success) {
             $upload_success = false;
@@ -76,12 +126,29 @@
         }
 
         // 如果檔案上傳成功，則插入資料庫
-        if ($upload_success) {
-            $sql = "INSERT INTO 作品(說明書,海報,作品展示_youtube連結,程式碼_github連結,作品名稱,作品描述,參加年份,隊伍編號) 
-                    VALUES('".$file_content."','".$file_content2."','".$video_url."','".$code_url."','".$pro_name."','".$pro_des."','".$year."','".$username."')";
-            $result = mysqli_query($link, $sql);
-            
-            if ($result) {
+        if (true) {
+            try {
+                $response = $supabaseClient->post('projects', [
+                    'json' => [
+                        'manual_path' => $manual_path,
+                        'poster_path' => $poster_path,
+                        'video_url' => $video_url,
+                        'code_url' => $code_url,
+                        'project_name' => $pro_name,
+                        'description' => $pro_des,
+                        'year' => $year,
+                        'team_id' => $username,
+                        'created_at' => date('Y-m-d H:i:s')
+                    ]
+                ]);
+
+                $statusCode = $response->getStatusCode();
+                $responseData = json_decode($response->getBody(), true);
+
+                if ($statusCode !== 201) {
+                    throw new Exception($responseData['message'] ?? '資料插入失敗');
+                }
+
                 echo '<div class="result-container success">';
                 echo '<div class="result-icon success-icon">✓</div>';
                 echo '<h2 class="result-title success-title">作品上傳成功！</h2>';
@@ -90,12 +157,12 @@
                 echo '<p><strong>上傳時間：</strong>' . date('Y-m-d H:i:s') . '</p>';
                 echo '</div>';
                 echo '</div>';
-            } else {
+            } catch (Exception $e) {
                 echo '<div class="result-container error">';
                 echo '<div class="result-icon error-icon">✗</div>';
                 echo '<h2 class="result-title error-title">作品上傳失敗！</h2>';
                 echo '<div class="result-details">';
-                echo '<p>資料庫錯誤：' . mysqli_error($link) . '</p>';
+                echo '<p>資料庫錯誤：' . htmlspecialchars($e->getMessage()) . '</p>';
                 echo '</div>';
                 echo '</div>';
             }
@@ -104,7 +171,7 @@
             echo '<div class="result-icon error-icon">✗</div>';
             echo '<h2 class="result-title error-title">作品上傳失敗！</h2>';
             echo '<div class="result-details">';
-            echo '<p>' . $error_message . '</p>';
+            echo '<p>' . htmlspecialchars($error_message) . '</p>';
             echo '</div>';
             echo '</div>';
         }
@@ -121,7 +188,7 @@
 
     <footer class="site-footer">
         <div class="footer-content">
-            <p>&copy; Copyright © 2025 XC Lee Tiger Lin  How Ho. All rights reserved.</p>
+            <p>&copy; Copyright © 2025 XC Lee Tiger Lin How Ho. All rights reserved.</p>
             <div class="footer-row">
                 <div class="footer-container">
                     <p>聯絡我們 : <a href="mailto:wylin@nuk.edu.tw">wylin@nuk.edu.tw</a></p>
@@ -133,4 +200,5 @@
         </div>
     </footer>
 </body>
+
 </html>
