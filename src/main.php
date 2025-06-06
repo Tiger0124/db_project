@@ -20,7 +20,7 @@
         <div class="rounded-box">
             <div class="button-container">
                 <a href="admin.php" class="system-button">管理員系統</a>
-                <a href="student.php" class="system-button">學生系統</a>
+                <a href="student_login.php" class="system-button">學生系統</a>
                 <a href="teacher.php" class="system-button">指導老師系統</a>
                 <a href="judge.php" class="system-button">評審系統</a>
             </div>
@@ -100,9 +100,6 @@
             foreach ($data as $row) {
                 // 從資料表取得 base64 的 blob 資料
                 $blob = $row['宣傳海報']; // 假設 Supabase 資料表儲存的就是 base64 字串
-
-                // 如果 Supabase 儲存的是純二進位 (binary)，則可能需要 base64_encode()
-                // $blob = base64_encode($row['宣傳海報']);
 
                 echo "<a href='data:application/pdf;base64," . $blob . "' download='宣傳海報.pdf'>下載宣傳海報</a><br>";
             }

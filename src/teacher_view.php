@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>老師指導隊伍資料</title>
     <link rel="stylesheet" href="../asset/teacher_view.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
     <header>
@@ -17,79 +18,81 @@
     </header>
 
     <main>
-        <?php
-include 'conn.php';
+    <div class="container">
+  <section id="teamContent"></section>
+    </div>
 
-$filename = $_POST["username"];
-$filepasswd = $_POST["password"];
+    <script>
+    const { createClient } = supabase;
+    const supabaseClient = createClient
+        ('https://xlomzrhmzjjfjmsvqxdo.supabase.co',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhsb216cmhtempqZmptc3ZxeGRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg0OTk3NTcsImV4cCI6MjA2NDA3NTc1N30.AaGloZjC_aqW3OQkn4aDxy7SGymfTsJ6JWNWJYcYbGo');
+        
+    const name = "<?php echo $_POST['username']; ?>";
 
-try {
-    // 查詢指導老師是否存在
-    $response = $supabaseClient->get('指導老師', [
-        'query' => [
-            '隊伍編號' => 'eq.' . $filename,
-            '身分證字號' => 'eq.' . $filepasswd
-        ]
-    ]);
-    $data = json_decode($response->getBody(), true);
+    async function loadTeamdata() {
+    const { data: teacherData } = await supabaseClient
+        .from('指導老師')
+        .select('*')
+        .eq('身分證字號', name);
 
-    if (count($data) === 1) {
-        $row = $data[0];  // 指導老師資料
-        $team_id = $row['隊伍編號'];
-
-        // 查詢隊伍與作品資料
-        $response_team = $supabaseClient->get('作品', [
-            'query' => ['隊伍編號' => 'eq.' . $team_id]
-        ]);
-        $作品 = json_decode($response_team->getBody(), true);
-
-        $response_team2 = $supabaseClient->get('隊伍', [
-            'query' => ['隊伍編號' => 'eq.' . $team_id]
-        ]);
-        $隊伍 = json_decode($response_team2->getBody(), true);
-
-        if (count($作品) > 0 && count($隊伍) > 0) {
-            $team_row = array_merge($作品[0], $隊伍[0]); // 合併資料
-            $blob = base64_encode($team_row['說明書']);
-
-            echo "<section class='team-info'>";
-            echo "<h2>指導的隊伍資訊</h2>";
-            echo "<div class='team-details'>";
-            echo "<div class='team-basic-info'>";
-            echo "<h3>隊伍基本資料</h3>";
-            echo "<div class='info-item'><span class='label'>隊伍名稱：</span><span class='value'>" . htmlspecialchars($team_row['隊伍名稱']) . "</span></div>";
-            echo "<div class='info-item'><span class='label'>作品說明書：</span><a href='data:application/pdf;base64," . $blob . "' download class='download-link'>下載說明書</a></div>";
-            echo "<div class='info-item'><span class='label'>作品影片網址：</span><a href='" . htmlspecialchars($team_row['作品展示_youtube連結']) . "' target='_blank' class='external-link'>" . htmlspecialchars($team_row['作品展示_youtube連結']) . "</a></div>";
-            echo "<div class='info-item'><span class='label'>作品程式碼網址：</span><a href='" . htmlspecialchars($team_row['程式碼_Github連結']) . "' target='_blank' class='external-link'>" . htmlspecialchars($team_row['程式碼_Github連結']) . "</a></div>";
-            echo "</div>";
-
-            // 查詢學生資料
-            $response_students = $supabaseClient->get('學生', [
-                'query' => [
-                    '隊伍編號' => 'eq.' . $team_id
-                ]
-            ]);
-            $students_data = json_decode($response_students->getBody(), true);
-
-            // 顯示學生資料（表格 + 卡片）
-            include 'components/student_table.php';  // 表格與卡片統一顯示（可選擇外部化）
-
-            // 顯示指導教授資料
-            include 'components/professor_table.php'; // 外部檔案呈現樣式（可選）
-
-            echo "</div></section>";
-        } else {
-            echo "<div class='error-message'><h2>未找到符合的隊伍資料</h2></div>";
-        }
-    } else {
-        echo "<div class='error-message'><h2>登入驗證失敗，請重新登入</h2></div>";
+    if (!teacherData || teacherData.length === 0) {
+        document.getElementById('teamContent').innerHTML = '<p>查無指導老師資料</p>';
+        return;
     }
-} catch (Exception $e) {
-    echo "<div class='error-message'><h2>系統錯誤：" . htmlspecialchars($e->getMessage()) . "</h2></div>";
-}
-?>
 
+    const { 參加年份, 隊伍編號 } = teacherData[0];
 
+    const [{ data: teamData }, { data: workData }, { data: studentData }] = await Promise.all([
+        supabaseClient.from('隊伍').select('*').eq('隊伍編號', 隊伍編號).eq('參加年份', 參加年份),
+        supabaseClient.from('作品').select('*').eq('隊伍編號', 隊伍編號).eq('參加年份', 參加年份),
+        supabaseClient.from('學生').select('*').eq('隊伍編號', 隊伍編號).eq('參加年份', 參加年份)
+    ]);
+
+    const team = teamData[0];
+    const work = workData[0];
+
+    let html = `<section class='team-info'>`;
+
+    // 🧑‍🎓 學生資料
+    html += `<h2>隊員資料</h2><div class="team-details">`;
+    studentData.forEach(s => {
+        html += `
+        <div class="info-item"><span class="label">姓名：</span><span class="value">${s.姓名}</span></div>
+        <div class="info-item"><span class="label">學號：</span><span class="value">${s.學號}</span></div>
+        <div class="info-item"><span class="label">科系：</span><span class="value">${s.科系}</span></div>
+        <div class="info-item"><span class="label">電子郵件：</span><span class="value">${s.電子郵件}</span></div>
+        <hr/>
+        `;
+    });
+    html += `</div>`;
+
+    // 🧾 隊伍基本資料
+    html += `<h2>隊伍資訊</h2><div class="team-details team-basic-info">`;
+    html += `<div class="info-item"><span class="label">隊伍名稱：</span><span class="value">${team.隊伍名稱}</span></div>`;
+    html += `<div class="info-item"><span class="label">報名進度：</span><span class="value">${team.報名進度 || '無'}</span></div>`;
+    html += `<div class="info-item"><span class="label">名次：</span><span class="value">${team.名次 || '尚未公布'}</span></div>`;
+    html += `</div>`;
+
+    // 📄 作品資訊
+    html += `<h2>作品資訊</h2><div class="team-details">`;
+    if (work.說明書) {
+        const pdfBase64 = work.說明書; // 如果是 base64，這邊就可直接使用
+        html += `<div class="info-item"><span class="label">作品說明書：</span><a href="data:application/pdf;base64,${pdfBase64}" download class="download-link">下載說明書</a></div>`;
+    }
+    html += `
+        <div class="info-item"><span class="label">作品名稱：</span><span class="value">${work.作品名稱 || '未命名'}</span></div>
+        <div class="info-item"><span class="label">作品描述：</span><span class="value">${work.作品描述 || '無描述'}</span></div>
+        <div class="info-item"><span class="label">作品影片網址：</span><a href="${work['作品展示(youtube連結)']}" target="_blank" class="external-link">${work['作品展示(youtube連結)']}</a></div>
+        <div class="info-item"><span class="label">作品程式碼網址：</span><a href="${work['程式碼(Github連結)']}" target="_blank" class="external-link">${work['程式碼(Github連結)']}</a></div>
+    `;
+    html += `</div></section>`;
+
+    document.getElementById('teamContent').innerHTML = html;
+    }
+
+    loadTeamdata();
+    </script>
         <div class="return-section">
             <form action="teacher_dashboard.php" method="POST">
                 <input type="hidden" name="username" value="<?php echo htmlspecialchars($_POST['username']); ?>">
