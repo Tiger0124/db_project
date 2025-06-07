@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="../asset/judgement.css">
     
     <script>
+    src = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.0.0/dist/umd/supabase.min.js";
     function goBack() {
         const form = document.createElement("form");
         form.method = "post";
@@ -100,7 +101,6 @@
                             $scoredTeamMap[$score['隊伍編號']] = true;
                         }
 
-                        // 過濾出尚未被評分且報名進度為「完成報名」的隊伍
                         $unscoredTeams = array_filter($teams, function ($team) use ($scoredTeamMap) {
                             return !isset($scoredTeamMap[$team['隊伍編號']]) && $team['報名進度'] === '完成報名';
                         });
@@ -129,7 +129,7 @@
                                 <!-- 說明書 -->
                                 <td>
                                     <?php if (!empty($work['說明書'])): ?>
-                                        <?php $pdf = base64_encode($work['說明書']); ?>
+                                        <?php $pdf = $work['說明書']; ?>
                                         <a href="data:application/pdf;base64,<?= $pdf ?>" download>下載</a>
                                     <?php else: ?>
                                         無
@@ -139,7 +139,7 @@
                                 <!-- 海報 -->
                                 <td>
                                     <?php if (!empty($work['海報'])): ?>
-                                        <?php $pdf = base64_encode($work['海報']); ?>
+                                        <?php $pdf = $work['海報']; ?>
                                         <a href="data:application/pdf;base64,<?= $pdf ?>" download>下載</a>
                                     <?php else: ?>
                                         無
@@ -192,9 +192,16 @@
                     </tbody>
                 </table>
                 <div style="text-align: right;">
-                    <button type="submit">提交評分</button>
+                    <button type="submit" id="count_rank">提交評分</button>
                 </div>
-                </form> 
+                </form>
+                <script>
+                document.getElementById('count_rank').addEventListener('click', function(event) {
+                    if (!confirm('確定要提交評分嗎？')) {
+                        event.preventDefault();
+                    }
+                });
+                </script> 
         </section>
         <form action="judge_dashboard.php" method="POST">
             <input type="hidden" name="username" value="<?php echo $_POST['username']; ?>">

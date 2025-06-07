@@ -41,7 +41,7 @@
 
         if (count($data) === 1) {
             $reasons = $data[0]['退件原因'] ?? '';
-            echo '<h2>退件原因: ' . $reasons;
+            echo '<h2>退件原因: ' . $reasons . '</h2>';
                 $members = [['報名進度' => '未報名']];
         }
         ?>

@@ -166,7 +166,6 @@
 
                     foreach ($professors as $professor) {
                         $name = $professor['姓名']; // 根據你的資料欄位名稱調整
-                        // 確保 參加年份不是當年
                         if (date("Y") == $professor['參加年份']) {
                             continue; // 略過當年參加的教授
                         }

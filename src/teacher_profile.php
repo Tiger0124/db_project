@@ -86,7 +86,7 @@
     const { error } = await supabaseClient
       .from('指導老師')
       .update(updates)
-      .eq('身分證字號', userId);
+      .eq('身分證字號', username);
 
     if (error) {
       alert('更新失敗：' + error.message);

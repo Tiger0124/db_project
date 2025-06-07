@@ -147,7 +147,6 @@
                     'query' => [
                         '學號' => "eq.$student_num",
                         "身分證字號" => "eq.$student_id",
-
                     ]
                 ]);
                 $data = json_decode($response->getBody(), true);
