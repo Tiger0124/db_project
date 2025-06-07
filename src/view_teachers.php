@@ -43,7 +43,7 @@
 
                 <div class="form-group">
                     <label for="add_teacher_number">電話:</label>
-                    <input type="text" id="add_teacher_number"  required maxlength="10" pattern="[A-Z][0-9]{9}">
+                    <input type="tel" id="add_teacher_number"  required maxlength="10" pattern="[A-Z][0-9]{9}">
                 </div>
 
                 <div class="form-group">
@@ -53,12 +53,12 @@
 
                 <div class="form-group">
                     <label for="add_subname">職稱:</label>
-                    <input type="text" id="add_subname" required>
+                    <input type="tel" id="add_subname" required>
                 </div>
 
                 <div class="form-group">
                     <label for="add_pwd">密碼:</label>
-                    <input type="tel" id="add_pwd" required>
+                    <input type="text" id="add_pwd" required>
                 </div>
                 <div class="form-buttons">
                     <button type="submit" class="btn-save" onclick="insert()">新增</button>
