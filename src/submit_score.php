@@ -76,10 +76,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhsb216cmhtempqZmptc3ZxeGRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg0OTk3NTcsImV4cCI6MjA2NDA3NTc1N30.AaGloZjC_aqW3OQkn4aDxy7SGymfTsJ6JWNWJYcYbGo'
         );
         async function rank() {
-            const { data, error } = await supabaseClient
+            const {
+                data,
+                error
+            } = await supabaseClient
                 .from('評分資料')
                 .select('*')
-                .eq('參加年份','2025');
+                .eq('參加年份', '2025');
             if (error) {
                 console.error('Error fetching data:', error);
                 return;
@@ -111,7 +114,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 const rank = i + 1;
                 await supabaseClient
                     .from('隊伍')
-                    .update({ 名次: rank })
+                    .update({
+                        名次: rank
+                    })
                     .eq('參加年份', year)
                     .eq('隊伍編號', teamId);
             }

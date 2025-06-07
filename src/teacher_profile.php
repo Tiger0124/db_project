@@ -1,16 +1,19 @@
+<?php include 'darkmode.php'; ?>
 <?php
-  session_start();
-  $username = $_POST["username"];
-  $password = $_POST["password"]; // 假設密碼為老師的身分證字號
+session_start();
+$username = $_POST["username"];
+$password = $_POST["password"]; // 假設密碼為老師的身分證字號
 ?>
 <!DOCTYPE html>
 <html lang="zh-Hant">
+
 <head>
   <meta charset="UTF-8">
   <title>編輯個人資料</title>
   <link rel="stylesheet" href="../asset/teacher_profile.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
+
 <body>
   <div class="container">
     <h2>編輯個人資料</h2>
@@ -40,107 +43,114 @@
       </button>
     </div>
 
-<script>
-  const { createClient } = supabase;
-  const supabaseClient = createClient(
-    'https://xlomzrhmzjjfjmsvqxdo.supabase.co',
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhsb216cmhtempqZmptc3ZxeGRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg0OTk3NTcsImV4cCI6MjA2NDA3NTc1N30.AaGloZjC_aqW3OQkn4aDxy7SGymfTsJ6JWNWJYcYbGo'
-  );
+    <script>
+      const {
+        createClient
+      } = supabase;
+      const supabaseClient = createClient(
+        'https://xlomzrhmzjjfjmsvqxdo.supabase.co',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhsb216cmhtempqZmptc3ZxeGRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg0OTk3NTcsImV4cCI6MjA2NDA3NTc1N30.AaGloZjC_aqW3OQkn4aDxy7SGymfTsJ6JWNWJYcYbGo'
+      );
 
-  // ✅ 把 PHP 中的帳號與身分證帶進 JS
-  const userId = "<?php echo $password; ?>";
-  const username = "<?php echo $username; ?>";
-  console.log('userId:', userId);
+      // ✅ 把 PHP 中的帳號與身分證帶進 JS
+      const userId = "<?php echo $password; ?>";
+      const username = "<?php echo $username; ?>";
+      console.log('userId:', userId);
 
-  async function loadProfile() {
-    const { data, error } = await supabaseClient
-      .from('指導老師')
-      .select('*')
-      .eq('身分證字號', username)
-      .single();
-    console.log('讀取資料', data);
+      async function loadProfile() {
+        const {
+          data,
+          error
+        } = await supabaseClient
+          .from('指導老師')
+          .select('*')
+          .eq('身分證字號', username)
+          .single();
+        console.log('讀取資料', data);
 
-    if (error) {
-      alert('讀取資料失敗：' + error.message);
-      console.error('讀取錯誤', error);
-      return;
-    }
+        if (error) {
+          alert('讀取資料失敗：' + error.message);
+          console.error('讀取錯誤', error);
+          return;
+        }
 
-    document.getElementById('id').value = data.身分證字號;
-    document.getElementById('name').value = data.姓名;
-    document.getElementById('phone').value = data.電話;
-    document.getElementById('email').value = data.電子郵件;
-    document.getElementById('title').value = data.職稱;
-  }
+        document.getElementById('id').value = data.身分證字號;
+        document.getElementById('name').value = data.姓名;
+        document.getElementById('phone').value = data.電話;
+        document.getElementById('email').value = data.電子郵件;
+        document.getElementById('title').value = data.職稱;
+      }
 
-  document.getElementById('profileForm').addEventListener('submit', async function (e) {
-    e.preventDefault();
+      document.getElementById('profileForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
 
-    const updates = {
-      姓名: document.getElementById('name').value,
-      電話: document.getElementById('phone').value,
-      電子郵件: document.getElementById('email').value,
-      職稱: document.getElementById('title').value,
-    };
+        const updates = {
+          姓名: document.getElementById('name').value,
+          電話: document.getElementById('phone').value,
+          電子郵件: document.getElementById('email').value,
+          職稱: document.getElementById('title').value,
+        };
 
-    const { error } = await supabaseClient
-      .from('指導老師')
-      .update(updates)
-      .eq('身分證字號', userId);
+        const {
+          error
+        } = await supabaseClient
+          .from('指導老師')
+          .update(updates)
+          .eq('身分證字號', userId);
 
-    if (error) {
-      alert('更新失敗：' + error.message);
-      console.error('更新錯誤', error);
-    } else {
-      alert('資料更新成功，將返回主頁...');
+        if (error) {
+          alert('更新失敗：' + error.message);
+          console.error('更新錯誤', error);
+        } else {
+          alert('資料更新成功，將返回主頁...');
 
-      // ✅ 自動建立並送出一個 POST 表單，回到 teacher_dashboard
-      const form = document.createElement('form');
-      form.method = 'post';
-      form.action = 'teacher_dashboard.php';
+          // ✅ 自動建立並送出一個 POST 表單，回到 teacher_dashboard
+          const form = document.createElement('form');
+          form.method = 'post';
+          form.action = 'teacher_dashboard.php';
 
-      const input1 = document.createElement('input');
-      input1.type = 'hidden';
-      input1.name = 'username';
-      input1.value = username;
+          const input1 = document.createElement('input');
+          input1.type = 'hidden';
+          input1.name = 'username';
+          input1.value = username;
 
-      const input2 = document.createElement('input');
-      input2.type = 'hidden';
-      input2.name = 'password';
-      input2.value = userId;
+          const input2 = document.createElement('input');
+          input2.type = 'hidden';
+          input2.name = 'password';
+          input2.value = userId;
 
-      form.appendChild(input1);
-      form.appendChild(input2);
-      document.body.appendChild(form);
-      form.submit();
-    }
-  });
+          form.appendChild(input1);
+          form.appendChild(input2);
+          document.body.appendChild(form);
+          form.submit();
+        }
+      });
 
-  loadProfile();
+      loadProfile();
 
-  function goBack() {
-  // 直接跳轉回 dashboard 並保留登入資訊
-  const form = document.createElement('form');
-  form.method = 'post';
-  form.action = 'teacher_dashboard.php';
+      function goBack() {
+        // 直接跳轉回 dashboard 並保留登入資訊
+        const form = document.createElement('form');
+        form.method = 'post';
+        form.action = 'teacher_dashboard.php';
 
-  const input1 = document.createElement('input');
-  input1.type = 'hidden';
-  input1.name = 'username';
-  input1.value = username;
+        const input1 = document.createElement('input');
+        input1.type = 'hidden';
+        input1.name = 'username';
+        input1.value = username;
 
-  const input2 = document.createElement('input');
-  input2.type = 'hidden';
-  input2.name = 'password';
-  input2.value = userId;
+        const input2 = document.createElement('input');
+        input2.type = 'hidden';
+        input2.name = 'password';
+        input2.value = userId;
 
-  form.appendChild(input1);
-  form.appendChild(input2);
-  document.body.appendChild(form);
-  form.submit();
-}
-
-</script>
+        form.appendChild(input1);
+        form.appendChild(input2);
+        document.body.appendChild(form);
+        form.submit();
+      }
+    </script>
 
 </body>
+
 </html>

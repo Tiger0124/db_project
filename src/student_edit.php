@@ -1,6 +1,6 @@
+<?php include 'darkmode.php'; ?>
 <!DOCTYPE html>
 <html lang="zh-TW">
-<?php include 'darkmode.php'; ?>
 
 <head>
     <meta charset="UTF-8">
@@ -83,7 +83,8 @@
                                         <div class="form-group">
                                             <label for="student<?= $index ?>-studentid">學號：</label>
                                             <input type="text" id="student<?= $index ?>-studentid"
-                                                name="student<?= $index ?>_studentid" value="<?= htmlspecialchars($member["學號"]) ?>" required readonly>
+                                                name="student<?= $index ?>_studentid" value="<?= htmlspecialchars($member["學號"]) ?>"
+                                                required readonly>
                                         </div>
                                     </div>
 

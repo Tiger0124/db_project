@@ -1,11 +1,14 @@
+<?php include 'darkmode.php'; ?>
 <!DOCTYPE html>
 <html lang="zh-TW">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>高雄大學創意競賽管理系統</title>
   <link rel="stylesheet" href="../asset/announcements.css">
 </head>
+
 <body>
   <header>
     <div class="navbar">
@@ -25,8 +28,8 @@
         include 'conn.php';
         $response = $supabaseClient->get('創意競賽', [
           'query' => [
-              '屆數' => 'eq.13',
-              'select' => '*',
+            '屆數' => 'eq.13',
+            'select' => '*',
           ]
         ]);
         $data = json_decode($response->getBody(), true);
@@ -41,32 +44,33 @@
         echo "<label for='announcement-file'>上傳檔案：</label>";
         echo "<input type='file' id='announcement-file' name='announcement_file' accept='.pdf'>";
         ?>
-        
+
         <!-- 提交按鈕 -->
         <button type="submit">發布公告</button>
         <input type="hidden" name="username" value="<?php echo $_POST['username']; ?>">
         <input type="hidden" name="password" value="<?php echo $_POST['password']; ?>">
       </form>
     </section>
-  
-  <form action="admin_dashboard.php" method="POST">
-            <input type="hidden" name="username" value="<?php echo $_POST['username']; ?>">
-            <input type="hidden" name="password" value="<?php echo $_POST['password']; ?>">
-            <button type="submit">返回</button>
-        </form>
-    </main>
+
+    <form action="admin_dashboard.php" method="POST">
+      <input type="hidden" name="username" value="<?php echo $_POST['username']; ?>">
+      <input type="hidden" name="password" value="<?php echo $_POST['password']; ?>">
+      <button type="submit">返回</button>
+    </form>
+  </main>
 </body>
 <footer class="site-footer">
-    <div class="footer-content">
-        <p>&copy; Copyright © 2025 XC Lee Tiger Lin  How Ho. All rights reserved.</p>
-        <div class="footer-row">
-        <div class="footer-container">
-            <p>聯絡我們 : <a href="mailto:wylin@nuk.edu.tw">wylin@nuk.edu.tw</a></p>
-        </div>
-        <ul class="footer-links">
-            <li><a href="https://github.com/Tiger0124/db_project.git">關於我們</a></li>
-        </ul>
-        </div>
+  <div class="footer-content">
+    <p>&copy; Copyright © 2025 XC Lee Tiger Lin How Ho. All rights reserved.</p>
+    <div class="footer-row">
+      <div class="footer-container">
+        <p>聯絡我們 : <a href="mailto:wylin@nuk.edu.tw">wylin@nuk.edu.tw</a></p>
+      </div>
+      <ul class="footer-links">
+        <li><a href="https://github.com/Tiger0124/db_project.git">關於我們</a></li>
+      </ul>
     </div>
+  </div>
 </footer>
+
 </html>
