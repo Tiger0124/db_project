@@ -56,6 +56,36 @@
                         $currentYear = date("Y");
                         $reviewerId = $_POST["username"] ?? ""; // 評審的身分證字號（可依實際變數名稱）
 
+                        // 年份對應屆數
+                        $yearToSession = [
+                            2013 => "1", 2014 => "2", 2015 => "3", 2016 => "4",
+                            2017 => "5", 2018 => "6", 2019 => "7", 2020 => "8",
+                            2021 => "9", 2022 => "10", 2023 => "11", 2024 => "12",
+                            2025 => "13"
+                        ];
+                        $session = $yearToSession[$currentYear] ?? null;
+                        
+                        if (!$session) {
+                            echo "<script>alert('無效的年度，無法對應屆數'); history.back();</script>";
+                            exit;
+                        }
+
+                        // 查詢該評審是否屬於當屆
+                        $reviewerRes = $supabaseClient->get("評審委員?身分證字號=eq.$reviewerId&select=屆數");
+                        $reviewers = json_decode($reviewerRes->getBody(), true);
+
+                        // 找不到該評審
+                        if (empty($reviewers)) {
+                            echo "<script>alert('查無此評審'); goBack();</script>";
+                            exit;
+                        }
+
+                        // 檢查屆數是否相符
+                        if ($reviewers[0]['屆數'] !== $session) {
+                            echo "<script>alert('您不是本屆評審，無法評分'); goBack();</script>";
+                            exit;
+                        }
+
                         // 查詢所有今年的隊伍
                         $teamsResponse = $supabaseClient->get("隊伍?參加年份=eq.$currentYear");
                         $teams = json_decode($teamsResponse->getBody(), true);

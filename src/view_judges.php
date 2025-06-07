@@ -83,6 +83,11 @@
                 </div>
                 
                 <div class="form-group">
+                    <label for="add_phone">密碼:</label>
+                    <input type="password" id="add_password" name="password" required>
+                </div>
+
+                <div class="form-group">
                     <label for="add_session">屆數:</label>
                     <select id="add_session" name="session" required>
                         <option value="">請選擇屆數</option>
@@ -145,7 +150,12 @@
                     <label for="edit_phone">電話:</label>
                     <input type="tel" id="edit_phone" name="phone" required>
                 </div>
-                
+
+                <div class="form-group">
+                    <label for="edit_phone">密碼:</label>
+                    <input type="password" id="edit_password" name="password" required>
+                </div>
+
                 <div class="form-group">
                     <label for="edit_session">屆數:</label>
                     <select id="edit_session" name="session" required>
@@ -182,6 +192,7 @@
                 <th>頭銜</th>
                 <th>姓名</th>
                 <th>電話</th>
+                <th>密碼</th>
                 <th>操作</th>
             </tr>
             <?php
@@ -238,7 +249,11 @@
                                 // 電話
                                 $phone = isset($row['電話']) ? htmlspecialchars($row['電話'], ENT_QUOTES, 'UTF-8') : 'N/A';
                                 echo "<td>" . $phone . "</td>";
-                                
+
+                                // 電話
+                                $password = isset($row['密碼']) ? htmlspecialchars($row['密碼'], ENT_QUOTES, 'UTF-8') : 'N/A';
+                                echo "<td>" . $password . "</td>";
+
                                 // 操作按鈕
                                 echo "<td>";
                                 $edit_data = json_encode([
@@ -247,7 +262,8 @@
                                     'title' => $row['頭銜'] ?? '',
                                     'name' => $row['姓名'] ?? '',
                                     'phone' => $row['電話'] ?? '',
-                                    'session' => $row['屆數'] ?? ''
+                                    'session' => $row['屆數'] ?? '',
+                                    'password' => $row['密碼'] ?? ''
                                 ]);
                                 echo "<button class='btn-edit' onclick='openEditForm(" . htmlspecialchars($edit_data, ENT_QUOTES, 'UTF-8') . ")'>編輯</button>";
                                 // 新增刪除按鈕
@@ -320,6 +336,7 @@
         document.getElementById('edit_title').value = data.title;
         document.getElementById('edit_name').value = data.name;
         document.getElementById('edit_phone').value = data.phone;
+        document.getElementById('edit_password').value = data.password;
         document.getElementById('edit_session').value = data.session;
         
         // 顯示編輯表單
