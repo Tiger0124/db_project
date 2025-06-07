@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>高雄大學創意競賽管理系統</title>
   <link rel="stylesheet" href="../asset/view_students.css">
+    <script 
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.0.0/dist/umd/supabase.min.js">
+    </script>
 </head>
 <body>
   <header>
@@ -43,124 +46,9 @@
           <option value="2025">2025</option>
         </select>
         <button type="submit">查詢</button>
-        <button type="button" class="btn-add" onclick="openAddForm()">新增學生</button>
         <input type="hidden" name="username" value="<?php echo isset($_POST['username']) ? htmlspecialchars($_POST['username'], ENT_QUOTES, 'UTF-8') : ''; ?>">
         <input type="hidden" name="password" value="<?php echo isset($_POST['password']) ? htmlspecialchars($_POST['password'], ENT_QUOTES, 'UTF-8') : ''; ?>">
     </form>
-
-    <!-- 新增學生表單 (預設隱藏) -->
-    <div id="addForm" class="edit-form-container" style="display: none;">
-        <div class="edit-form">
-            <h3>新增學生</h3>
-            <form id="addStudentForm" method="POST" action="add_student.php">
-                <input type="hidden" name="username" value="<?php echo isset($_POST['username']) ? htmlspecialchars($_POST['username'], ENT_QUOTES, 'UTF-8') : ''; ?>">
-                <input type="hidden" name="password" value="<?php echo isset($_POST['password']) ? htmlspecialchars($_POST['password'], ENT_QUOTES, 'UTF-8') : ''; ?>">
-                <input type="hidden" name="year" value="<?php echo isset($_POST['year']) ? htmlspecialchars($_POST['year'], ENT_QUOTES, 'UTF-8') : ''; ?>">
-                
-                <div class="form-group">
-                    <label for="add_student_id">學號:</label>
-                    <input type="text" id="add_student_id" name="student_id" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="add_student_name">姓名:</label>
-                    <input type="text" id="add_student_name" name="student_name" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="add_email">電子郵件:</label>
-                    <input type="email" id="add_email" name="email" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="add_phone">電話:</label>
-                    <input type="tel" id="add_phone" name="phone" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="add_team_id">隊伍編號:</label>
-                    <input type="text" id="add_team_id" name="team_id" required placeholder="請輸入隊伍編號">
-                    <small class="form-text">請確認隊伍編號是否存在</small>
-                </div>
-
-                <!-- 在新增學生表單中加入身分證欄位 -->
-                <div class="form-group">
-                    <label for="add_id_number">身分證字號:</label>
-                    <input type="text" id="add_id_number" name="id_number" required maxlength="10" pattern="[A-Z][0-9]{9}">
-                </div>
-                
-                <div class="form-group">
-                    <label for="add_participate_year">參加年份:</label>
-                    <select id="add_participate_year" name="participate_year" required>
-                        <option value="">請選擇參加年份</option>
-                        <option value="2013">2013</option>
-                        <option value="2014">2014</option>
-                        <option value="2015">2015</option>
-                        <option value="2016">2016</option>
-                        <option value="2017">2017</option>
-                        <option value="2018">2018</option>
-                        <option value="2019">2019</option>
-                        <option value="2020">2020</option>
-                        <option value="2021">2021</option>
-                        <option value="2022">2022</option>
-                        <option value="2023">2023</option>
-                        <option value="2024">2024</option>
-                        <option value="2025">2025</option>
-                    </select>
-                </div>
-                
-                <div class="form-buttons">
-                    <button type="submit" class="btn-save">新增</button>
-                    <button type="button" class="btn-cancel" onclick="closeAddForm()">取消</button>
-                </div>
-
-            </form>
-        </div>
-    </div>
-
-
-    <!-- 編輯表單 (預設隱藏) -->
-    <div id="editForm" class="edit-form-container" style="display: none;">
-        <div class="edit-form">
-            <h3>編輯隊伍資料</h3>
-            <form id="updateForm" method="POST" action="update_team.php">
-                <input type="hidden" id="edit_team_id" name="team_id" value="">
-                <input type="hidden" name="username" value="<?php echo isset($_POST['username']) ? htmlspecialchars($_POST['username'], ENT_QUOTES, 'UTF-8') : ''; ?>">
-                <input type="hidden" name="password" value="<?php echo isset($_POST['password']) ? htmlspecialchars($_POST['password'], ENT_QUOTES, 'UTF-8') : ''; ?>">
-                <input type="hidden" name="year" value="<?php echo isset($_POST['year']) ? htmlspecialchars($_POST['year'], ENT_QUOTES, 'UTF-8') : ''; ?>">
-                
-                <div class="form-group">
-                    <label for="edit_team_name">隊伍名稱:</label>
-                    <input type="text" id="edit_team_name" name="team_name" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="edit_teacher_name">指導老師:</label>
-                    <input type="text" id="edit_teacher_name" name="teacher_name" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="edit_students">學生名單:</label>
-                    <textarea id="edit_students" name="students" rows="3" placeholder="請用逗號分隔多個學生姓名"></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label for="edit_project_name">作品名稱:</label>
-                    <input type="text" id="edit_project_name" name="project_name" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="edit_project_description">作品描述:</label>
-                    <textarea id="edit_project_description" name="project_description" rows="4"></textarea>
-                </div>
-                
-                <div class="form-buttons">
-                    <button type="submit" class="btn-save">儲存</button>
-                    <button type="button" class="btn-cancel" onclick="closeEditForm()">取消</button>
-                </div>
-            </form>
-        </div>
-    </div>
 
     <div class="rounded-box">
       <table style="width:100%">
@@ -169,167 +57,11 @@
               <th>指導老師</th>
               <th>學生名單</th>
               <th>作品名稱</th>
-              <th>作品描述</th>
-              <th>操作</th>
+              <th>作品說明書</th>
+              <th>作品海報</th>
+              <th>名次</th>
+              <th>刪除</th>
           </tr>
-          <?php
-          // 原有的 PHP 查詢程式碼保持不變
-
-          require_once 'conn.php';
-
-          // 年份到屆數的對應陣列
-          $yearToSession = [
-              2013 => "第1屆", 2014 => "第2屆", 2015 => "第3屆", 2016 => "第4屆",
-              2017 => "第5屆", 2018 => "第6屆", 2019 => "第7屆", 2020 => "第8屆",
-              2021 => "第9屆", 2022 => "第10屆", 2023 => "第11屆", 2024 => "第12屆",
-              2025 => "第13屆"
-          ];
-
-          // 檢查是否有提交表單並且選擇的年份是有效的
-          if (isset($_POST['year']) && array_key_exists($_POST['year'], $yearToSession)) {
-              $selectedYear = $_POST['year'];
-
-              try {
-                  // 第一步：查詢隊伍資料
-                  $response = $supabaseClient->get('隊伍', [
-                      'query' => [
-                          '參加年份' => 'eq.' . $selectedYear,
-                          'select' => '*',
-                      ]
-                  ]);
-
-                  $status_code = $response->getStatusCode();
-                  
-                  if ($status_code == 200) {
-                      $teamsData = json_decode($response->getBody()->getContents(), true);
-
-                      if (!empty($teamsData)) {
-                          foreach ($teamsData as $row) {
-                              echo "<tr>";
-                              
-                              // 隊伍名稱
-                              $team_name = isset($row['隊伍名稱']) ? htmlspecialchars($row['隊伍名稱'], ENT_QUOTES, 'UTF-8') : 'N/A';
-                              echo "<td>" . $team_name . "</td>";
-                              
-                              // 取得隊伍編號
-                              $team_id = isset($row['隊伍編號']) ? $row['隊伍編號'] : null;
-                              
-                              // 查詢指導老師 - 使用隊伍編號
-                              $teacher_name = 'N/A';
-                              if ($team_id !== null) {
-                                  try {
-                                      $teacherResponse = $supabaseClient->get('指導老師', [
-                                          'query' => [
-                                              '隊伍編號' => 'eq.' . $team_id,
-                                              'select' => '姓名',
-                                          ]
-                                      ]);
-                                      
-                                      if ($teacherResponse->getStatusCode() == 200) {
-                                          $teacherData = json_decode($teacherResponse->getBody()->getContents(), true);
-                                          if (!empty($teacherData)) {
-                                              $teacher_name = htmlspecialchars($teacherData[0]['姓名'], ENT_QUOTES, 'UTF-8');
-                                          }
-                                      }
-                                  } catch (Exception $e) {
-                                      // 查詢指導老師失敗，保持 N/A
-                                  }
-                              }
-                              echo "<td>" . $teacher_name . "</td>";
-                              
-                              // 查詢學生資料 - 使用隊伍編號
-                              $students_display = 'N/A';
-                              $students_array = [];
-                              if ($team_id !== null) {
-                                  try {
-                                      $studentResponse = $supabaseClient->get('學生', [
-                                          'query' => [
-                                              '隊伍編號' => 'eq.' . $team_id,
-                                              'select' => '姓名',
-                                          ]
-                                      ]);
-                                      
-                                      if ($studentResponse->getStatusCode() == 200) {
-                                          $studentData = json_decode($studentResponse->getBody()->getContents(), true);
-                                          if (!empty($studentData)) {
-                                              $student_names = [];
-                                              foreach ($studentData as $student) {
-                                                  $student_names[] = htmlspecialchars($student['姓名'], ENT_QUOTES, 'UTF-8');
-                                                  $students_array[] = $student['姓名'];
-                                              }
-                                              $students_display = implode(', ', $student_names);
-                                          }
-                                      }
-                                  } catch (Exception $e) {
-                                      // 查詢學生失敗，保持 N/A
-                                  }
-                              }
-                              echo "<td>" . $students_display . "</td>";
-                              
-                              // 查詢作品資料 - 使用隊伍編號
-                              $project_name = 'N/A';
-                              $project_description = 'N/A';
-                              if ($team_id !== null) {
-                                  try {
-                                      $projectResponse = $supabaseClient->get('作品', [
-                                          'query' => [
-                                              '隊伍編號' => 'eq.' . $team_id,
-                                              'select' => '作品名稱,作品描述',
-                                          ]
-                                      ]);
-                                      
-                                      if ($projectResponse->getStatusCode() == 200) {
-                                          $projectData = json_decode($projectResponse->getBody()->getContents(), true);
-                                          if (!empty($projectData)) {
-                                              $project_name = htmlspecialchars($projectData[0]['作品名稱'], ENT_QUOTES, 'UTF-8');
-                                              $project_description = htmlspecialchars($projectData[0]['作品描述'], ENT_QUOTES, 'UTF-8');
-                                          }
-                                      }
-                                  } catch (Exception $e) {
-                                      // 查詢作品失敗，保持 N/A
-                                  }
-                              }
-                              echo "<td>" . $project_name . "</td>";
-                              echo "<td>" . $project_description . "</td>";
-                              
-                              // 操作按鈕
-                              echo "<td>";
-                              if ($team_id !== null) {
-                                  $edit_data = json_encode([
-                                      'team_id' => $team_id,
-                                      'team_name' => $row['隊伍名稱'] ?? '',
-                                      'teacher_name' => $teacher_name === 'N/A' ? '' : str_replace('&quot;', '"', html_entity_decode($teacher_name)),
-                                      'students' => implode(', ', $students_array),
-                                      'project_name' => $project_name === 'N/A' ? '' : str_replace('&quot;', '"', html_entity_decode($project_name)),
-                                      'project_description' => $project_description === 'N/A' ? '' : str_replace('&quot;', '"', html_entity_decode($project_description))
-                                  ]);
-                                  echo "<button class='btn-edit' onclick='openEditForm(" . htmlspecialchars($edit_data, ENT_QUOTES, 'UTF-8') . ")'>編輯</button>";
-                                  // 新增刪除按鈕
-                                  echo "<button class='btn-delete' onclick='confirmDelete(\"" . $team_id . "\", \"" . htmlspecialchars($team_name, ENT_QUOTES, 'UTF-8') . "\")' style='background-color: #dc3545; margin-left: 5px;'>刪除</button>";
-                              }
-                              echo "</td>";
-                              
-                              echo "</tr>";
-                          }
-                      } else {
-                          echo "<tr><td colspan='6'>查無 " . htmlspecialchars($selectedYear, ENT_QUOTES, 'UTF-8') . " 年度的隊伍資料。</td></tr>";
-                      }
-                  } else {
-                      echo "<tr><td colspan='6'>查詢隊伍資料失敗，HTTP 狀態碼：" . $status_code . "</td></tr>";
-                  }
-              } catch (GuzzleHttp\Exception\RequestException $e) {
-                  echo "<tr><td colspan='6'>Guzzle 請求錯誤: ";
-                  if ($e->hasResponse()) {
-                      echo htmlspecialchars($e->getResponse()->getBody()->getContents(), ENT_QUOTES, 'UTF-8');
-                  } else {
-                      echo htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
-                  }
-                  echo "</td></tr>";
-              } catch (Exception $e) {
-                  echo "<tr><td colspan='6'>執行查詢時發生例外狀況: " . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8') . "</td></tr>";
-              }
-          }
-          ?>
       </table>
     </div>
     
@@ -341,95 +73,137 @@
   </main>
 
   <script>
-    function openAddForm() {
-    // 如果有選擇年份，自動設定對應的參加年份
+    const { createClient } = supabase;
+    const supabaseClient = createClient(
+        'https://xlomzrhmzjjfjmsvqxdo.supabase.co',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhsb216cmhtempqZmptc3ZxeGRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg0OTk3NTcsImV4cCI6MjA2NDA3NTc1N30.AaGloZjC_aqW3OQkn4aDxy7SGymfTsJ6JWNWJYcYbGo'
+    );
+    async function retrival(y) {
+        const {data:teamData, error} = await supabaseClient
+            .from('隊伍')
+            .select(`*`)
+            .eq('參加年份', y);
+
+        if (error) {
+            console.error("Error retrieving data:", error);
+            return;
+        }
+        const {data:workData, error: workerror} = await supabaseClient
+            .from('作品')
+            .select(`*`)
+            .eq('參加年份', y)
+            .in('隊伍編號', teamData.map(team => team.隊伍編號));
+        if (workerror) {
+            console.error("Error retrieving work data:", workerror);
+            return;
+        }
+        const {data: teacherData, error: teacherError} = await supabaseClient
+            .from('指導老師')
+            .select(`*`)
+            .in('身分證字號', teamData.map(team => team.身分證字號));
+        if (teacherError) {
+            console.error("Error retrieving teacher data:", teacherError);
+            return;
+        }
+        const { data: studentData, error: studentError } = await supabaseClient
+            .from('學生')
+            .select(`學號,隊伍編號,姓名`)
+            .eq('參加年份',y)
+            .in('隊伍編號', teamData.map(team => team.隊伍編號));
+        const tabel = document.querySelector('table');
+        tabel.innerHTML = `
+            <tr>
+                <th>隊伍名稱</th>
+                <th>指導老師</th>
+                <th>學生名單</th>
+                <th>作品名稱</th>
+                <th>作品說明書</th>
+                <th>作品海報</th>
+                <th>名次</th>
+                <th>刪除</th>
+            </tr>`;
+        teamData.forEach(team => {
+            const teamWork = workData.find(work => work.隊伍編號 === team.隊伍編號);
+            const teacher = teacherData.find(t => t.身分證字號 === team.身分證字號);
+            const students = studentData.filter(student => student.隊伍編號 === team.隊伍編號);
+            const rank = team.名次 ? team.名次 : '未評分';
+
+            tabel.innerHTML += `
+                <tr>
+                    <td>${team.隊伍名稱}</td>
+                    <td>${teacher ? teacher.姓名 : '無'}</td>
+                    <td>${students.length > 0 ? students.map(s => `${s.學號}: ${s.姓名}`).join('<br>') : '無'}</td>
+                    <td>${teamWork ? teamWork.作品名稱 : '無'}</td>
+                    <td>${teamWork ? `<a href="data:application/pdf;base64,${teamWork.作品說明書}" download="${teamWork.作品名稱}_說明書.pdf">下載說明書</a>` : '無'}</td>
+                    <td>${teamWork ? `<a href="data:application/pdf;base64,${teamWork.作品說明書}" download="${teamWork.作品名稱}_海報.pdf">下載海報</a>` : '無'}</td>
+                    <td>${rank}</td>
+                    <td><button type="button" class="delete_btn" data-id="${team.隊伍編號}">刪除</button></td>
+                </tr>`;
+        });
+        const deleteButtons = document.querySelectorAll('.delete_btn');
+            deleteButtons.forEach(btn => {
+                btn.addEventListener('click', async (event) => {
+                    const teamId = event.target.dataset.id;
+                    const teamname = teamData.find(team => team.隊伍編號 === teamId).隊伍名稱;
+                    if (!confirm(`確定要刪除「${teamname}」隊伍嗎？`)) return;
+                    // 先刪作品
+                    const { error: workDeleteError } = await supabaseClient
+                        .from('作品')
+                        .delete()
+                        .eq('隊伍編號', teamId)
+                        .eq('參加年份', y);
+                    if (workDeleteError) {
+                        console.error("Error deleting work data:", workDeleteError);
+                        return;
+                    }
+                    // 再刪學生
+                    const { error: studentDeleteError } = await supabaseClient
+                        .from('學生')
+                        .update({隊伍編號: null,參加年份: null})
+                        .eq('隊伍編號', teamId)
+                        .eq('參加年份', y);
+                    if (studentDeleteError) {
+                        console.error("Error deleting student data:", studentDeleteError);
+                        return;
+                    }
+                    // 老師
+                    const { error: teacherDeleteError } = await supabaseClient
+                        .from('指導老師')
+                        .update({隊伍編號: null,參加年份: null})
+                        .eq('隊伍編號', teamId)
+                        .eq('參加年份', y);
+                    if (teacherDeleteError) {
+                        console.error("Error deleting teacher data:", teacherDeleteError);
+                        return;
+                    }
+                    // 最後刪隊伍
+                    const { error: teamDeleteError } = await supabaseClient
+                        .from('隊伍')
+                        .delete()
+                        .eq('隊伍編號', teamId)
+                        .eq('參加年份', y);
+                    if (teamDeleteError) {
+                        console.error("Error deleting team data:", teamDeleteError);
+                        return;
+                    }
+                    // 刪除成功，重新載入資料
+                    alert(`隊伍「${teamname}」刪除成功！`);
+                    retrival(y);
+                });
+            });
+        if (teamData.length === 0) {
+            tabel.innerHTML += `<tr><td colspan="8">沒有找到符合條件的隊伍資料</td></tr>`;
+        }
+    }
     const yearSelect = document.querySelector('select[name="year"]');
-    const participateYearSelect = document.getElementById('add_participate_year');
-    
-    if (yearSelect.value) {
-        participateYearSelect.value = yearSelect.value;
-    }
-    
-    // 顯示新增表單
-    document.getElementById('addForm').style.display = 'flex';
-}
 
-
-    function closeAddForm() {
-        document.getElementById('addForm').style.display = 'none';
-        // 清空表單
-        document.getElementById('addStudentForm').reset();
-    }
-
-    function openEditForm(data) {
-        // 填入表單資料
-        document.getElementById('edit_team_id').value = data.team_id;
-        document.getElementById('edit_team_name').value = data.team_name;
-        document.getElementById('edit_teacher_name').value = data.teacher_name;
-        document.getElementById('edit_students').value = data.students;
-        document.getElementById('edit_project_name').value = data.project_name;
-        document.getElementById('edit_project_description').value = data.project_description;
-        
-        // 顯示編輯表單
-        document.getElementById('editForm').style.display = 'flex';
-    }
-
-    function closeEditForm() {
-        document.getElementById('editForm').style.display = 'none';
-    }
-    // 在現有的 JavaScript 函數後面新增__刪除
-    function confirmDelete(teamId, teamName) {
-        if (confirm('確定要刪除隊伍「' + teamName + '」嗎？\n此操作將同時刪除相關的指導老師、學生和作品資料，且無法復原！')) {
-            // 創建隱藏表單來提交刪除請求
-            var form = document.createElement('form');
-            form.method = 'POST';
-            form.action = 'delete_team.php';
-            
-            // 添加隊伍編號
-            var teamIdInput = document.createElement('input');
-            teamIdInput.type = 'hidden';
-            teamIdInput.name = 'team_id';
-            teamIdInput.value = teamId;
-            form.appendChild(teamIdInput);
-            
-            // 添加用戶名和密碼（保持會話）
-            var usernameInput = document.createElement('input');
-            usernameInput.type = 'hidden';
-            usernameInput.name = 'username';
-            usernameInput.value = document.querySelector('input[name="username"]').value;
-            form.appendChild(usernameInput);
-            
-            var passwordInput = document.createElement('input');
-            passwordInput.type = 'hidden';
-            passwordInput.name = 'password';
-            passwordInput.value = document.querySelector('input[name="password"]').value;
-            form.appendChild(passwordInput);
-            
-            // 添加年份
-            var yearInput = document.createElement('input');
-            yearInput.type = 'hidden';
-            yearInput.name = 'year';
-            yearInput.value = document.querySelector('select[name="year"]').value;
-            form.appendChild(yearInput);
-            
-            document.body.appendChild(form);
-            form.submit();
-        }
-    }
-
-
-    // 點擊背景關閉表單
-    document.getElementById('addForm').addEventListener('click', function(e) {
-        if (e.target === this) {
-            closeAddForm();
-        }
+    document.querySelector('form[action="view_teams.php"]').addEventListener('submit', function (event) {
+        event.preventDefault();
+        const selectedYear = yearSelect.value;
+        retrival(selectedYear);
     });
 
-    document.getElementById('editForm').addEventListener('click', function(e) {
-        if (e.target === this) {
-            closeEditForm();
-        }
-    });
+    
   </script>
 </body>
 <footer class="site-footer">
