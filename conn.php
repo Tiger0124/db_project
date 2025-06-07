@@ -1,7 +1,19 @@
 <?php
-    $location="localhost";
-    $account="root";
-    $password="Mbuibm9290";
-    $db="db_project";
-    $link=mysqli_connect($location,$account,$password,$db);
+require_once __DIR__ . '/vendor/autoload.php';
+
+use GuzzleHttp\Client;
+
+$supabaseUrl = 'https://xlomzrhmzjjfjmsvqxdo.supabase.co';
+$supabaseApiKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhsb216cmhtempqZmptc3ZxeGRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg0OTk3NTcsImV4cCI6MjA2NDA3NTc1N30.AaGloZjC_aqW3OQkn4aDxy7SGymfTsJ6JWNWJYcYbGo';
+
+// 建立 Guzzle Client
+$supabaseClient = new Client([
+    'verify' => false, // 關閉 SSL 驗證（不建議在生產環境中使用）
+    'base_uri' => $supabaseUrl . '/rest/v1/',
+    'headers' => [
+        'apikey' => $supabaseApiKey,
+        'Authorization' => 'Bearer ' . $supabaseApiKey,
+        'Accept' => 'application/json',
+    ]
+]);
 ?>
