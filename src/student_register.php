@@ -180,7 +180,7 @@
                 <label for="professor-phone">電話：</label>
                 <input type="text" id="professor-phone" name="professor_phone" required readonly>
 
-                <input type="hidden" id="professor-id" name="professor__id" value="">
+                <input type="hidden" id="professor-id" name="professor_id">
             </div>
 
             <div class="submit-section">

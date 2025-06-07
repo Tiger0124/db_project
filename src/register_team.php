@@ -79,7 +79,9 @@
                     '隊伍編號' => $team_num,
                     '隊伍名稱' => $team_name,
                     '名次' => null,
-                    '屆數' => $session
+                    '屆數' => $session,
+                    '報名進度' => '未送件',
+                    '身分證字號' => $_POST['professor_id'],
                 ]
             ]);
         } catch (GuzzleHttp\Exception\RequestException $e) {
@@ -100,51 +102,53 @@
                 continue;
             }
 
-            // 插入學生資料
+            // 檢查是否有該學號的學生存在
             try {
-                $supabaseClient->post('學生', [
+                $response = $supabaseClient->get("學生", [
+                    'query' => [
+                        '學號' => "eq.$student_num"
+                    ]
+                ]);
+                $data = json_decode($response->getBody(), true);
+
+                if (empty($data)) {
+                    echo "alert('學號 {$student_num} 有誤，找不到此學生資料');";
+                    echo "window.history.back();";
+                    echo '</script>';
+                    exit;
+                }
+
+                // 更新學生資料
+                $supabaseClient->patch('學生', [
+                    'query' => ['學號' => "eq.$student_num"],
                     'json' => [
-                        '姓名' => $student_name,
-                        '身分證字號' => $student_id,
-                        '科系' => $student_department,
-                        '電話' => $student_phone,
-                        '電子郵件' => $student_email,
-                        '學號' => $student_num,
                         '參加年份' => $currentYear,
                         '隊伍編號' => $team_num
                     ]
                 ]);
             } catch (GuzzleHttp\Exception\RequestException $e) {
-                die("學生資料插入失敗：" . $e->getMessage());
+                die("學生資料更新失敗：" . $e->getMessage());
             }
         }
 
-        // 指導教授資料
+        // 更新指導老師指導的隊伍
         $professor_id = $_POST['professor_id'];
-        $professor_name = $_POST['professor_name'];
-        $professor_email = $_POST['professor_email'];
-        $professor_phone = $_POST['professor_phone'];
-
-        // 插入教授資料
-        try {
-            $supabaseClient->post('指導老師', [
-                'json' => [
-                    '姓名' => $professor_name,
-                    '電話' => $professor_phone,
-                    '電子郵件' => $professor_email,
-                    '身分證字號' => $professor_id,
-                    '參加年份' => $currentYear,
-                    '隊伍編號' => $team_num
-                ]
-            ]);
-        } catch (GuzzleHttp\Exception\RequestException $e) {
-            die("教授資料插入失敗：" . $e->getMessage());
-        }
+        $supabaseClient->patch('指導老師', [
+            'query' => ['身份證字號' => "eq.$professor_id"],
+            'json' => [
+                '隊伍編號' => $team_num
+            ]
+        ]);
 
         // 報名成功訊息
         echo "<h2>報名成功！</h2>";
         echo "<p>隊伍編號：$team_num</p>";
-        echo "<a href='main.php'>返回主頁</a>";
+        echo '
+            <form action="student_dashboard.php" method="POST">
+                <input type="hidden" name="username" value="' . $_POST['username'] . '">
+                <input type="hidden" name="password" value="' . $_POST['password'] . '">
+                <button type="submit">返回</button>
+            </form>';
     } else {
         // 如果不是 POST 提交，跳轉回表單頁面
         header('Location: main.php');
