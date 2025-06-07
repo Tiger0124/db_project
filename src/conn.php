@@ -1,4 +1,5 @@
 <?php
+
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use GuzzleHttp\Client;
@@ -13,6 +14,7 @@ $supabaseClient = new Client([
         'apikey' => $supabaseApiKey,
         'Authorization' => 'Bearer ' . $supabaseApiKey,
         'Accept' => 'application/json',
-    ]
+    ],
+    'verify' => 'C:\AppServ\php7\extras\ssl\cacert.pem' // 將此路徑替換為實際路徑
 ]);
 ?>
