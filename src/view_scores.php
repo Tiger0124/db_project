@@ -84,13 +84,16 @@
     </div>
 
     <div class="rounded-box">
-      <table style="width:100%">
-          <tr>
-              <th>隊伍</th>
-              <th>評審:得分</th>
-              <th>名次</th>
-              <th>操作</th>
-          </tr>
+    <table style="width:100%">
+    <tr>
+        <th>隊伍</th>
+        <th style="background-color: #e91e63; color: white;">創意性</th>
+        <th style="background-color: #e91e63; color: white;">實用性</th>
+        <th style="background-color: #e91e63; color: white;">完整性</th>
+        <th style="background-color: #e91e63; color: white;">評語</th>
+        <th>操作</th>
+    </tr>
+
           <?php
           session_start();
           require_once 'conn.php';
@@ -106,7 +109,7 @@
           // 檢查是否有提交表單並且選擇的年份是有效的
           if (isset($_POST['year']) && array_key_exists($_POST['year'], $yearToSession)) {
               $selectedYear = $_POST['year'];
-
+          
               try {
                   // 第一步：查詢隊伍資料
                   $response = $supabaseClient->get('隊伍', [
@@ -115,12 +118,12 @@
                           'select' => '*',
                       ]
                   ]);
-
+          
                   $status_code = $response->getStatusCode();
                   
                   if ($status_code == 200) {
                       $teamsData = json_decode($response->getBody()->getContents(), true);
-
+                      
                       if (!empty($teamsData)) {
                           foreach ($teamsData as $row) {
                               echo "<tr>";
@@ -131,10 +134,14 @@
                               
                               // 取得隊伍編號
                               $team_id = isset($row['隊伍編號']) ? $row['隊伍編號'] : null;
-                              
-                              // 查詢評分資料 - 使用隊伍編號
-                              $scores_display = 'N/A';
+          
+                              // 查詢評分資料
+                              $creativity_scores = [];
+                              $utility_scores = [];
+                              $completeness_scores = [];
+                              $comments = [];
                               $scores_data = [];
+          
                               if ($team_id !== null) {
                                   try {
                                       $scoreResponse = $supabaseClient->get('評分資料', [
@@ -147,7 +154,6 @@
                                       if ($scoreResponse->getStatusCode() == 200) {
                                           $scoreData = json_decode($scoreResponse->getBody()->getContents(), true);
                                           if (!empty($scoreData)) {
-                                              $score_details = [];
                                               foreach ($scoreData as $score) {
                                                   // 查詢評審姓名
                                                   $judgeResponse = $supabaseClient->get('評審委員', [
@@ -161,37 +167,94 @@
                                                       $judgeData = json_decode($judgeResponse->getBody()->getContents(), true);
                                                       if (!empty($judgeData)) {
                                                           $judge_name = $judgeData[0]['姓名'];
-                                                          $score_details[] = $judge_name . ': ' . $score['評分'];
+                                                          
+                                                          // 分別收集三種評分
+                                                          if (isset($score['創意性'])) {
+                                                              $creativity_scores[] = $judge_name . ': ' . $score['創意性'];
+                                                          }
+                                                          if (isset($score['實用性'])) {
+                                                              $utility_scores[] = $judge_name . ': ' . $score['實用性'];
+                                                          }
+                                                          if (isset($score['完整性'])) {
+                                                              $completeness_scores[] = $judge_name . ': ' . $score['完整性'];
+                                                          }
+                                                          if (isset($score['評語']) && !empty($score['評語'])) {
+                                                              $comments[] = $judge_name . ': ' . $score['評語'];
+                                                          }
+                                                          
                                                           $scores_data[] = [
                                                               'judge_name' => $judge_name,
                                                               'judge_id' => $score['身分證字號'],
-                                                              'score' => $score['評分']
+                                                              'creativity' => $score['創意性'] ?? 'N/A',
+                                                              'utility' => $score['實用性'] ?? 'N/A',
+                                                              'completeness' => $score['完整性'] ?? 'N/A',
+                                                              'comment' => $score['評語'] ?? ''
                                                           ];
                                                       }
                                                   }
                                               }
-                                              $scores_display = implode('; ', $score_details);
                                           }
                                       }
                                   } catch (Exception $e) {
-                                      // 查詢評分失敗，保持 N/A
+                                      // 查詢評分失敗，保持空陣列
                                   }
                               }
-                              echo "<td>" . $scores_display . "</td>";
+          
+                              // 顯示創意性評分
+                              echo "<td>";
+                              if (!empty($creativity_scores)) {
+                                  foreach ($creativity_scores as $score) {
+                                      echo "<div style='margin-bottom: 3px; padding: 2px 5px; background-color: #fce4ec; border-radius: 3px; font-size: 12px;'>";
+                                      echo htmlspecialchars($score);
+                                      echo "</div>";
+                                  }
+                              } else {
+                                  echo "<span style='color: #999; font-size: 12px;'>尚未評分</span>";
+                              }
+                              echo "</td>";
+          
+                              // 顯示實用性評分
+                              echo "<td>";
+                              if (!empty($utility_scores)) {
+                                  foreach ($utility_scores as $score) {
+                                      echo "<div style='margin-bottom: 3px; padding: 2px 5px; background-color: #fce4ec; border-radius: 3px; font-size: 12px;'>";
+                                      echo htmlspecialchars($score);
+                                      echo "</div>";
+                                  }
+                              } else {
+                                  echo "<span style='color: #999; font-size: 12px;'>尚未評分</span>";
+                              }
+                              echo "</td>";
+          
+                              // 顯示完整性評分
+                              echo "<td>";
+                              if (!empty($completeness_scores)) {
+                                  foreach ($completeness_scores as $score) {
+                                      echo "<div style='margin-bottom: 3px; padding: 2px 5px; background-color: #fce4ec; border-radius: 3px; font-size: 12px;'>";
+                                      echo htmlspecialchars($score);
+                                      echo "</div>";
+                                  }
+                              } else {
+                                  echo "<span style='color: #999; font-size: 12px;'>尚未評分</span>";
+                              }
+                              echo "</td>";
+          
+                              // 顯示評語
+                              echo "<td>";
+                              if (!empty($comments)) {
+                                  foreach ($comments as $comment) {
+                                      echo "<div style='margin-bottom: 3px; padding: 2px 5px; background-color: #f5f5f5; border-radius: 3px; font-size: 11px; max-width: 200px; word-wrap: break-word;'>";
+                                      echo htmlspecialchars($comment);
+                                      echo "</div>";
+                                  }
+                              } else {
+                                  echo "<span style='color: #999; font-size: 12px;'>無評語</span>";
+                              }
+                              echo "</td>";
                               
-                              // 名次
-                              $rank = isset($row['名次']) ? htmlspecialchars($row['名次'], ENT_QUOTES, 'UTF-8') : 'N/A';
-                              echo "<td>" . $rank . "</td>";
-                              
-                              // 操作按鈕
+                              // 操作按鈕 (移除名次欄位後直接顯示)
                               echo "<td>";
                               if ($team_id !== null) {
-                                  $edit_data = json_encode([
-                                      'team_id' => $team_id,
-                                      'team_name' => $row['隊伍名稱'] ?? '',
-                                      'rank' => $row['名次'] ?? '',
-                                      'scores' => $scores_data
-                                  ]);
                                   echo "<button class='btn-delete' onclick='confirmDelete(\"" . $team_id . "\", \"" . htmlspecialchars($team_name, ENT_QUOTES, 'UTF-8') . "\")' style='background-color: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 12px;'>刪除</button>";
                               }
                               echo "</td>";
@@ -199,24 +262,17 @@
                               echo "</tr>";
                           }
                       } else {
-                          echo "<tr><td colspan='4'>查無 " . htmlspecialchars($selectedYear, ENT_QUOTES, 'UTF-8') . " 年度的隊伍資料。</td></tr>";
+                          echo "<tr><td colspan='6'>查無 " . htmlspecialchars($selectedYear, ENT_QUOTES, 'UTF-8') . " 年度的隊伍資料。</td></tr>";
                       }
                   } else {
-                      echo "<tr><td colspan='4'>查詢隊伍資料失敗，HTTP 狀態碼：" . $status_code . "</td></tr>";
+                      echo "<tr><td colspan='6'>查詢隊伍資料失敗，HTTP 狀態碼：" . $status_code . "</td></tr>";
                   }
-              } catch (GuzzleHttp\Exception\RequestException $e) {
-                  echo "<tr><td colspan='4'>Guzzle 請求錯誤: ";
-                  if ($e->hasResponse()) {
-                      echo htmlspecialchars($e->getResponse()->getBody()->getContents(), ENT_QUOTES, 'UTF-8');
-                  } else {
-                      echo htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
-                  }
-                  echo "</td></tr>";
               } catch (Exception $e) {
-                  echo "<tr><td colspan='4'>執行查詢時發生例外狀況: " . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8') . "</td></tr>";
+                  echo "<tr><td colspan='6'>執行查詢時發生例外狀況: " . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8') . "</td></tr>";
               }
           }
           ?>
+          
       </table>
     </div>
     

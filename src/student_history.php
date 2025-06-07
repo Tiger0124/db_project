@@ -7,7 +7,7 @@ include 'conn.php';
 $year = isset($_GET['year']) ? (int)$_GET['year'] : 2024;
 
 // 安全性檢查（允許的年份範圍）
-$allowedYears = range(2020, 2025);
+$allowedYears = range(2013, 2024);
 if (!in_array($year, $allowedYears, true)) {
     $year = 2024;
 }
@@ -122,10 +122,10 @@ foreach ($teams as $team) {
                             <td><?= htmlspecialchars($row['隊伍名稱']) ?></td>
                             <td><?= htmlspecialchars($row['作品名稱']) ?></td>
                             <td>
-                                <a href="data:application/pdf;base64,<?= $row['說明書'] ?>" download>下載說明書</a>
+                                <a href="data:application/pdf;base64,<?= $row['說明書'] ?>" download='說明書.pdf'>下載說明書</a>
                             </td>
                             <td>
-                                <a href="data:application/pdf;base64,<?= $row['海報'] ?>" download>下載海報</a>
+                                <a href="data:application/pdf;base64,<?= $row['海報'] ?>" download='海報.pdf'>下載海報</a>
                             </td>
                             <td>
                                 <a href="<?= htmlspecialchars($row['作品展示(youtube連結)']) ?>" target="_blank">影片連結</a>
