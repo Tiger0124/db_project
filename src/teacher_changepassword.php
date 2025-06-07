@@ -66,14 +66,14 @@
       const { error } = await supabase
         .from('指導老師')
         .update({ 密碼: newPassword })
-        .eq('隊伍編號', teamId)
+        .eq('身分證字號', teamId)
         .eq('密碼', oldPassword);
 
       if (error) {
         alert("密碼更新失敗：" + error.message);
       } else {
-        alert("密碼已更新，返回主頁！");
-        goBack(newPassword);
+        alert("密碼已更新，請重新登入。");
+        window.location.href="teacher.php";
       }
     });
 

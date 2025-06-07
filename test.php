@@ -1,97 +1,72 @@
-<?php
-include 'conn.php';
+<!DOCTYPE html>
+<html lang="zh-TW">
 
-$team_id = $_POST['team_id'];
-$username = $_POST['username'];
-$password = $_POST['password'];
-$member_count = $_POST['member_count'];
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高雄大學創意競賽管理系統</title>
+    <link rel="stylesheet" href="../asset/post_announcement.css">
+</head>
 
-$success = true;
-$error_messages = [];
-$updated_items = [];
-
-try {
-    // Update student data
-    for ($i = 0; $i < $member_count; $i++) {
-        if (isset($_POST["student{$i}_id"])) {
-            $student_id = $_POST["student{$i}_id"];
-            $student_data = [
-                '學號' => $_POST["student{$i}_studentid"],
-                '姓名' => $_POST["student{$i}_name"],
-                '電子郵件' => $_POST["student{$i}_email"],
-                '電話' => $_POST["student{$i}_phone"],
-                '科系' => $_POST["student{$i}_department"],
-                '年級' => $_POST["student{$i}_grade"]
-            ];
-
-            $response = $supabaseClient->from('學生')
-                ->update($student_data)
-                ->eq('身分證字號', $student_id)
-                ->eq('隊伍編號', $team_id)
-                ->execute();
-
-            if ($response->getStatusCode() === 200 && $response->getData()) {
-                $updated_items[] = "學生 " . ($i + 1) . " (" . $student_data['姓名'] . ")";
-            } else {
-                throw new Exception("更新學生 " . ($i + 1) . " 資料失敗");
-            }
-        }
-    }
-
-    // Update professor data
-    if (isset($_POST['professor_id'])) {
-        $professor_id = $_POST['professor_id'];
-        $professor_data = [
-            '姓名' => $_POST['professor_name'],
-            '電子郵件' => $_POST['professor_email'],
-            '電話' => $_POST['professor_phone']
-        ];
-
-        $response = $supabaseClient->from('指導老師')
-            ->update($professor_data)
-            ->eq('身分證字號', $professor_id)
-            ->eq('隊伍編號', $team_id)
-            ->execute();
-
-        if ($response->getStatusCode() === 200 && $response->getData()) {
-            $updated_items[] = "指導老師 (" . $professor_data['姓名'] . ")";
-        } else {
-            throw new Exception("更新指導老師資料失敗");
-        }
-    }
-} catch (Exception $e) {
-    $success = false;
-    $error_messages[] = $e->getMessage();
-}
-?>
-
-<div class="result-container">
-    <?php if ($success): ?>
-        <div class="success-section">
-            <div class="success-icon">✓</div>
-            <h2>資料修改成功！</h2>
-            <div class="success-details">
-                <h3>已更新的資料：</h3>
-                <ul class="updated-list">
-                    <?php foreach ($updated_items as $item): ?>
-                        <li><?= htmlspecialchars($item) ?></li>
-                    <?php endforeach; ?>
-                </ul>
-                <p class="update-time">更新時間：<?= date('Y-m-d H:i:s') ?></p>
-            </div>
+<body>
+    <header>
+        <div class="navbar">
+            <a href="main.php" alt="Logo" class="logo">
+                <img src="../images/logo.png" alt="Logo" class="logo">
+            </a>
+            <h1>高雄大學激發學生創意競賽管理系統</h1>
         </div>
-    <?php else: ?>
-        <div class="error-section">
-            <div class="error-icon">✗</div>
-            <h2>資料修改失敗</h2>
-            <div class="error-details">
-                <h3>錯誤訊息：</h3>
-                <ul class="error-list">
-                    <?php foreach ($error_messages as $error): ?>
-                        <li><?= htmlspecialchars($error) ?></li>
-                    <?php endforeach; ?>
+    </header>
+    <?php
+    include 'conn.php';
+
+    // 1. 接收表單的文字內容
+    $announcement_content = $_POST['announcement_content'];
+    $competition_rules = $_POST['competition_rules'];
+
+    // 2. 準備更新內容
+    $update_data = [
+        '比賽規則' => $competition_rules,
+        '公告內容' => $announcement_content
+    ];
+
+    // 3. 若有檔案上傳，才加入宣傳海報欄位
+    if (isset($_FILES['announcement_file']) && $_FILES['announcement_file']['error'] === UPLOAD_ERR_OK) {
+        $file_tmp_name = $_FILES['announcement_file']['tmp_name'];
+        $update_data['宣傳海報'] = base64_encode(file_get_contents($file_tmp_name));
+    }
+
+    // 4. 執行 PATCH 更新
+    $response = $supabaseClient->patch('創意競賽', [
+        'query' => [
+            '屆數' => 'eq.13'
+        ],
+        'json' => $update_data
+    ]);
+
+    if ($response->getStatusCode() >= 200 && $response->getStatusCode() < 300) {
+        echo "<h2>公告發布成功！</h2>";
+    } else {
+        echo "<h2>公告發布失敗！</h2>";
+    }
+
+    //回主畫面
+    echo "<form action='admin_dashboard.php' method='POST'>";
+    echo "<input type='hidden' name='username' value='" . $_POST['username'] . "'>";
+    echo "<input type='hidden' name='password' value='" . $_POST['password'] . "'>";
+    echo "<button type='submit'>返回</button>";
+    echo "</form>";
+    ?>
+    <footer class="site-footer">
+        <div class="footer-content">
+            <p>&copy; Copyright © 2025 XC Lee Tiger Lin How Ho. All rights reserved.</p>
+            <div class="footer-row">
+                <div class="footer-container">
+                    <p>聯絡我們 : <a href="mailto:wylin@nuk.edu.tw">wylin@nuk.edu.tw</a></p>
+                </div>
+                <ul class="footer-links">
+                    <li><a href="https://github.com/Tiger0124/db_project.git">關於我們</a></li>
                 </ul>
             </div>
         </div>
-    <?php endif; ?>
-</div>
+    </footer>

@@ -3,7 +3,11 @@
 <?php
 include 'conn.php';
 
-// 預設年份為 2025，或根據使用者選擇的年份
+
+$filename = $_POST["username"];
+$filepasswd = $_POST["password"];
+
+// 預設年份為 2024，或根據使用者選擇的年份
 $year = isset($_GET['year']) ? (int)$_GET['year'] : 2024;
 
 // 安全性檢查（允許的年份範圍）
@@ -48,41 +52,6 @@ foreach ($teams as $team) {
 </head>
 
 <body>
-    <script>
-    function goBackWithPost() {
-        // 取得上一頁的 URL
-        const prevUrl = document.referrer;
-
-        if (!prevUrl) {
-            alert("找不到上一頁的網址");
-            return;
-        }
-
-        // 建立一個表單元素
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = prevUrl;
-
-        // 加入要帶回去的 hidden 欄位
-        const usernameInput = document.createElement('input');
-        usernameInput.type = 'hidden';
-        usernameInput.name = 'username';
-        usernameInput.value = "<?php echo $_POST['username']; ?>";
-
-        const passwordInput = document.createElement('input');
-        passwordInput.type = 'hidden';
-        passwordInput.name = 'password';
-        passwordInput.value = "<?php echo $_POST['password']; ?>";
-
-        // 加進 form 裡
-        form.appendChild(usernameInput);
-        form.appendChild(passwordInput);
-
-        // 加進 body 並送出
-        document.body.appendChild(form);
-        form.submit();
-    }
-    </script>
     <header>
         <div class="navbar">
             <a href="main.php" alt="Logo" class="logo">
@@ -117,24 +86,24 @@ foreach ($teams as $team) {
             <tbody>
 
                 <?php if (!empty($merged)): ?>
-                <?php foreach ($merged as $row): ?>
-                <tr>
-                    <td><?= htmlspecialchars($row['隊伍名稱']) ?></td>
-                    <td><?= htmlspecialchars($row['作品名稱']) ?></td>
-                    <td>
-                        <a href="data:application/pdf;base64,<?= $row['說明書'] ?>" download>下載說明書</a>
-                    </td>
-                    <td>
-                        <a href="data:application/pdf;base64,<?= $row['海報'] ?>" download>下載海報</a>
-                    </td>
-                    <td>
-                        <a href="<?= htmlspecialchars($row['作品展示(youtube連結)']) ?>" target="_blank">影片連結</a>
-                    </td>
-                    <td>
-                        <a href="<?= htmlspecialchars($row['程式碼(Github連結)']) ?>" target="_blank">程式碼連結</a>
-                    </td>
-                </tr>
-                <?php endforeach; ?>
+                    <?php foreach ($merged as $row): ?>
+                        <tr>
+                            <td><?= htmlspecialchars($row['隊伍名稱']) ?></td>
+                            <td><?= htmlspecialchars($row['作品名稱']) ?></td>
+                            <td>
+                                <a href="data:application/pdf;base64,<?= base64_encode($row['說明書']) ?>" download>下載說明書</a>
+                            </td>
+                            <td>
+                                <a href="data:application/pdf;base64,<?= base64_encode($row['海報']) ?>" download>下載海報</a>
+                            </td>
+                            <td>
+                                <a href="<?= htmlspecialchars($row['作品展示(youtube連結)']) ?>" target="_blank">影片連結</a>
+                            </td>
+                            <td>
+                                <a href="<?= htmlspecialchars($row['程式碼(Github連結)']) ?>" target="_blank">程式碼連結</a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
                 <?php else: ?>
                     <tr>
                         <td colspan="6">該年份無資料。</td>
@@ -143,7 +112,13 @@ foreach ($teams as $team) {
 
             </tbody>
         </table>
-        <button onclick="goBackWithPost()">返回</button>
+        <div class="return-section">
+            <form action="student_dashboard.php" method="POST">
+                <input type="hidden" name="username" value="<?= htmlspecialchars($_POST['username']) ?>">
+                <input type="hidden" name="password" value="<?= htmlspecialchars($_POST['password']) ?>">
+                <button type="submit" class="return-btn">返回</button>
+            </form>
+        </div>
     </main>
     <footer class="site-footer">
         <div class="footer-content">
