@@ -21,7 +21,8 @@
     <?php
     // 顯示刪除結果訊息
     if (isset($_POST['delete_success']) && $_POST['delete_success'] === '1') {
-        echo '<div class="alert alert-success" style="background-color: #d4edda; color: #155724; padding: 10px; margin: 10px 0; border: 1px solid #c3e6cb; border-radius: 4px;">隊伍刪除成功！</div>';
+        $message = isset($_POST['delete_message']) ? $_POST['delete_message'] : '指導老師資料刪除成功！';
+        echo '<div class="alert alert-success" style="background-color: #d4edda; color: #155724; padding: 10px; margin: 10px 0; border: 1px solid #c3e6cb; border-radius: 4px;">' . htmlspecialchars($message) . '</div>';
     }
     if (isset($_POST['delete_error'])) {
         echo '<div class="alert alert-error" style="background-color: #f8d7da; color: #721c24; padding: 10px; margin: 10px 0; border: 1px solid #f5c6cb; border-radius: 4px;">刪除失敗：' . htmlspecialchars($_POST['delete_error']) . '</div>';
@@ -90,7 +91,7 @@
                 
                 <div class="form-group">
                     <label for="add_teacher_password">密碼:</label>
-                    <input type="password" id="add_teacher_password" name="teacher_password" required minlength="6" placeholder="請輸入至少6位密碼">
+                    <input type="password" id="add_teacher_password" name="teacher_password" required minlength="6" placeholder="請輸入至少6位密碼" reuquired>
                 </div>
                 
                 <div class="form-group">
@@ -114,9 +115,9 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="add_team_id">隊伍編號:</label>
-                    <input type="text" id="add_team_id" name="team_id" required placeholder="請輸入隊伍編號">
-                    <small class="form-text">請確認隊伍編號是否存在</small>
+                    <label for="add_team_id">隊伍編號(選題):</label>
+                    <input type="text" id="add_team_id" name="team_id" placeholder="如有指導隊伍請填寫隊伍編號" >
+                    <small class="form-text">如不填寫則建立獨立的指導老師</small>
                 </div>
                 
                 <div class="form-buttons">
@@ -149,7 +150,7 @@
                 
                 <div class="form-group">
                     <label for="edit_team_name">隊伍名稱:</label>
-                    <input type="text" id="edit_team_name" name="team_name" required>
+                    <input type="text" id="edit_team_name" name="team_name">
                 </div>
                 
                 <div class="form-group">
@@ -159,7 +160,7 @@
                 
                 <div class="form-group">
                     <label for="edit_project_name">作品名稱:</label>
-                    <input type="text" id="edit_project_name" name="project_name" required>
+                    <input type="text" id="edit_project_name" name="project_name" >
                 </div>
                 
                 <div class="form-group">
@@ -211,126 +212,210 @@
                       ]
                   ]);
 
+                // 【新增位置】在這裡加入沒有隊伍的老師查詢
+                    $teachers_without_team_response = $supabaseClient->get('指導老師', [
+                        'query' => [
+                            '參加年份' => 'eq.' . $selectedYear,
+                            '隊伍編號' => 'is.null',
+                            'select' => '*'
+                        ]
+                    ]);
+
                   $status_code = $response->getStatusCode();
                   
                   if ($status_code == 200) {
-                      $teamsData = json_decode($response->getBody()->getContents(), true);
+                    $teamsData = json_decode($response->getBody()->getContents(), true);
+                    
+                    // 初始化合併資料陣列
+                    $combined_data = [];
+                    
+                    // 處理有隊伍的資料
+                    if (!empty($teamsData)) {
+                        foreach ($teamsData as $team) {
+                            $combined_data[] = [
+                                '隊伍編號' => $team['隊伍編號'],
+                                '隊伍名稱' => $team['隊伍名稱'],
+                                '參加年份' => $team['參加年份'],
+                                'type' => 'with_team'
+                            ];
+                        }
+                    }
+                    
+                    // 處理沒有隊伍的老師
+                    if ($teachers_without_team_response->getStatusCode() === 200) {
+                        $teachers_without_team_body = $teachers_without_team_response->getBody()->getContents();
+                        $teachers_without_team_result = json_decode($teachers_without_team_body, true);
+                        
+                        if (!empty($teachers_without_team_result)) {
+                            foreach ($teachers_without_team_result as $teacher) {
+                                $combined_data[] = [
+                                    '隊伍編號' => null,
+                                    '隊伍名稱' => '未指定隊伍',
+                                    '參加年份' => $teacher['參加年份'],
+                                    'teacher_data' => $teacher,
+                                    'type' => 'without_team'
+                                ];
+                            }
+                        }
+                    }
 
-                      if (!empty($teamsData)) {
-                          foreach ($teamsData as $row) {
-                              echo "<tr>";
-                              
-                              // 取得隊伍編號和隊伍名稱
-                              $team_id = isset($row['隊伍編號']) ? $row['隊伍編號'] : null;
-                              $team_name = isset($row['隊伍名稱']) ? htmlspecialchars($row['隊伍名稱'], ENT_QUOTES, 'UTF-8') : 'N/A';
-                              
-                              // 查詢指導老師 - 使用隊伍編號
-                              $teacher_name = 'N/A';
-                              $teacher_title = 'N/A';
-                              if ($team_id !== null) {
-                                  try {
-                                      $teacherResponse = $supabaseClient->get('指導老師', [
-                                          'query' => [
-                                              '隊伍編號' => 'eq.' . $team_id,
-                                              'select' => '姓名,職稱',
-                                          ]
-                                      ]);
-                                      
-                                      if ($teacherResponse->getStatusCode() == 200) {
-                                          $teacherData = json_decode($teacherResponse->getBody()->getContents(), true);
-                                          if (!empty($teacherData)) {
-                                              $teacher_name = htmlspecialchars($teacherData[0]['姓名'], ENT_QUOTES, 'UTF-8');
-                                              $teacher_title = htmlspecialchars($teacherData[0]['職稱'], ENT_QUOTES, 'UTF-8');
-                                          }
-                                      }
-                                  } catch (Exception $e) {
-                                      // 查詢指導老師失敗，保持 N/A
-                                  }
-                              }
-                              echo "<td>" . $teacher_name . "</td>";
-                              echo "<td>" . $teacher_title . "</td>";
-                              
-                              // 隊伍名稱
-                              echo "<td>" . $team_name . "</td>";
-                              
-                              // 查詢學生資料 - 使用隊伍編號
-                              $students_display = 'N/A';
-                              $students_array = [];
-                              if ($team_id !== null) {
-                                  try {
-                                      $studentResponse = $supabaseClient->get('學生', [
-                                          'query' => [
-                                              '隊伍編號' => 'eq.' . $team_id,
-                                              'select' => '姓名',
-                                          ]
-                                      ]);
-                                      
-                                      if ($studentResponse->getStatusCode() == 200) {
-                                          $studentData = json_decode($studentResponse->getBody()->getContents(), true);
-                                          if (!empty($studentData)) {
-                                              $student_names = [];
-                                              foreach ($studentData as $student) {
-                                                  $student_names[] = htmlspecialchars($student['姓名'], ENT_QUOTES, 'UTF-8');
-                                                  $students_array[] = $student['姓名'];
-                                              }
-                                              $students_display = implode(', ', $student_names);
-                                          }
-                                      }
-                                  } catch (Exception $e) {
-                                      // 查詢學生失敗，保持 N/A
-                                  }
-                              }
-                              echo "<td>" . $students_display . "</td>";
-                              
-                              // 查詢作品資料 - 使用隊伍編號
-                              $project_name = 'N/A';
-                              $project_description = 'N/A';
-                              if ($team_id !== null) {
-                                  try {
-                                      $projectResponse = $supabaseClient->get('作品', [
-                                          'query' => [
-                                              '隊伍編號' => 'eq.' . $team_id,
-                                              'select' => '作品名稱,作品描述',
-                                          ]
-                                      ]);
-                                      
-                                      if ($projectResponse->getStatusCode() == 200) {
-                                          $projectData = json_decode($projectResponse->getBody()->getContents(), true);
-                                          if (!empty($projectData)) {
-                                              $project_name = htmlspecialchars($projectData[0]['作品名稱'], ENT_QUOTES, 'UTF-8');
-                                              $project_description = htmlspecialchars($projectData[0]['作品描述'], ENT_QUOTES, 'UTF-8');
-                                          }
-                                      }
-                                  } catch (Exception $e) {
-                                      // 查詢作品失敗，保持 N/A
-                                  }
-                              }
-                              echo "<td>" . $project_name . "</td>";
-                              echo "<td>" . $project_description . "</td>";
-                              
-                              // 操作按鈕
-                              echo "<td>";
-                              if ($team_id !== null) {
-                                  $edit_data = json_encode([
-                                      'team_id' => $team_id,
-                                      'teacher_name' => $teacher_name === 'N/A' ? '' : str_replace('&quot;', '"', html_entity_decode($teacher_name)),
-                                      'teacher_title' => $teacher_title === 'N/A' ? '' : str_replace('&quot;', '"', html_entity_decode($teacher_title)),
-                                      'team_name' => $row['隊伍名稱'] ?? '',
-                                      'students' => implode(', ', $students_array),
-                                      'project_name' => $project_name === 'N/A' ? '' : str_replace('&quot;', '"', html_entity_decode($project_name)),
-                                      'project_description' => $project_description === 'N/A' ? '' : str_replace('&quot;', '"', html_entity_decode($project_description))
-                                  ]);
-                                  echo "<button class='btn-edit' onclick='openEditForm(" . htmlspecialchars($edit_data, ENT_QUOTES, 'UTF-8') . ")'>編輯</button>";
-                                  echo "<button class='btn-delete' onclick='confirmDelete(\"" . $team_id . "\", \"" . htmlspecialchars($team_name, ENT_QUOTES, 'UTF-8') . "\")' style='background-color: #dc3545; margin-left: 5px; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 12px;'>刪除</button>";
-                              }
-                              echo "</td>";
-                              
-                              echo "</tr>";
-                          }
-                      } else {
-                          echo "<tr><td colspan='7'>查無 " . htmlspecialchars($selectedYear, ENT_QUOTES, 'UTF-8') . " 年度的隊伍資料。</td></tr>";
-                      }
-                  } else {
+                    // 顯示合併後的資料
+                    if (!empty($combined_data)) {
+                        foreach ($combined_data as $row) {
+                            $team_id = $row['隊伍編號'];
+                            $team_name = $row['隊伍名稱'];
+                            $row_type = $row['type'];
+                            
+                            echo "<tr>";
+                            
+                            // 指導老師資料處理
+                            if ($row_type === 'without_team') {
+                                // 沒有隊伍的老師，直接使用已查詢的資料
+                                $teacher_data = $row['teacher_data'];
+                                $teacher_name = htmlspecialchars($teacher_data['姓名'], ENT_QUOTES, 'UTF-8');
+                                $teacher_title = htmlspecialchars($teacher_data['職稱'], ENT_QUOTES, 'UTF-8');
+                                $students_array = [];
+                                $project_name = 'N/A';
+                                $project_description = 'N/A';
+                            } else {
+                                // 有隊伍的老師，按原邏輯查詢
+                                $teacher_name = 'N/A';
+                                $teacher_title = 'N/A';
+                                $teacher_data = null;
+                                
+                                if ($team_id !== null) {
+                                    try {
+                                        $teacherResponse = $supabaseClient->get('指導老師', [
+                                            'query' => [
+                                                '隊伍編號' => 'eq.' . $team_id,
+                                                'select' => '*',
+                                            ]
+                                        ]);
+                                        
+                                        if ($teacherResponse->getStatusCode() == 200) {
+                                            $teacherDataResult = json_decode($teacherResponse->getBody()->getContents(), true);
+                                            if (!empty($teacherDataResult)) {
+                                                $teacher_data = $teacherDataResult[0];
+                                                $teacher_name = htmlspecialchars($teacherDataResult[0]['姓名'], ENT_QUOTES, 'UTF-8');
+                                                $teacher_title = htmlspecialchars($teacherDataResult[0]['職稱'], ENT_QUOTES, 'UTF-8');
+                                            }
+                                        }
+                                    } catch (Exception $e) {
+                                        // 查詢指導老師失敗，保持 N/A
+                                    }
+                                }
+                                
+                                // 查詢學生資料
+                                $students_array = [];
+                                if ($team_id !== null) {
+                                    try {
+                                        $studentResponse = $supabaseClient->get('學生', [
+                                            'query' => [
+                                                '隊伍編號' => 'eq.' . $team_id,
+                                                'select' => '姓名',
+                                            ]
+                                        ]);
+                                        
+                                        if ($studentResponse->getStatusCode() == 200) {
+                                            $studentData = json_decode($studentResponse->getBody()->getContents(), true);
+                                            if (!empty($studentData)) {
+                                                foreach ($studentData as $student) {
+                                                    $students_array[] = $student['姓名'];
+                                                }
+                                            }
+                                        }
+                                    } catch (Exception $e) {
+                                        // 查詢學生失敗
+                                    }
+                                }
+                                
+                                // 查詢作品資料
+                                $project_name = 'N/A';
+                                $project_description = 'N/A';
+                                if ($team_id !== null) {
+                                    try {
+                                        $projectResponse = $supabaseClient->get('作品', [
+                                            'query' => [
+                                                '隊伍編號' => 'eq.' . $team_id,
+                                                'select' => '作品名稱,作品描述',
+                                            ]
+                                        ]);
+                                        
+                                        if ($projectResponse->getStatusCode() == 200) {
+                                            $projectData = json_decode($projectResponse->getBody()->getContents(), true);
+                                            if (!empty($projectData)) {
+                                                $project_name = htmlspecialchars($projectData[0]['作品名稱'], ENT_QUOTES, 'UTF-8');
+                                                $project_description = htmlspecialchars($projectData[0]['作品描述'], ENT_QUOTES, 'UTF-8');
+                                            }
+                                        }
+                                    } catch (Exception $e) {
+                                        // 查詢作品失敗
+                                    }
+                                }
+                            }
+                            
+                            // 顯示資料
+                            echo "<td>" . $teacher_name . "</td>";
+                            echo "<td>" . $teacher_title . "</td>";
+                            echo "<td>" . htmlspecialchars($team_name, ENT_QUOTES, 'UTF-8') . "</td>";
+                            
+                            // 學生名單
+                            if ($row_type === 'without_team') {
+                                echo "<td><span style='color: #999;'>無</span></td>";
+                            } else {
+                                $students_display = empty($students_array) ? 'N/A' : implode(', ', array_map(function($name) {
+                                    return htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
+                                }, $students_array));
+                                echo "<td>" . $students_display . "</td>";
+                            }
+                            
+                            // 作品資料
+                            if ($row_type === 'without_team') {
+                                echo "<td><span style='color: #999;'>無</span></td>";
+                                echo "<td><span style='color: #999;'>無</span></td>";
+                            } else {
+                                echo "<td>" . $project_name . "</td>";
+                                echo "<td>" . $project_description . "</td>";
+                            }
+                            
+                            // 操作按鈕
+                            echo "<td>";
+                            if ($teacher_data !== null) {
+                                $edit_data = json_encode([
+                                    'team_id' => $team_id,
+                                    'teacher_name' => $teacher_name === 'N/A' ? '' : str_replace('&quot;', '"', html_entity_decode($teacher_name)),
+                                    'teacher_title' => $teacher_title === 'N/A' ? '' : str_replace('&quot;', '"', html_entity_decode($teacher_title)),
+                                    'team_name' => $team_name,
+                                    'students' => $row_type === 'without_team' ? '' : implode(', ', $students_array),
+                                    'project_name' => $row_type === 'without_team' ? '' : ($project_name === 'N/A' ? '' : str_replace('&quot;', '"', html_entity_decode($project_name))),
+                                    'project_description' => $row_type === 'without_team' ? '' : ($project_description === 'N/A' ? '' : str_replace('&quot;', '"', html_entity_decode($project_description))),
+                                    'teacher_id' => $teacher_data['身分證字號'] ?? '',
+                                    'teacher_phone' => $teacher_data['電話'] ?? '',
+                                    'teacher_email' => $teacher_data['電子郵件'] ?? '',
+                                    'type' => $row_type
+                                ]);
+                                echo "<button class='btn-edit' onclick='openEditForm(" . htmlspecialchars($edit_data, ENT_QUOTES, 'UTF-8') . ")'>編輯</button>";
+                                
+                                // 修改刪除按鈕
+                                // 修改後的刪除按鈕樣式（紅色危險樣式）
+                                if ($row_type === 'without_team') {
+                                    echo "<button class='btn-delete' onclick='confirmDeleteTeacher(\"" . htmlspecialchars($teacher_data['身分證字號'], ENT_QUOTES, 'UTF-8') . "\", \"" . htmlspecialchars($teacher_name, ENT_QUOTES, 'UTF-8') . "\")' style='background-color: #dc3545; margin-left: 5px; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 12px;'>刪除</button>";
+                                } 
+                                else {
+                                    echo "<button class='btn-delete' onclick='confirmDelete(\"" . $team_id . "\", \"" . htmlspecialchars($team_name, ENT_QUOTES, 'UTF-8') . "\")' style='background-color: #dc3545; margin-left: 5px; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 12px;'>刪除</button>";
+                                }
+
+                            }
+                            echo "</td>";
+                            
+                            echo "</tr>";
+                        }
+                    } else {
+                        echo "<tr><td colspan='7'>查無 " . htmlspecialchars($selectedYear, ENT_QUOTES, 'UTF-8') . " 年度的資料。</td></tr>";
+                    }
+
+                  }
+                   else {
                       echo "<tr><td colspan='7'>查詢隊伍資料失敗，HTTP 狀態碼：" . $status_code . "</td></tr>";
                   }
               } catch (GuzzleHttp\Exception\RequestException $e) {
@@ -396,11 +481,11 @@
 
     // 在現有的 JavaScript 函數後面新增__刪除
     function confirmDelete(teamId, teamName) {
-        if (confirm('確定要刪除隊伍「' + teamName + '」嗎？\n此操作將同時刪除相關的指導老師、學生和作品資料，且無法復原！')) {
+        if (confirm('確定要刪除隊伍「' + teamName + '」的指導老師資料嗎？\n此操作只會刪除指導老師資料，不會影響隊伍、學生和作品資料。')) {
             // 創建隱藏表單來提交刪除請求
             var form = document.createElement('form');
             form.method = 'POST';
-            form.action = 'delete_team_from_teachers.php';
+            form.action = 'delete_teacher.php';
             
             // 添加隊伍編號
             var teamIdInput = document.createElement('input');
@@ -433,6 +518,43 @@
             form.submit();
         }
     }
+    // 新增針對沒有隊伍的老師的刪除函數
+function confirmDeleteTeacher(teacherId, teacherName) {
+    if (confirm('確定要刪除指導老師「' + teacherName + '」嗎？\n身分證字號：' + teacherId + '\n此操作無法復原！')) {
+        var form = document.createElement('form');
+        form.method = 'POST';
+        form.action = 'delete_teacher_by_id.php';
+        
+        var teacherIdInput = document.createElement('input');
+        teacherIdInput.type = 'hidden';
+        teacherIdInput.name = 'teacher_id';
+        teacherIdInput.value = teacherId;
+        form.appendChild(teacherIdInput);
+        
+        var usernameInput = document.createElement('input');
+        usernameInput.type = 'hidden';
+        usernameInput.name = 'username';
+        usernameInput.value = document.querySelector('input[name="username"]').value;
+        form.appendChild(usernameInput);
+        
+        var passwordInput = document.createElement('input');
+        passwordInput.type = 'hidden';
+        passwordInput.name = 'password';
+        passwordInput.value = document.querySelector('input[name="password"]').value;
+        form.appendChild(passwordInput);
+        
+        var yearInput = document.createElement('input');
+        yearInput.type = 'hidden';
+        yearInput.name = 'year';
+        yearInput.value = document.querySelector('select[name="year"]').value;
+        form.appendChild(yearInput);
+        
+        document.body.appendChild(form);
+        form.submit();
+    }
+}
+
+
 
     // 點擊背景關閉表單
     document.getElementById('addForm').addEventListener('click', function(e) {
