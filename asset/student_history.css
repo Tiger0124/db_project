@@ -5,7 +5,8 @@
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   height: 100vh;
   width: 100vw;
   margin: 0;
@@ -36,12 +37,12 @@ header {
     to right,
     #ffffff 0%,
     #ffffff 30%,
-    #FFD700 60%,
+    #ffd700 60%,
     #f5be11 100%
   );
   color: #2c3e50;
   padding: 1rem 0;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   z-index: 1000;
 }
 
@@ -58,7 +59,7 @@ header {
 .logo img {
   height: 50px;
   width: auto;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 }
 
 header h1 {
@@ -66,7 +67,7 @@ header h1 {
   font-weight: 600;
   letter-spacing: 1px;
   color: #2c3e50;
-  text-shadow: 0 1px 3px rgba(255,255,255,0.8);
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8);
 }
 
 /* Main 內容區塊 */
@@ -133,7 +134,7 @@ select:focus {
 /* 查詢按鈕 */
 main > form button {
   padding: 0.8rem 1.5rem;
-  background: linear-gradient(135deg, #FFD700 0%, #f5be11 100%);
+  background: linear-gradient(135deg, #ffd700 0%, #f5be11 100%);
   color: #2c3e50;
   border: none;
   border-radius: 8px;
@@ -160,7 +161,7 @@ table {
   background: white;
   border-radius: 15px;
   overflow: hidden;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
 }
 
 /* 表格標題 */
@@ -208,7 +209,7 @@ tbody td[colspan] {
 tbody td a {
   display: inline-block;
   padding: 0.5rem 1rem;
-  background: linear-gradient(135deg, #FFD700 0%, #f5be11 100%);
+  background: linear-gradient(135deg, #ffd700 0%, #f5be11 100%);
   color: #2c3e50;
   text-decoration: none;
   border-radius: 6px;
@@ -316,7 +317,7 @@ tbody td a[target="_blank"]:hover {
   main#content {
     overflow-x: auto;
   }
-  
+
   table {
     min-width: 1000px;
   }
@@ -327,58 +328,54 @@ tbody td a[target="_blank"]:hover {
     padding-top: 110px;
     padding-bottom: 90px;
   }
-  
+
   header {
     height: 110px;
-    background: linear-gradient(
-      to bottom,
-      #ffffff 0%,
-      #f5be11 100%
-    );
+    background: linear-gradient(to bottom, #ffffff 0%, #f5be11 100%);
   }
-  
+
   .navbar {
     flex-direction: column;
     text-align: center;
     gap: 1rem;
     padding: 0 1rem;
   }
-  
+
   header h1 {
     font-size: 1.4rem;
   }
-  
+
   main#content {
     padding: 1rem;
   }
-  
+
   main h2 {
     font-size: 1.8rem;
     margin-bottom: 2rem;
   }
-  
+
   main > form {
     padding: 1.5rem;
     flex-direction: column;
     gap: 1rem;
   }
-  
+
   thead th,
   tbody td {
     padding: 0.8rem 0.4rem;
     font-size: 0.8rem;
   }
-  
+
   .site-footer {
     height: 90px;
   }
-  
+
   .footer-row {
     flex-direction: column;
     text-align: center;
     gap: 0.5rem;
   }
-  
+
   .footer-links {
     justify-content: center;
   }
@@ -389,31 +386,36 @@ tbody td a[target="_blank"]:hover {
     padding-top: 130px;
     padding-bottom: 110px;
   }
-  
+
   header {
     height: 130px;
   }
-  
+
   header h1 {
     font-size: 1.2rem;
   }
-  
+
   main h2 {
     font-size: 1.5rem;
   }
-  
+
   main > form {
     padding: 1rem;
     max-width: 95vw;
   }
-  
+
   thead th,
   tbody td {
     padding: 0.6rem 0.2rem;
     font-size: 0.7rem;
   }
-  
+
   .site-footer {
     height: 110px;
   }
+}
+
+/* 返回區塊 */
+.return-section {
+  border-radius: 15px;
 }

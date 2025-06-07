@@ -10,7 +10,7 @@
     <header>
         <div class="navbar">
             <a href="main.php" alt="Logo" class="logo">
-                <img src="../images/logo.png" alt="Logo" class="logo">
+                <img src="../asset/images/logo.png" alt="Logo" class="logo">
             </a>
             <h1>高雄大學激發學生創意競賽管理系統</h1>
         </div>
@@ -33,29 +33,24 @@
         // $result = mysqli_query($link, $sql);
         // $name = mysqli_fetch_array($result);
     if (count($data) === 1) {
-        echo '<h2>歡迎，'.$filename.' 管理員！</h2>';
+        echo '<h2>公告資料所</h2>';
         echo '
         <div class="admin-buttons">
-            <form action="view_students.php" method="POST">
-                <input type="hidden" name="username" value="' . $_POST['username'] . '">
-                <input type="hidden" name="password" value="' . $_POST['password'] . '">
-                <button type="submit">查詢隊伍資料</button>
-            </form>
-            <form action="admin_judges.php" method="POST">
-                <input type="hidden" name="username" value="' . $_POST['username'] . '">
-                <input type="hidden" name="password" value="' . $_POST['password'] . '">
-                <button type="submit">查詢評審資料</button>
-            </form>
-            <form action="view_teachers.php" method="POST">
-                <input type="hidden" name="username" value="' . $_POST['username'] . '">
-                <input type="hidden" name="password" value="' . $_POST['password'] . '">
-                <button type="submit">查詢指導老師資料</button>
-            </form>
             <form action="announcements.php" method="POST">
                 <input type="hidden" name="username" value="' . $_POST['username'] . '">
                 <input type="hidden" name="password" value="' . $_POST['password'] . '">
-                <button type="submit">公告重要事項</button>
+                <button type="submit">公告</button>
             </form>
+            <form action="main.php" method="POST">
+                <input type="hidden" name="username" value="' . $_POST['username'] . '">
+                <input type="hidden" name="password" value="' . $_POST['password'] . '">
+                <button type="submit">修改</button>
+            </form> 
+            <form action="main.php" method="POST">
+                <input type="hidden" name="username" value="' . $_POST['username'] . '">
+                <input type="hidden" name="password" value="' . $_POST['password'] . '">
+                <button type="submit">修改</button>
+            </form> 
             </div>';
     } else {
         echo '<h2>登入失敗，請返回並重試。</h2>';

@@ -27,35 +27,58 @@
     const teamId = "<?php echo $username; ?>";
 
     async function loadFeedback() {
-      const { data, error } = await supabaseClient
-        .from('評分資料')
-        .select('創意性, 完整性, 實用性, 評語')
-        .eq('隊伍編號', teamId);
+    const { data, error } = await supabaseClient
+      .from('指導老師')
+      .select('身分證字號, 隊伍編號, 參加年份')
+      .eq('身分證字號', teamId);
 
-      const list = document.getElementById('feedbackList');
-      if (error || !data) {
-        list.innerHTML = `<p style="color:red;">讀取失敗：${error?.message || '未知錯誤'}</p>`;
-        return;
-      }
-
-      if (data.length === 0) {
-        list.innerHTML = '<p style="text-align:center; color:gray;">此隊伍尚無評分資料。</p>';
-        return;
-      }
-
-      list.innerHTML = '';
-      data.forEach((row) => {
-        const box = document.createElement('div');
-        box.className = 'feedback-box';
-        box.innerHTML = `
-          <p><strong>創意性：</strong> ${row.創意性 ?? '—'}</p>
-          <p><strong>完整性：</strong> ${row.完整性 ?? '—'}</p>
-          <p><strong>實用性：</strong> ${row.實用性 ?? '—'}</p>
-          <p><strong>評語：</strong> ${row.評語?.trim() || '（無）'}</p>
-        `;
-        list.appendChild(box);
-      });
+    const teamData = data[0];
+    if (!teamData.隊伍編號) {
+      document.getElementById('feedbackList').innerHTML = '<p style="color:red;">找不到該指導老師的隊伍資料。</p>';
+      return;
     }
+
+    const { data: feedbackData, error: feedbackError } = await supabaseClient
+      .from('評分資料')
+      .select('*')
+      .eq('隊伍編號', teamData.隊伍編號)
+      .eq('參加年份', teamData.參加年份);
+
+    if (feedbackError || feedbackData.length === 0) {
+      document.getElementById('feedbackList').innerHTML = '<p>尚無評分資料。</p>';
+      return;
+    }
+
+    // 🔍 取得所有評審身分證字號
+    const reviewerIds = [...new Set(feedbackData.map(item => item.身分證字號))];
+
+    // 🔍 查出所有評審姓名
+    const { data: reviewers, error: reviewerError } = await supabaseClient
+      .from('評審委員')
+      .select('身分證字號, 姓名')
+      .in('身分證字號', reviewerIds);
+
+    // 建立身分證 => 姓名的對照表
+    const reviewerMap = {};
+    reviewers.forEach(r => {
+      reviewerMap[r.身分證字號] = r.姓名;
+    });
+
+    // ✅ 顯示資料
+    const listHTML = feedbackData.map((item, index) => `
+      <div class="feedback-item">
+        <h4>評審：${reviewerMap[item.身分證字號] || '未知評審'}</h4>
+        <p><strong>創意性：</strong> ${item.創意性}</p>
+        <p><strong>完整性：</strong> ${item.完整性}</p>
+        <p><strong>實用性：</strong> ${item.實用性}</p>
+        <p><strong>評語：</strong> ${item.評語}</p>
+        <hr>
+      </div>
+    `).join('');
+
+    document.getElementById('feedbackList').innerHTML = listHTML;
+  }
+
 
     function goBack() {
       const form = document.createElement('form');
@@ -74,3 +97,5 @@
   </script>
 </body>
 </html>
+
+  

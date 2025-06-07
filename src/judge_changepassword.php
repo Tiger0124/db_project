@@ -2,7 +2,8 @@
   $username = $_POST["username"] ?? '';
   $password = $_POST["password"] ?? '';
   if ($username === '' || $password === '') {
-    echo "<h2 style='color:red; text-align:center;'>請從教師主頁正確登入後進入此頁面。</h2>";
+    echo "<h2 style='color:red; text-align:center;'>請從評審主頁正確登入後進入此頁面。</h2>";
+    echo '<button onclick="window.location.href=\'main.php\'" style="display:block; margin: 0 auto; padding: 10px 20px; font-size: 16px;">返回主頁</button>';
     exit;
   }
 ?>
@@ -11,7 +12,7 @@
 <head>
   <meta charset="UTF-8">
   <title>更改密碼</title>
-  <link rel="stylesheet" href="../asset/teacher_changepassword.css">
+  <link rel="stylesheet" href="../asset/judge_changepassword.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
@@ -38,8 +39,9 @@
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhsb216cmhtempqZmptc3ZxeGRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg0OTk3NTcsImV4cCI6MjA2NDA3NTc1N30.AaGloZjC_aqW3OQkn4aDxy7SGymfTsJ6JWNWJYcYbGo'
     );
 
-    const teamId = <?php echo json_encode($username); ?>;
-    const oldPasswordPHP = <?php echo json_encode($password); ?>;
+    const username = <?php echo json_encode($username); ?>;
+    const password = <?php echo json_encode($password); ?>;
+    const oldPasswordPHP = password;
 
     document.getElementById("changePwForm").addEventListener("submit", async function (e) {
       e.preventDefault();
@@ -64,26 +66,26 @@
       }
 
       const { error } = await supabase
-        .from('指導老師')
+        .from('評審委員')
         .update({ 密碼: newPassword })
-        .eq('身分證字號', teamId)
+        .eq('身分證字號', username)
         .eq('密碼', oldPassword);
 
       if (error) {
         alert("密碼更新失敗：" + error.message);
       } else {
         alert("密碼已更新，請重新登入。");
-        window.location.href="teacher.php";
+        window.location.href="judge.php";
       }
     });
 
     function goBack(newPw = oldPasswordPHP) {
       const form = document.createElement("form");
       form.method = "post";
-      form.action = "teacher_dashboard.php";
+      form.action = "judge_dashboard.php";
 
       form.innerHTML = `
-        <input type="hidden" name="username" value="${teamId}">
+        <input type="hidden" name="username" value="${username}">
         <input type="hidden" name="password" value="${newPw}">
       `;
       document.body.appendChild(form);

@@ -5,7 +5,8 @@
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   height: 100vh;
   width: 100vw;
   margin: 0;
@@ -36,12 +37,12 @@ header {
     to right,
     #ffffff 0%,
     #ffffff 30%,
-    #FFD700 60%,
+    #ffd700 60%,
     #f5be11 100%
   );
   color: #2c3e50;
   padding: 1rem 0;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   z-index: 1000;
 }
 
@@ -58,7 +59,7 @@ header {
 .logo img {
   height: 50px;
   width: auto;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 }
 
 header h1 {
@@ -66,7 +67,7 @@ header h1 {
   font-weight: 600;
   letter-spacing: 1px;
   color: #2c3e50;
-  text-shadow: 0 1px 3px rgba(255,255,255,0.8);
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8);
 }
 
 /* Main 內容區塊 */
@@ -89,7 +90,7 @@ main {
   max-width: 1000px;
   background: white;
   border-radius: 16px;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
   padding: 3rem;
   margin: 0 auto;
 }
@@ -130,7 +131,7 @@ h2 {
   align-items: center;
   justify-content: center;
   padding: 2rem 1.5rem;
-  background: linear-gradient(135deg, #FFD700 0%, #f5be11 100%);
+  background: linear-gradient(135deg, #ffd700 0%, #f5be11 100%);
   color: #2c3e50;
   border: none;
   border-radius: 15px;
@@ -156,15 +157,15 @@ h2 {
 /* 錯誤訊息樣式 */
 body > h2 {
   text-align: center;
-  color: #dc3545;
+  color: #695586;
   font-size: 2rem;
   margin: 2rem auto;
   padding: 2rem;
   background: white;
-  border-left: 4px solid #dc3545;
+  border-left: 4px solid #6e588c;
   border-radius: 8px;
   max-width: 800px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 body > p {
@@ -176,7 +177,7 @@ body > p {
   background: white;
   border-radius: 8px;
   max-width: 600px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 /* 返回按鈕容器 */
@@ -191,7 +192,7 @@ body > p {
 .system-button {
   display: inline-block;
   padding: 1.2rem 2.5rem;
-  background: linear-gradient(135deg, #FFD700 0%, #f5be11 100%);
+  background: linear-gradient(135deg, #ffd700 0%, #f5be11 100%);
   color: #2c3e50;
   text-decoration: none;
   border-radius: 12px;
@@ -289,40 +290,36 @@ body > p {
     padding-top: 110px;
     padding-bottom: 90px;
   }
-  
+
   header {
     height: 110px;
-    background: linear-gradient(
-      to bottom,
-      #ffffff 0%,
-      #f5be11 100%
-    );
+    background: linear-gradient(to bottom, #ffffff 0%, #f5be11 100%);
   }
-  
+
   .navbar {
     flex-direction: column;
     text-align: center;
     gap: 1rem;
     padding: 0 1rem;
   }
-  
+
   header h1 {
     font-size: 1.4rem;
   }
-  
+
   main {
     padding: 1rem;
   }
-  
+
   .content-wrapper {
     padding: 2rem;
   }
-  
+
   h2 {
     font-size: 1.8rem;
     margin-bottom: 2rem;
   }
-  
+
   .admin-buttons {
     grid-template-columns: 1fr; /* 小螢幕時改為垂直排列 */
     grid-template-rows: auto;
@@ -330,35 +327,35 @@ body > p {
     max-width: 90vw;
     padding: 2rem;
   }
-  
+
   .admin-buttons button {
     font-size: 1rem;
     padding: 1.5rem;
     min-height: 80px;
     min-width: auto;
   }
-  
+
   body > h2 {
     font-size: 1.6rem;
     padding: 1.5rem;
   }
-  
+
   body > p {
     font-size: 1.1rem;
     padding: 1rem;
     margin: 1rem auto;
   }
-  
+
   .site-footer {
     height: 90px;
   }
-  
+
   .footer-row {
     flex-direction: column;
     text-align: center;
     gap: 0.5rem;
   }
-  
+
   .footer-links {
     justify-content: center;
   }
@@ -369,45 +366,45 @@ body > p {
     padding-top: 130px;
     padding-bottom: 110px;
   }
-  
+
   header {
     height: 130px;
   }
-  
+
   header h1 {
     font-size: 1.2rem;
   }
-  
+
   h2 {
     font-size: 1.5rem;
   }
-  
+
   .content-wrapper {
     padding: 1.5rem;
   }
-  
+
   .admin-buttons {
     padding: 1.5rem;
     gap: 1rem;
     max-width: 95vw;
   }
-  
+
   .admin-buttons button {
     font-size: 0.9rem;
     padding: 1.2rem;
     min-height: 70px;
   }
-  
+
   .system-button {
     padding: 1rem 2rem;
     font-size: 1.1rem;
   }
-  
+
   body > h2 {
     font-size: 1.4rem;
     padding: 1rem;
   }
-  
+
   .site-footer {
     height: 110px;
   }
@@ -419,12 +416,12 @@ body > p {
     max-width: 1000px;
     gap: 2.5rem;
   }
-  
+
   .admin-buttons button {
     font-size: 1.2rem;
     min-height: 120px;
   }
-  
+
   h2 {
     font-size: 2.5rem;
   }
