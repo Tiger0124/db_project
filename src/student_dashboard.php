@@ -71,7 +71,25 @@
             // 如果報名進度是未報名，則禁用上傳作品按鈕
             echo '<button type="submit" disabled>請先報名</button>';
         }
-        else if ($members[0]['報名進度'] != '退件')
+        else if ($members[0]['報名進度'] == '退件')
+        {
+            echo '
+            <form action="student_upload.php" method="POST">
+                <input type="hidden" name="username" value="' . $_POST['username'] . '">
+                <input type="hidden" name="password" value="' . $_POST['password'] . '">
+                <button type="submit">重新報名</button>
+            </form>';
+        }
+        else if ($members[0]['報名進度'] == '送出報名' or $members[0]['報名進度'] == '完成報名')
+        {
+            echo '
+            <form action="student_upload.php" method="POST">
+                <input type="hidden" name="username" value="' . $_POST['username'] . '">
+                <input type="hidden" name="password" value="' . $_POST['password'] . '">
+                <button type="submit" disabled>已上傳作品</button>
+            </form>';
+        } 
+        else
         {
             echo '
             <form action="student_upload.php" method="POST">
@@ -80,29 +98,32 @@
                 <button type="submit">上傳作品</button>
             </form>';
         } 
-        else {
-            echo '
-        <form action="student_reregister.php" method="POST">
-            <input type="hidden" name="username" value="' . $_POST['username'] . '">
-            <input type="hidden" name="password" value="' . $_POST['password'] . '">
-            <button type="submit">重新報名</button>
-        </form>';
-        }
 
 
         echo '
-
-        <form action="student_history_login.php" method="POST">
+        <form action="student_history.php" method="POST">
             <input type="hidden" name="username" value="' . $_POST['username'] . '">
             <input type="hidden" name="password" value="' . $_POST['password'] . '">
             <button type="submit">歷屆作品瀏覽</button>
-        </form>
-        <form action="student_register.php" method="POST">
-            <input type="hidden" name="username" value="' . $_POST['username'] . '">
-            <input type="hidden" name="password" value="' . $_POST['password'] . '">
-            <button type="submit">報名參賽</button>
-        </form>
-    </div>';
+        </form>';
+
+        if($members[0]['報名進度'] == '送出報名' or $members[0]['報名進度'] == '完成報名'){
+            echo '
+            <form action="student_register.php" method="POST">
+                <input type="hidden" name="username" value="' . $_POST['username'] . '">
+                <input type="hidden" name="password" value="' . $_POST['password'] . '">
+                <button type="submit" disabled>已報名參賽</button>
+            </form>';
+        }
+        else{
+            echo '
+            <form action="student_register.php" method="POST">
+                <input type="hidden" name="username" value="' . $_POST['username'] . '">
+                <input type="hidden" name="password" value="' . $_POST['password'] . '">
+                <button type="submit">報名參賽</button>
+            </form>';
+        }
+    '</div>';
     } else {
         echo '<h2>登入失敗，請返回並重試。</h2>';
         echo '<P>隊伍帳號密碼提示</P>';
