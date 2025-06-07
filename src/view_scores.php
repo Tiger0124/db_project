@@ -20,7 +20,7 @@
     <?php
     // 顯示刪除結果訊息
     if (isset($_POST['delete_success']) && $_POST['delete_success'] === '1') {
-        echo '<div class="alert alert-success" style="background-color: #d4edda; color: #155724; padding: 10px; margin: 10px 0; border: 1px solid #c3e6cb; border-radius: 4px;">隊伍及相關評分資料刪除成功！</div>';
+        echo '<div class="alert alert-success" style="background-color: #d4edda; color: #155724; padding: 10px; margin: 10px 0; border: 1px solid #c3e6cb; border-radius: 4px;">隊伍的相關評分資料刪除成功！</div>';
     }
     if (isset($_POST['delete_error'])) {
         echo '<div class="alert alert-error" style="background-color: #f8d7da; color: #721c24; padding: 10px; margin: 10px 0; border: 1px solid #f5c6cb; border-radius: 4px;">刪除失敗：' . htmlspecialchars($_POST['delete_error']) . '</div>';
@@ -48,40 +48,6 @@
         <input type="hidden" name="password" value="<?php echo isset($_POST['password']) ? htmlspecialchars($_POST['password'], ENT_QUOTES, 'UTF-8') : ''; ?>">
     </form>
 
-    <!-- 編輯表單 (預設隱藏) -->
-    <div id="editForm" class="edit-form-container" style="display: none;">
-        <div class="edit-form">
-            <h3>編輯評分資料</h3>
-            <form id="updateForm" method="POST" action="update_score.php">
-                <input type="hidden" id="edit_team_id" name="team_id" value="">
-                <input type="hidden" name="username" value="<?php echo isset($_POST['username']) ? htmlspecialchars($_POST['username'], ENT_QUOTES, 'UTF-8') : ''; ?>">
-                <input type="hidden" name="password" value="<?php echo isset($_POST['password']) ? htmlspecialchars($_POST['password'], ENT_QUOTES, 'UTF-8') : ''; ?>">
-                <input type="hidden" name="year" value="<?php echo isset($_POST['year']) ? htmlspecialchars($_POST['year'], ENT_QUOTES, 'UTF-8') : ''; ?>">
-                
-                <div class="form-group">
-                    <label for="edit_team_name">隊伍名稱:</label>
-                    <input type="text" id="edit_team_name" name="team_name" readonly>
-                </div>
-                
-                <div class="form-group">
-                    <label for="edit_rank">名次:</label>
-                    <input type="number" id="edit_rank" name="rank" min="1" required>
-                </div>
-                
-                <div class="form-group">
-                    <label>評審評分:</label>
-                    <div id="judge_scores_container">
-                        <!-- 動態生成的評審評分欄位 -->
-                    </div>
-                </div>
-                
-                <div class="form-buttons">
-                    <button type="submit" class="btn-save">儲存</button>
-                    <button type="button" class="btn-cancel" onclick="closeEditForm()">取消</button>
-                </div>
-            </form>
-        </div>
-    </div>
 
     <div class="rounded-box">
     <table style="width:100%">
@@ -316,7 +282,7 @@
     }
 
     function confirmDelete(teamId, teamName) {
-        if (confirm('確定要刪除隊伍「' + teamName + '」的所有評分資料嗎？\n此操作將同時刪除該隊伍的所有相關資料，且無法復原！')) {
+        if (confirm('確定要刪除隊伍「' + teamName + '」的所有評分資料嗎？')) {
             // 創建隱藏表單來提交刪除請求
             var form = document.createElement('form');
             form.method = 'POST';

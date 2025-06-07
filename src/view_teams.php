@@ -176,6 +176,16 @@
                         console.error("Error deleting teacher data:", teacherDeleteError);
                         return;
                     }
+                    // 刪除評分資料
+                    const { error: scoreDeleteError } = await supabaseClient
+                        .from('評分資料')
+                        .delete()
+                        .eq('隊伍編號', teamId)
+                        .eq('參加年份', y);
+                    if (scoreDeleteError) {
+                        console.error("Error deleting score data:", scoreDeleteError);
+                        return;
+                    }
                     // 最後刪隊伍
                     const { error: teamDeleteError } = await supabaseClient
                         .from('隊伍')

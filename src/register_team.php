@@ -106,15 +106,35 @@
             try {
                 $response = $supabaseClient->get("學生", [
                     'query' => [
-                        '學號' => "eq.$student_num"
+                        '學號' => "eq.$student_num",
+                        '身分證字號' => "eq.$student_id"
                     ]
                 ]);
                 $data = json_decode($response->getBody(), true);
-
                 if (empty($data)) {
-                    echo "alert('學號 {$student_num} 有誤，找不到此學生資料');";
-                    echo "window.history.back();";
-                    echo '</script>';
+                    echo`
+                    <script>
+                        alert('學號 {$student_num} 有誤，找不到此學生資料');
+
+                        const form = document.createElement("form");
+                        form.method = "POST";
+                        form.action = "student_dashboard.php";
+
+                        const usernameField = document.createElement("input");
+                        usernameField.type = "hidden";
+                        usernameField.name = "username";
+                        usernameField.value = "{$_POST['username']}";
+
+                        const passwordField = document.createElement("input");
+                        passwordField.type = "hidden";
+                        passwordField.name = "password";
+                        passwordField.value = "{$_POST['password']}";
+
+                        form.appendChild(usernameField);
+                        form.appendChild(passwordField);
+                        document.body.appendChild(form);
+                        form.submit();
+                    </script>`;
                     exit;
                 }
 

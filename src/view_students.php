@@ -324,7 +324,9 @@
                 alert('請選擇至少一個學生！');
                 return;
             }
-
+            if (!confirm('確定要刪除選擇的學生嗎？此操作無法撤銷。')) {
+                return;
+            }
             const studentIds = Array.from(checkboxes).map(checkbox => checkbox.closest('tr').children[1].textContent);
 
             supabaseClient
