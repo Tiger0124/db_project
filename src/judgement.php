@@ -8,15 +8,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>高雄大學創意競賽管理系統 - 隊伍列表與評分</title>
     <link rel="stylesheet" href="../asset/judgement.css">
-
-    <script>
+    <<<<<<< HEAD=======<script>
         src = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.0.0/dist/umd/supabase.min.js";
-
         function goBack() {
-            const form = document.createElement("form");
-            form.method = "post";
-            form.action = "judge_dashboard.php";
+        const form = document.createElement("form");
+        form.method = "post";
+        form.action = "judge_dashboard.php";
+        >>>>>>> tiger_branch
 
+        <script>
             function goBack() {
                 const form = document.createElement("form");
                 form.method = "post";
@@ -29,7 +29,7 @@
                 document.body.appendChild(form);
                 form.submit();
             }
-    </script>
+        </script>
 </head>
 
 <body>
