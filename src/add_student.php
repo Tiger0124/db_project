@@ -12,8 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'];
     $phone = $_POST['phone'];
     $participate_year = $_POST['participate_year'];
-    $team_id = trim($_POST['team_id']);
-    
+    $team_id = trim($_POST['team_id']);    
     try {
         // 驗證必要欄位
         if (empty($student_id) || empty($student_name) || empty($id_number) || empty($participate_year) || empty($team_id)) {
