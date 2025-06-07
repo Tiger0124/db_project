@@ -1,20 +1,23 @@
+<?php include 'darkmode.php'; ?>
 <?php
-  $username = $_POST["username"] ?? '';
-  $password = $_POST["password"] ?? '';
-  if ($username === '' || $password === '') {
-    echo "<h2 style='color:red; text-align:center;'>請從評審主頁正確登入後進入此頁面。</h2>";
-    echo '<button onclick="window.location.href=\'main.php\'" style="display:block; margin: 0 auto; padding: 10px 20px; font-size: 16px;">返回主頁</button>';
-    exit;
-  }
+$username = $_POST["username"] ?? '';
+$password = $_POST["password"] ?? '';
+if ($username === '' || $password === '') {
+  echo "<h2 style='color:red; text-align:center;'>請從評審主頁正確登入後進入此頁面。</h2>";
+  echo '<button onclick="window.location.href=\'main.php\'" style="display:block; margin: 0 auto; padding: 10px 20px; font-size: 16px;">返回主頁</button>';
+  exit;
+}
 ?>
 <!DOCTYPE html>
 <html lang="zh-Hant">
+
 <head>
   <meta charset="UTF-8">
   <title>更改密碼</title>
   <link rel="stylesheet" href="../asset/judge_changepassword.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
+
 <body>
   <div class="container">
     <h2>更改密碼</h2>
@@ -43,7 +46,7 @@
     const password = <?php echo json_encode($password); ?>;
     const oldPasswordPHP = password;
 
-    document.getElementById("changePwForm").addEventListener("submit", async function (e) {
+    document.getElementById("changePwForm").addEventListener("submit", async function(e) {
       e.preventDefault();
 
       const oldPassword = document.getElementById("oldPassword").value;
@@ -65,9 +68,13 @@
         return;
       }
 
-      const { error } = await supabase
+      const {
+        error
+      } = await supabase
         .from('評審委員')
-        .update({ 密碼: newPassword })
+        .update({
+          密碼: newPassword
+        })
         .eq('身分證字號', username)
         .eq('密碼', oldPassword);
 
@@ -75,7 +82,7 @@
         alert("密碼更新失敗：" + error.message);
       } else {
         alert("密碼已更新，請重新登入。");
-        window.location.href="judge.php";
+        window.location.href = "judge.php";
       }
     });
 
@@ -93,4 +100,5 @@
     }
   </script>
 </body>
+
 </html>

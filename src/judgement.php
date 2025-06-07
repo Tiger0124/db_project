@@ -1,26 +1,30 @@
+<?php include 'darkmode.php'; ?>
+
 <!DOCTYPE html>
 <html lang="zh-TW">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>高雄大學創意競賽管理系統 - 隊伍列表與評分</title>
     <link rel="stylesheet" href="../asset/judgement.css">
-    
-    <script>
-    function goBack() {
-        const form = document.createElement("form");
-        form.method = "post";
-        form.action = "judge_dashboard.php";
 
-        form.innerHTML = `
+    <script>
+        function goBack() {
+            const form = document.createElement("form");
+            form.method = "post";
+            form.action = "judge_dashboard.php";
+
+            form.innerHTML = `
             <input type="hidden" name="username" value="<?php echo htmlspecialchars($_POST['username']); ?>">
             <input type="hidden" name="password" value="<?php echo htmlspecialchars($_POST['password']); ?>">
         `;
-        document.body.appendChild(form);
-        form.submit();
-    }
+            document.body.appendChild(form);
+            form.submit();
+        }
     </script>
 </head>
+
 <body>
     <header>
         <div class="navbar">
@@ -34,22 +38,22 @@
     <main id="content">
         <section class="team-table">
             <h2>隊伍列表</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>隊伍名稱</th>
-                            <th>作品名稱</th>
-                            <th>作品說明書</th>
-                            <th>海報</th>
-                            <th>影片網址</th>
-                            <th>程式碼網址</th>
-                            <th>創意性</th>
-                            <th>實用性</th>
-                            <th>完整性</th>
-                            <th>評語</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+            <table>
+                <thead>
+                    <tr>
+                        <th>隊伍名稱</th>
+                        <th>作品名稱</th>
+                        <th>作品說明書</th>
+                        <th>海報</th>
+                        <th>影片網址</th>
+                        <th>程式碼網址</th>
+                        <th>創意性</th>
+                        <th>實用性</th>
+                        <th>完整性</th>
+                        <th>評語</th>
+                    </tr>
+                </thead>
+                <tbody>
                     <form action="submit_score.php" method="POST">
                         <?php
                         include 'conn.php';
@@ -159,12 +163,12 @@
                                 </td>
                             </tr>
                         <?php endforeach; ?>
-                    </tbody>
-                </table>
-                <div style="text-align: right;">
-                    <button type="submit">提交評分</button>
-                </div>
-                </form> 
+                </tbody>
+            </table>
+            <div style="text-align: right;">
+                <button type="submit">提交評分</button>
+            </div>
+            </form>
         </section>
         <form action="judge_dashboard.php" method="POST">
             <input type="hidden" name="username" value="<?php echo $_POST['username']; ?>">
@@ -175,15 +179,16 @@
 </body>
 <footer class="site-footer">
     <div class="footer-content">
-        <p>&copy; Copyright © 2025 XC Lee Tiger Lin  How Ho. All rights reserved.</p>
+        <p>&copy; Copyright © 2025 XC Lee Tiger Lin How Ho. All rights reserved.</p>
         <div class="footer-row">
-        <div class="footer-container">
-            <p>聯絡我們 : <a href="mailto:wylin@nuk.edu.tw">wylin@nuk.edu.tw</a></p>
-        </div>
-        <ul class="footer-links">
-            <li><a href="https://github.com/Tiger0124/db_project.git">關於我們</a></li>
-        </ul>
+            <div class="footer-container">
+                <p>聯絡我們 : <a href="mailto:wylin@nuk.edu.tw">wylin@nuk.edu.tw</a></p>
+            </div>
+            <ul class="footer-links">
+                <li><a href="https://github.com/Tiger0124/db_project.git">關於我們</a></li>
+            </ul>
         </div>
     </div>
 </footer>
+
 </html>
