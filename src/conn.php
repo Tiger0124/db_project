@@ -14,6 +14,6 @@ $supabaseClient = new Client([
         'apikey' => $supabaseApiKey,
         'Authorization' => 'Bearer ' . $supabaseApiKey,
         'Accept' => 'application/json',
-    ]
+    ],
 ]);
 ?>

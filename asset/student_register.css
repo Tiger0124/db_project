@@ -271,7 +271,8 @@ label:first-of-type {
 
 /* 輸入框樣式 */
 input[type="text"],
-input[type="email"] {
+input[type="email"]
+{
   width: 100%;
   padding: 1rem;
   border: 2px solid transparent;
@@ -281,10 +282,15 @@ input[type="email"] {
   background: rgba(255, 255, 255, 0.95);
   transition: all 0.3s ease;
   margin-bottom: 1rem;
+  box-sizing: border-box;
+  appearance: none;        /* 清除預設下拉樣式 */
+  -webkit-appearance: none;
+  -moz-appearance: none;
 }
 
 input[type="text"]:focus,
-input[type="email"]:focus {
+input[type="email"]:focus
+{
   outline: none;
   border-color: #FFD700;
   background: white;
@@ -461,7 +467,7 @@ button[type="submit"]:hover {
   .student-info {
     padding: 1.5rem;
   }
-  
+
   input[type="text"],
   input[type="email"] {
     padding: 0.8rem;

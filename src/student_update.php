@@ -62,27 +62,6 @@
                 }
             }
 
-            // Update professor data
-            if (isset($_POST['professor_id'])) {
-                $professor_id = $_POST['professor_id'];
-                $professor_data = [
-                    '姓名' => $_POST['professor_name'],
-                    '電子郵件' => $_POST['professor_email'],
-                    '電話' => $_POST['professor_phone']
-                ];
-
-                $response = $supabaseClient->patch('指導老師', [
-                    'query' => [
-                        '身分證字號' => 'eq.' . $professor_id,
-                        '隊伍編號' => 'eq.' . $team_id
-                    ],
-                    'json' => $professor_data
-                ]);
-
-                $data = json_decode($response->getBody(), true);
-
-                $updated_items[] = "指導老師 (" . $professor_data['姓名'] . ")";
-            }
         } catch (Exception $e) {
             $success = false;
             $error_messages[] = $e->getMessage();
