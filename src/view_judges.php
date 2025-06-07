@@ -273,10 +273,10 @@
                                 echo "</tr>";
                             }
                         } else {
-                            echo "<tr><td colspan='6'>查無 " . htmlspecialchars($selectedYear, ENT_QUOTES, 'UTF-8') . " 年度（" . htmlspecialchars($session, ENT_QUOTES, 'UTF-8') . "）的評審委員資料。</td></tr>";
+                            echo "<tr><td colspan='7'>查無 " . htmlspecialchars($selectedYear, ENT_QUOTES, 'UTF-8') . " 年度（" . htmlspecialchars($session, ENT_QUOTES, 'UTF-8') . "）的評審委員資料。</td></tr>";
                         }
                     } else {
-                        echo "<tr><td colspan='6'>查詢評審委員資料失敗，HTTP 狀態碼：" . $status_code . "</td></tr>";
+                        echo "<tr><td colspan='7'>查詢評審委員資料失敗，HTTP 狀態碼：" . $status_code . "</td></tr>";
                     }
                 } catch (GuzzleHttp\Exception\RequestException $e) {
                     echo "<tr><td colspan='6'>Guzzle 請求錯誤: ";

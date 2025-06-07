@@ -65,8 +65,9 @@
                 <input type="hidden" name="year" value="<?php echo isset($_POST['year']) ? htmlspecialchars($_POST['year'], ENT_QUOTES, 'UTF-8') : ''; ?>">
                 
                 <div class="form-group">
-                    <label for="add_id_number">身分證字號:</label>
-                    <input type="text" id="add_id_number" name="id_number" required maxlength="10" pattern="[A-Z][0-9]{9}" placeholder="例：A123456789">
+                    <label for="id_number">身分證字號：</label>
+                    <input type="text" id="id_number" name="id_number" required 
+                        placeholder="請輸入身分證字號（例：A123456789）">
                 </div>
                 
                 <div class="form-group">
@@ -81,7 +82,7 @@
                 
                 <div class="form-group">
                     <label for="add_email">電子郵件:</label>
-                    <input type="email" id="add_email" name="email" required>
+                    <input type="email" id="add_email" name="email" placeholder="例：A123456789" required >
                 </div>
                 
                 <div class="form-group">

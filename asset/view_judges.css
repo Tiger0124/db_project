@@ -993,3 +993,16 @@ table td:last-child {
   border: 1px solid #f5c6cb;
 }
 
+/* 自動為必填欄位添加紅色星號 */
+.form-group.required label::after {
+  content: " *";
+  color: #dc3545;
+  font-weight: bold;
+}
+
+/* 或者針對有required屬性的input的label */
+label:has(+ input[required])::after {
+  content: " *";
+  color: #dc3545;
+  font-weight: bold;
+}
