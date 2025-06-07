@@ -105,16 +105,7 @@
 
     document.getElementById('teamContent').innerHTML = html;
 
-        if(team.報名進度 === '完成報名') {
-            const feedbackButton = document.createElement('button');
-            feedbackButton.textContent = '查看評分';
-            feedbackButton.className = 'feedback-btn';
-            feedbackButton.onclick = () => {
-                window.location.href = `teacher_viewfeedback.php?username=${encodeURIComponent(name)}`;
-            };
-            document.getElementById('teamContent').appendChild(feedbackButton);
-        }
-        else if(team.報名進度 === '完成送件') {
+        if(team.報名進度 === '完成送件') {
             const confirmButton = document.createElement('button');
             confirmButton.textContent = '確認報名';
             confirmButton.className = 'confirm-btn';
