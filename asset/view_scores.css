@@ -716,3 +716,31 @@ table td:last-child {
   color: #721c24;
   border: 1px solid #f5c6cb;
 }
+
+.score-detail {
+  max-height: 150px;
+  overflow-y: auto;
+  text-align: left;
+}
+
+.score-item {
+  margin-bottom: 8px;
+  padding: 5px;
+  background-color: #f8f9fa;
+  border-radius: 3px;
+  font-size: 12px;
+}
+
+.score-summary {
+  text-align: left;
+  line-height: 1.4;
+}
+
+.score-summary strong {
+  color: #333;
+}
+
+.no-score {
+  color: #999;
+  font-style: italic;
+}
