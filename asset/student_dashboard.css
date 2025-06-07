@@ -14,10 +14,15 @@ html, body {
 }
 
 body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
   font-family: "Microsoft JhengHei", "Noto Sans TC", Arial, sans-serif;
-  background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+  background-color: #f5f5f5;
   color: #333;
   line-height: 1.6;
+  padding-top: 100px;
+  padding-bottom: 80px;
 }
 
 /* Header 樣式 - 固定在頂部 */
@@ -64,6 +69,222 @@ header h1 {
   text-shadow: 0 1px 3px rgba(255,255,255,0.8);
 }
 
+/* Main 內容區塊 */
+main#content {
+  flex: 1;
+  width: 100vw;
+  padding: 3rem 2rem 2rem 2rem;
+  background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* 歡迎區塊 */
+.welcome-section {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto 3rem auto;
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  border-radius: 20px;
+  padding: 3rem;
+  box-shadow: 0 15px 40px rgba(40, 167, 69, 0.4);
+  color: white;
+  text-align: center;
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.welcome-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.student-icon {
+  font-size: 4rem;
+  animation: bounce 1s ease-in-out 0.5s;
+}
+
+.welcome-title {
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.status-badge {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 1rem 2rem;
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.status-label {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.status-value {
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #FFD700;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+/* 狀態顏色 */
+.status-unregister .status-value {
+  color: #ff6b6b;
+}
+
+.status-reject .status-value {
+  color: #ffa726;
+}
+
+/* 儀表板容器 */
+.dashboard-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 20px;
+  padding: 3rem;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+  animation: fadeInUp 0.6s ease-out 0.2s both;
+}
+
+/* 按鈕網格 */
+.buttons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  place-items: center;
+}
+
+/* 儀表板按鈕 */
+.dashboard-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.5rem;
+  border: none;
+  border-radius: 15px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  min-height: 120px;
+  min-width: 250px;
+  width: 100%;
+  height: 100%;
+  gap: 1rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.dashboard-btn:hover {
+  transform: translateY(-4px) scale(1.03);
+  text-decoration: none;
+  color: inherit;
+}
+
+/* 按鈕圖示 */
+.btn-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.btn-text {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+/* 不同類型按鈕樣式 */
+.edit-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+.edit-btn:hover {
+  box-shadow: 0 12px 35px rgba(102, 126, 234, 0.6);
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+  color: white;
+}
+
+.upload-btn {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+  box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
+}
+
+.upload-btn:hover {
+  box-shadow: 0 12px 35px rgba(40, 167, 69, 0.6);
+  background: linear-gradient(135deg, #20c997 0%, #28a745 100%);
+  color: white;
+}
+
+.history-btn {
+  background: linear-gradient(135deg, #FFD700 0%, #f5be11 100%);
+  color: #2c3e50;
+  box-shadow: 0 8px 25px rgba(245, 190, 17, 0.4);
+}
+
+.history-btn:hover {
+  box-shadow: 0 12px 35px rgba(245, 190, 17, 0.6);
+  background: linear-gradient(135deg, #f5be11 0%, #e6a800 100%);
+  color: white;
+}
+
+.register-btn {
+  background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+  color: white;
+  box-shadow: 0 8px 25px rgba(23, 162, 184, 0.4);
+}
+
+.register-btn:hover {
+  box-shadow: 0 12px 35px rgba(23, 162, 184, 0.6);
+  background: linear-gradient(135deg, #138496 0%, #17a2b8 100%);
+  color: white;
+}
+
+.reregister-btn {
+  background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
+  color: #2c3e50;
+  box-shadow: 0 8px 25px rgba(255, 193, 7, 0.4);
+}
+
+.reregister-btn:hover {
+  box-shadow: 0 12px 35px rgba(255, 193, 7, 0.6);
+  background: linear-gradient(135deg, #e0a800 0%, #ffc107 100%);
+  color: white;
+}
+
+.disabled-btn {
+  background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+  color: white;
+  box-shadow: 0 8px 25px rgba(108, 117, 125, 0.4);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.disabled-btn:hover {
+  transform: none;
+  box-shadow: 0 8px 25px rgba(108, 117, 125, 0.4);
+}
+
+/* 按鈕動畫延遲 */
+.dashboard-form:nth-child(1) .dashboard-btn { animation: slideInLeft 0.6s ease-out 0.3s both; }
+.dashboard-form:nth-child(2) .dashboard-btn { animation: slideInLeft 0.6s ease-out 0.4s both; }
+.dashboard-form:nth-child(3) .dashboard-btn { animation: slideInLeft 0.6s ease-out 0.5s both; }
+.dashboard-form:nth-child(4) .dashboard-btn { animation: slideInLeft 0.6s ease-out 0.6s both; }
+.dashboard-form:nth-child(5) .dashboard-btn { animation: slideInLeft 0.6s ease-out 0.7s both; }
+
 /* 錯誤容器 - 滿版設計 */
 .error-container {
   width: 100vw;
@@ -71,19 +292,19 @@ header h1 {
   margin: 0;
   padding: 2rem;
   background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
-  border-radius: 0;
-  box-shadow: none;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
-  animation: fadeInUp 0.6s ease-out;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
   padding-top: 100px;
   padding-bottom: 80px;
 }
 
-/* 錯誤內容卡片 */
 .error-content {
   max-width: 600px;
   background: white;
@@ -91,17 +312,15 @@ header h1 {
   padding: 3rem;
   box-shadow: 0 15px 40px rgba(0,0,0,0.1);
   width: 90%;
-  animation: slideInUp 0.8s ease-out 0.2s both;
+  animation: slideInUp 0.8s ease-out;
 }
 
-/* 錯誤圖示 */
 .error-icon {
   font-size: 4rem;
   margin-bottom: 1.5rem;
   animation: shake 0.5s ease-in-out 0.5s;
 }
 
-/* 錯誤標題 */
 .error-title {
   color: #dc3545;
   font-size: 2.2rem;
@@ -112,7 +331,6 @@ header h1 {
   text-align: left;
 }
 
-/* 錯誤訊息 */
 .error-message {
   color: #6c757d;
   font-size: 1.2rem;
@@ -122,7 +340,6 @@ header h1 {
   padding-left: 1.2rem;
 }
 
-/* 幫助區塊 */
 .help-section {
   background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
   border-radius: 15px;
@@ -137,7 +354,6 @@ header h1 {
   font-size: 1.3rem;
   font-weight: 600;
   margin-bottom: 1.5rem;
-  text-align: center;
 }
 
 .help-content {
@@ -177,7 +393,6 @@ header h1 {
   font-size: 1rem;
 }
 
-/* 動作區塊 */
 .action-section {
   display: flex;
   gap: 1rem;
@@ -196,8 +411,6 @@ header h1 {
   font-size: 1.2rem;
   transition: all 0.3s ease;
   box-shadow: 0 6px 20px rgba(245, 190, 17, 0.4);
-  text-transform: uppercase;
-  letter-spacing: 1px;
 }
 
 .retry-button:hover {
@@ -228,7 +441,7 @@ header h1 {
   text-decoration: none;
 }
 
-/* Footer 樣式 - 固定在底部 */
+/* Footer 樣式 */
 .site-footer {
   position: fixed;
   bottom: 0;
@@ -304,6 +517,11 @@ header h1 {
 
 /* 響應式設計 */
 @media (max-width: 768px) {
+  body {
+    padding-top: 130px;
+    padding-bottom: 100px;
+  }
+  
   header {
     height: 110px;
     background: linear-gradient(
@@ -322,6 +540,40 @@ header h1 {
   
   header h1 {
     font-size: 1.4rem;
+  }
+  
+  main#content {
+    padding: 2rem 1rem;
+  }
+  
+  .welcome-section {
+    padding: 2rem;
+    max-width: 90vw;
+  }
+  
+  .welcome-title {
+    font-size: 2rem;
+  }
+  
+  .dashboard-container {
+    padding: 2rem;
+    max-width: 90vw;
+  }
+  
+  .buttons-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .dashboard-btn {
+    min-height: 100px;
+    min-width: auto;
+    font-size: 1rem;
+    padding: 1.5rem;
+  }
+  
+  .btn-icon {
+    font-size: 2rem;
   }
   
   .error-container {
@@ -343,11 +595,6 @@ header h1 {
     flex-direction: column;
     gap: 0.8rem;
     text-align: center;
-  }
-  
-  .help-label,
-  .help-value {
-    font-size: 1rem;
   }
   
   .action-section {
@@ -379,12 +626,36 @@ header h1 {
 }
 
 @media (max-width: 480px) {
+  body {
+    padding-top: 150px;
+    padding-bottom: 120px;
+  }
+  
   header {
     height: 130px;
   }
   
   header h1 {
     font-size: 1.2rem;
+  }
+  
+  .welcome-title {
+    font-size: 1.7rem;
+  }
+  
+  .dashboard-container {
+    padding: 1.5rem;
+    max-width: 95vw;
+  }
+  
+  .dashboard-btn {
+    min-height: 80px;
+    font-size: 0.9rem;
+    padding: 1.2rem;
+  }
+  
+  .btn-icon {
+    font-size: 1.8rem;
   }
   
   .error-container {
@@ -406,20 +677,6 @@ header h1 {
     font-size: 3rem;
   }
   
-  .help-section {
-    padding: 1.5rem;
-  }
-  
-  .help-item {
-    padding: 1rem;
-  }
-  
-  .retry-button,
-  .home-button {
-    padding: 0.8rem 1.5rem;
-    font-size: 1rem;
-  }
-  
   .site-footer {
     height: 110px;
   }
@@ -437,6 +694,17 @@ header h1 {
   }
 }
 
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 @keyframes slideInUp {
   from {
     opacity: 0;
@@ -448,41 +716,20 @@ header h1 {
   }
 }
 
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
 @keyframes shake {
   0%, 100% { transform: translateX(0); }
   10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); }
   20%, 40%, 60%, 80% { transform: translateX(3px); }
-}
-
-/* 載入動畫 */
-.loading {
-  opacity: 0.7;
-  pointer-events: none;
-}
-
-/* 特殊效果 */
-.error-content:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 20px 50px rgba(0,0,0,0.15);
-}
-
-/* 暗色模式支援 */
-@media (prefers-color-scheme: dark) {
-  .error-container {
-    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-  }
-  
-  .error-content {
-    background: #3c4858;
-    color: white;
-  }
-  
-  .help-section {
-    background: linear-gradient(135deg, #495057 0%, #6c757d 100%);
-  }
-  
-  .help-item {
-    background: #495057;
-    color: white;
-  }
 }
