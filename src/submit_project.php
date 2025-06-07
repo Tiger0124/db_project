@@ -98,6 +98,12 @@
 
             // 如果有數據需要更新
             if (!empty($updateData)) {
+                $supabaseClient->patch('隊伍', [
+                        'query' => ['隊伍編號' => "eq.$team_id"],
+                        'json' => [
+                            '報名進度' => '完成送件',
+                        ]
+                ]);
                 if ($is_update) {
                     // 更新現有記錄
                     $response = $supabaseClient->patch('作品', [

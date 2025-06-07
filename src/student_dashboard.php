@@ -36,6 +36,7 @@
 
     $data = json_decode($response->getBody(), true);
 
+    // 報名進度: 未報名/未送件/完成送件/退件/完成報名
     if (count($data) === 1) {
         $name = $data[0]['姓名'];
         $team_id = $data[0]['隊伍編號'];
@@ -57,14 +58,24 @@
         {
             echo '<h2>歡迎，' . $name . ' 參賽同學！<br>目前狀態: ' . $members[0]['報名進度'] . '</h2>';
         }
-        
-        echo '
-        <div class="admin-buttons">
-        <form action="student_edit.php" method="POST">
-            <input type="hidden" name="username" value="' . $_POST['username'] . '">
-            <input type="hidden" name="password" value="' . $_POST['password'] . '">
-            <button type="submit">修改團隊資訊</button>
-        </form>';
+
+        if ($members[0]['報名進度'] == '未報名') {
+            echo '
+            <div class="admin-buttons">
+            <form action="student_edit.php" method="POST">
+                <input type="hidden" name="username" value="' . $_POST['username'] . '">
+                <input type="hidden" name="password" value="' . $_POST['password'] . '">
+                <button type="submit" disabled>修改團隊資訊</button>
+            </form>';
+        } else {
+            echo '
+            <div class="admin-buttons">
+            <form action="student_edit.php" method="POST">
+                <input type="hidden" name="username" value="' . $_POST['username'] . '">
+                <input type="hidden" name="password" value="' . $_POST['password'] . '">
+                <button type="submit">修改團隊資訊</button>
+            </form>';
+        }
         
 
         if ($members[0]['報名進度'] == '未報名') {
@@ -77,10 +88,11 @@
             <form action="student_upload.php" method="POST">
                 <input type="hidden" name="username" value="' . $_POST['username'] . '">
                 <input type="hidden" name="password" value="' . $_POST['password'] . '">
+                <input type="hidden" name="team_id" value="' . $team_id . '">
                 <button type="submit">重新報名</button>
             </form>';
         }
-        else if ($members[0]['報名進度'] == '送出報名' or $members[0]['報名進度'] == '完成報名')
+        else if ($members[0]['報名進度'] == '完成送件' or $members[0]['報名進度'] == '完成報名')
         {
             echo '
             <form action="student_upload.php" method="POST">
@@ -107,7 +119,7 @@
             <button type="submit">歷屆作品瀏覽</button>
         </form>';
 
-        if($members[0]['報名進度'] == '送出報名' or $members[0]['報名進度'] == '完成報名'){
+        if($members[0]['報名進度'] == '未送件' or $members[0]['報名進度'] == '完成送件' or $members[0]['報名進度'] == '退件' or $members[0]['報名進度'] == '完成報名'){
             echo '
             <form action="student_register.php" method="POST">
                 <input type="hidden" name="username" value="' . $_POST['username'] . '">
