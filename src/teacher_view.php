@@ -81,10 +81,19 @@
     html += `</div>`;
 
     // 📄 作品資訊
+    if(!work) {
+        html += '<p>目前沒有作品資料</p>';
+        document.getElementById('teamContent').innerHTML = html;
+        return;
+    }
     html += `<h2>作品資訊</h2><div class="team-details">`;
     if (work.說明書) {
         const pdfBase64 = work.說明書; // 如果是 base64，這邊就可直接使用
         html += `<div class="info-item"><span class="label">作品說明書：</span><a href="data:application/pdf;base64,${pdfBase64}" download class="download-link">下載說明書</a></div>`;
+    }
+    if (work.海報) {
+        const posterBase64 = work.海報; // 如果是 base64，這邊就可直接使用
+        html += `<div class="info-item"><span class="label">作品海報：</span><a href="data:application/pdf;base64,${posterBase64}" download class="download-link">下載海報</a></div>`;
     }
     html += `
         <div class="info-item"><span class="label">作品名稱：</span><span class="value">${work.作品名稱 || '未命名'}</span></div>
@@ -105,11 +114,12 @@
             };
             document.getElementById('teamContent').appendChild(feedbackButton);
         }
-        else if(team.報名進度 === '送出報名') {
+        else if(team.報名進度 === '完成送件') {
             const confirmButton = document.createElement('button');
             confirmButton.textContent = '確認報名';
             confirmButton.className = 'confirm-btn';
             confirmButton.onclick = async () => {
+                if (!confirm('確定要確認報名嗎？')) return;
                 const { error } = await supabaseClient
                     .from('隊伍')
                     .update({ 報名進度: '完成報名' })
@@ -127,9 +137,17 @@
             rejectButton.textContent = '退件';
             rejectButton.className = 'reject-btn';
             rejectButton.onclick = async () => {
+                const reason=prompt('請輸入退件原因：');
+                if (!reason || reason.trim() === '') {
+                    alert('退件原因不能為空！');
+                    return;
+                }
                 const { error } = await supabaseClient
                     .from('隊伍')
-                    .update({ 報名進度: '退件' })
+                    .update({ 
+                        報名進度: '退件', 
+                        退件原因: reason
+                    })
                     .eq('隊伍編號', team.隊伍編號)
                     .eq('參加年份', team.參加年份);
 
@@ -137,6 +155,7 @@
                     alert('拒絕報名失敗：' + error.message);
                 } else {
                     alert('報名已拒絕！');
+                    loadTeamdata(); // 重新載入資料
                 }
             };
             document.getElementById('teamContent').appendChild(confirmButton);
