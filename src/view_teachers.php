@@ -143,9 +143,11 @@
                 </div>
             </div>
         </div>
-        <button id="insert_one" onclick="document.getElementById('addForm').style.display = 'flex'">新增老師</button>
-        <button id="insert_many" onclick="document.getElementById('mutiaddForm').style.display = 'flex'">新增多位老師</button>
-        <button id="delete_selected" onclick="delete_student()">刪除選擇的老師</button>
+        <button class=delete_btn id="insert_one"
+            onclick="document.getElementById('addForm').style.display = 'flex'">新增老師</button>
+        <button class=delete_btn id="insert_many"
+            onclick="document.getElementById('mutiaddForm').style.display = 'flex'">新增多位老師</button>
+        <button class=delete_btn id="delete_selected" onclick="delete_student()">刪除選擇的老師</button>
         <div class="rounded-box">
             <table id="teacher_table" style="width:100%">
                 <tr>
@@ -286,7 +288,8 @@
                     }));
 
                     for (const teacher of teachers) {
-                        if (!teacher.姓名 || !teacher.電話 || !teacher.電子郵件 || !teacher.身分證字號 || !teacher.職稱 || !teacher.密碼) {
+                        if (!teacher.姓名 || !teacher.電話 || !teacher.電子郵件 || !teacher.身分證字號 || !teacher.職稱 || !teacher
+                            .密碼) {
                             alert('CSV 檔案中有空白欄位，請檢查！');
                             return;
                         }
@@ -391,8 +394,10 @@
         </script>
 
         <form action="admin_dashboard.php" method="POST">
-            <input type="hidden" name="username" value="<?php echo isset($_POST['username']) ? htmlspecialchars($_POST['username'], ENT_QUOTES, 'UTF-8') : ''; ?>">
-            <input type="hidden" name="password" value="<?php echo isset($_POST['password']) ? htmlspecialchars($_POST['password'], ENT_QUOTES, 'UTF-8') : ''; ?>">
+            <input type="hidden" name="username"
+                value="<?php echo isset($_POST['username']) ? htmlspecialchars($_POST['username'], ENT_QUOTES, 'UTF-8') : ''; ?>">
+            <input type="hidden" name="password"
+                value="<?php echo isset($_POST['password']) ? htmlspecialchars($_POST['password'], ENT_QUOTES, 'UTF-8') : ''; ?>">
             <button type="submit">返回</button>
         </form>
     </main>

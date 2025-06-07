@@ -47,8 +47,10 @@
                 <option value="2025">2025</option>
             </select>
             <button type="submit">查詢</button>
-            <input type="hidden" name="username" value="<?php echo isset($_POST['username']) ? htmlspecialchars($_POST['username'], ENT_QUOTES, 'UTF-8') : ''; ?>">
-            <input type="hidden" name="password" value="<?php echo isset($_POST['password']) ? htmlspecialchars($_POST['password'], ENT_QUOTES, 'UTF-8') : ''; ?>">
+            <input type="hidden" name="username"
+                value="<?php echo isset($_POST['username']) ? htmlspecialchars($_POST['username'], ENT_QUOTES, 'UTF-8') : ''; ?>">
+            <input type="hidden" name="password"
+                value="<?php echo isset($_POST['password']) ? htmlspecialchars($_POST['password'], ENT_QUOTES, 'UTF-8') : ''; ?>">
         </form>
 
         <!-- 編輯表單 (預設隱藏) -->
@@ -57,9 +59,12 @@
                 <h3>編輯評分資料</h3>
                 <form id="updateForm" method="POST" action="update_score.php">
                     <input type="hidden" id="edit_team_id" name="team_id" value="">
-                    <input type="hidden" name="username" value="<?php echo isset($_POST['username']) ? htmlspecialchars($_POST['username'], ENT_QUOTES, 'UTF-8') : ''; ?>">
-                    <input type="hidden" name="password" value="<?php echo isset($_POST['password']) ? htmlspecialchars($_POST['password'], ENT_QUOTES, 'UTF-8') : ''; ?>">
-                    <input type="hidden" name="year" value="<?php echo isset($_POST['year']) ? htmlspecialchars($_POST['year'], ENT_QUOTES, 'UTF-8') : ''; ?>">
+                    <input type="hidden" name="username"
+                        value="<?php echo isset($_POST['username']) ? htmlspecialchars($_POST['username'], ENT_QUOTES, 'UTF-8') : ''; ?>">
+                    <input type="hidden" name="password"
+                        value="<?php echo isset($_POST['password']) ? htmlspecialchars($_POST['password'], ENT_QUOTES, 'UTF-8') : ''; ?>">
+                    <input type="hidden" name="year"
+                        value="<?php echo isset($_POST['year']) ? htmlspecialchars($_POST['year'], ENT_QUOTES, 'UTF-8') : ''; ?>">
 
                     <div class="form-group">
                         <label for="edit_team_name">隊伍名稱:</label>
@@ -98,7 +103,6 @@
                 </tr>
 
                 <?php
-                session_start();
                 require_once 'conn.php';
 
                 // 年份到屆數的對應陣列
@@ -289,8 +293,10 @@
         </div>
 
         <form action="admin_dashboard.php" method="POST">
-            <input type="hidden" name="username" value="<?php echo isset($_POST['username']) ? htmlspecialchars($_POST['username'], ENT_QUOTES, 'UTF-8') : ''; ?>">
-            <input type="hidden" name="password" value="<?php echo isset($_POST['password']) ? htmlspecialchars($_POST['password'], ENT_QUOTES, 'UTF-8') : ''; ?>">
+            <input type="hidden" name="username"
+                value="<?php echo isset($_POST['username']) ? htmlspecialchars($_POST['username'], ENT_QUOTES, 'UTF-8') : ''; ?>">
+            <input type="hidden" name="password"
+                value="<?php echo isset($_POST['password']) ? htmlspecialchars($_POST['password'], ENT_QUOTES, 'UTF-8') : ''; ?>">
             <button type="submit">返回</button>
         </form>
     </main>

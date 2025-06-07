@@ -1,15 +1,3 @@
-<?php
-// Start session and handle dark mode toggle
-if (session_status() === PHP_SESSION_NONE) session_start();
-
-if (isset($_GET['toggle_dm'])) {
-    $_SESSION['darkmode'] = !($_SESSION['darkmode'] ?? false);
-    header('Location: ' . preg_replace('/[?&]toggle_dm(=1)?/i', '', $_SERVER['REQUEST_URI']));
-    exit;
-}
-
-// Inject necessary elements if dark mode is active
-if ($_SESSION['darkmode'] ?? false): ?>
     <style>
         /* ===== Universal Dark Mode Styles ===== */
         body {
@@ -157,19 +145,12 @@ if ($_SESSION['darkmode'] ?? false): ?>
             box-shadow: 0 8px 25px rgba(30, 58, 95, 0.4) !important;
         }
 
-        textarea,
         .form-group textarea,
         .form-group input[type="text"],
         .form-group input[type="file"],
         .form-group input[type="url"],
         .form-group input[type="password"] {
             background: rgba(26, 36, 57, 0.8) !important;
-
-        }
-
-        textarea {
-            color: #d0d8e8 !important;
-
         }
 
         .form-group textarea:focus,
@@ -206,7 +187,7 @@ if ($_SESSION['darkmode'] ?? false): ?>
         }
 
         .required-badge {
-            background: rgba(167, 53, 220, 0.7) !important;
+            background: rgba(220, 53, 69, 0.7) !important;
         }
 
         .optional-badge {
@@ -235,81 +216,6 @@ if ($_SESSION['darkmode'] ?? false): ?>
             background: linear-gradient(135deg, #2a4d7a 0%, #1e3a5f 100%) !important;
             color: rgb(147, 138, 213) !important;
             box-shadow: 0 8px 25px rgba(30, 58, 95, 0.4) !important;
-        }
-
-
-        button,
-        input[type="submit"],
-        button[type="submit"] {
-            background: linear-gradient(135deg, #2a4d7a 0%, #1e3a5f 100%) !important;
-            color: rgb(147, 138, 213) !important;
-            box-shadow: 0 8px 25px rgba(30, 58, 95, 0.4) !important;
-        }
-
-        a[download] {
-            display: inline-flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            padding: 12px 24px 12px 18px !important;
-            margin: 8px 0 !important;
-            font-family: 'Segoe UI', Roboto, sans-serif !important;
-            font-size: 15px !important;
-            font-weight: 600 !important;
-            color: #2c3e50 !important;
-            text-decoration: none !important;
-            background-color: #f8f9fa !important;
-            border: 2px solid #e9ecef !important;
-            border-radius: 8px !important;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05) !important;
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
-            position: relative !important;
-            overflow: hidden !important;
-            cursor: pointer !important;
-        }
-
-        input[type="file"]::file-selector-button {
-            background-color: #007bff;
-            /* Blue button */
-            color: white;
-            padding: 8px 12px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            margin-right: 10px;
-            /* Space between button and text */
-        }
-
-        input[type="file"]::file-selector-button:hover {
-            background-color: #0056b3;
-            /* Darker blue on hover */
-        }
-
-        input[type="file"]::file-selector-button:active {
-            background-color: #004085;
-            /* Even darker on click */
-        }
-
-        .edit-button,
-        .delete_btn {
-            display: inline-block !important;
-            padding: 6px 6px !important;
-            font-family: 'Arial', sans-serif !important;
-            font-size: 16px !important;
-            font-weight: bold !important;
-            color: rgb(47, 37, 112) !important;
-            text-align: center !important;
-            text-decoration: none !important;
-            text-transform: uppercase !important;
-            letter-spacing: 1px !important;
-            background: linear-gradient(135deg, #6e8efb, #a777e3) !important;
-            border: none !important;
-            border-radius: 10px !important;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
-            cursor: pointer !important;
-            transition: all 0.3s ease !important;
-            position: relative !important;
-            overflow: hidden !important;
         }
 
         button[type="submit"]:hover {
@@ -382,54 +288,11 @@ if ($_SESSION['darkmode'] ?? false): ?>
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3) !important;
         }
 
-        .label,
-        .download-link,
-        .external-link,
         .upload-section h2 {
             color: #e0e0e0 !important;
-            background: none !important;
-        }
-
-        thead th,
-        table tr:first-child th {
-            border-radius: 10px;
-
-            background: linear-gradient(135deg, rgb(130, 5, 141) 0%, rgb(98, 35, 200) 100%) !important;
-            color: rgb(168, 188, 232) !important;
-        }
-
-        tbody,
-        tr,
-        td {
-            border-radius: 10px !important;
-
-        }
-
-        tbody:hover,
-        tr:hover,
-        td:hover {
-            background: linear-gradient(135deg, rgb(23, 0, 26) 0%, rgb(24, 0, 63) 100%) !important;
-
-
         }
 
 
-        .rounded-box::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg, rgb(87, 37, 174) 0%, rgb(25, 4, 108) 100%) !important;
-            border-radius: 4px;
-        }
-
-        .download-link,
-        .external-link {
-            background: none !important;
-        }
-
-        .team-info h2::before {
-            background: #1a2439 !important;
-
-        }
-
-        .announcement-section,
         .rounded-box,
         .edit-team-section,
         .error-section {
@@ -465,9 +328,9 @@ if ($_SESSION['darkmode'] ?? false): ?>
 
 
 
-        .edit-form,
+
         .return-section {
-            border-radius: 20px !important;
+            /* padding: 10px; */
             background: linear-gradient(135deg, #1e3a5f 0%, #2a4d7a 100%) !important;
             box-shadow: 0 8px 25px rgba(30, 58, 95, 0.4) !important;
         }
@@ -503,40 +366,153 @@ if ($_SESSION['darkmode'] ?? false): ?>
             }
         });
     </script>
-<?php else: ?>
-    <style>
-        /* ===== Toggle Button - Dark Mode Style ===== */
-        .darkmode-btn {
-            margin-left: auto;
-            padding: 10px 20px !important;
-            background: linear-gradient(135deg, #2a4d7a 0%, #1e3a5f 100%) !important;
-            color: #ffffff !important;
-            border: none !important;
-            border-radius: 50px !important;
-            cursor: pointer !important;
-            font-weight: 600 !important;
-            font-size: 1rem !important;
-            box-shadow: 0 4px 15px rgba(30, 58, 95, 0.4) !important;
-            transition: all 0.3s ease !important;
-            text-align: center;
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+  <meta charset="UTF-8">
+  <title>編輯個人資料</title>
+  <link rel="stylesheet" href="../asset/teacher_profile.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+  <div class="container">
+    <h2>編輯個人資料</h2>
+
+    <form id="profileForm">
+      <label>身分證字號（不可修改）
+        <input type="text" id="id" disabled>
+      </label>
+      <label>姓名
+        <input type="text" id="name">
+      </label>
+      <label>電話
+        <input type="text" id="phone">
+      </label>
+      <label>電子郵件
+        <input type="email" id="email">
+      </label>
+      <label>職稱
+        <input type="text" id="title">
+      </label>
+      <button type="submit">儲存變更</button>
+    </form>
+
+    <div class="return-section">
+      <button onclick="goBack()" class="return-btn">
+        返回
+      </button>
+    </div>
+
+    <script>
+      const {
+        createClient
+      } = supabase;
+      const supabaseClient = createClient(
+        'https://xlomzrhmzjjfjmsvqxdo.supabase.co',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhsb216cmhtempqZmptc3ZxeGRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg0OTk3NTcsImV4cCI6MjA2NDA3NTc1N30.AaGloZjC_aqW3OQkn4aDxy7SGymfTsJ6JWNWJYcYbGo'
+      );
+
+      // ✅ 把 PHP 中的帳號與身分證帶進 JS
+      const userId = "a";
+      const username = "a";
+      console.log('userId:', userId);
+
+      async function loadProfile() {
+        const {
+          data,
+          error
+        } = await supabaseClient
+          .from('指導老師')
+          .select('*')
+          .eq('身分證字號', username)
+          .single();
+        console.log('讀取資料', data);
+
+        if (error) {
+          alert('讀取資料失敗：' + error.message);
+          console.error('讀取錯誤', error);
+          return;
         }
 
-        .darkmode-btn:hover {
-            transform: translateY(-3px) !important;
-            box-shadow: 0 6px 20px rgba(30, 58, 95, 0.6) !important;
+        document.getElementById('id').value = data.身分證字號;
+        document.getElementById('name').value = data.姓名;
+        document.getElementById('phone').value = data.電話;
+        document.getElementById('email').value = data.電子郵件;
+        document.getElementById('title').value = data.職稱;
+      }
+
+      document.getElementById('profileForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const updates = {
+          姓名: document.getElementById('name').value,
+          電話: document.getElementById('phone').value,
+          電子郵件: document.getElementById('email').value,
+          職稱: document.getElementById('title').value,
+        };
+
+        const {
+          error
+        } = await supabaseClient
+          .from('指導老師')
+          .update(updates)
+          .eq('身分證字號', userId);
+
+        if (error) {
+          alert('更新失敗：' + error.message);
+          console.error('更新錯誤', error);
+        } else {
+          alert('資料更新成功，將返回主頁...');
+
+          // ✅ 自動建立並送出一個 POST 表單，回到 teacher_dashboard
+          const form = document.createElement('form');
+          form.method = 'post';
+          form.action = 'teacher_dashboard.php';
+
+          const input1 = document.createElement('input');
+          input1.type = 'hidden';
+          input1.name = 'username';
+          input1.value = username;
+
+          const input2 = document.createElement('input');
+          input2.type = 'hidden';
+          input2.name = 'password';
+          input2.value = userId;
+
+          form.appendChild(input1);
+          form.appendChild(input2);
+          document.body.appendChild(form);
+          form.submit();
         }
-    </style>
-    <script>
-        // Add toggle button
-        document.addEventListener('DOMContentLoaded', function() {
-            const navbar = document.querySelector('.navbar');
-            if (navbar && !document.querySelector('.darkmode-btn')) {
-                const toggleBtn = document.createElement('button');
-                toggleBtn.className = 'darkmode-btn';
-                toggleBtn.innerHTML = '🌙 切換暗色模式';
-                toggleBtn.onclick = () => window.location.href = '?toggle_dm=1';
-                navbar.appendChild(toggleBtn);
-            }
-        });
+      });
+
+      loadProfile();
+
+      function goBack() {
+        // 直接跳轉回 dashboard 並保留登入資訊
+        const form = document.createElement('form');
+        form.method = 'post';
+        form.action = 'teacher_dashboard.php';
+
+        const input1 = document.createElement('input');
+        input1.type = 'hidden';
+        input1.name = 'username';
+        input1.value = username;
+
+        const input2 = document.createElement('input');
+        input2.type = 'hidden';
+        input2.name = 'password';
+        input2.value = userId;
+
+        form.appendChild(input1);
+        form.appendChild(input2);
+        document.body.appendChild(form);
+        form.submit();
+      }
     </script>
-<?php endif; ?>
+
+</body>
+
+</html>

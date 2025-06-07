@@ -1,6 +1,5 @@
 <?php include 'darkmode.php'; ?>
 <?php
-session_start();
 $username = $_POST["username"];
 $password = $_POST["password"]; // 假設密碼為老師的身分證字號
 ?>
@@ -37,8 +36,8 @@ $password = $_POST["password"]; // 假設密碼為老師的身分證字號
       <button type="submit">儲存變更</button>
     </form>
 
-    <div style="text-align: center; margin-top: 20px;">
-      <button onclick="goBack()" style="padding: 10px 20px; background-color: #aaa; border: none; border-radius: 5px; color: white; cursor: pointer;">
+    <div class="return-section">
+      <button onclick="goBack()" class="return-btn">
         返回
       </button>
     </div>

@@ -1,15 +1,3 @@
-<?php
-// Start session and handle dark mode toggle
-if (session_status() === PHP_SESSION_NONE) session_start();
-
-if (isset($_GET['toggle_dm'])) {
-    $_SESSION['darkmode'] = !($_SESSION['darkmode'] ?? false);
-    header('Location: ' . preg_replace('/[?&]toggle_dm(=1)?/i', '', $_SERVER['REQUEST_URI']));
-    exit;
-}
-
-// Inject necessary elements if dark mode is active
-if ($_SESSION['darkmode'] ?? false): ?>
     <style>
         /* ===== Universal Dark Mode Styles ===== */
         body {
@@ -164,12 +152,6 @@ if ($_SESSION['darkmode'] ?? false): ?>
         .form-group input[type="url"],
         .form-group input[type="password"] {
             background: rgba(26, 36, 57, 0.8) !important;
-
-        }
-
-        textarea {
-            color: #d0d8e8 !important;
-
         }
 
         .form-group textarea:focus,
@@ -265,29 +247,6 @@ if ($_SESSION['darkmode'] ?? false): ?>
             position: relative !important;
             overflow: hidden !important;
             cursor: pointer !important;
-        }
-
-        input[type="file"]::file-selector-button {
-            background-color: #007bff;
-            /* Blue button */
-            color: white;
-            padding: 8px 12px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            margin-right: 10px;
-            /* Space between button and text */
-        }
-
-        input[type="file"]::file-selector-button:hover {
-            background-color: #0056b3;
-            /* Darker blue on hover */
-        }
-
-        input[type="file"]::file-selector-button:active {
-            background-color: #004085;
-            /* Even darker on click */
         }
 
         .edit-button,
@@ -503,40 +462,59 @@ if ($_SESSION['darkmode'] ?? false): ?>
             }
         });
     </script>
-<?php else: ?>
-    <style>
-        /* ===== Toggle Button - Dark Mode Style ===== */
-        .darkmode-btn {
-            margin-left: auto;
-            padding: 10px 20px !important;
-            background: linear-gradient(135deg, #2a4d7a 0%, #1e3a5f 100%) !important;
-            color: #ffffff !important;
-            border: none !important;
-            border-radius: 50px !important;
-            cursor: pointer !important;
-            font-weight: 600 !important;
-            font-size: 1rem !important;
-            box-shadow: 0 4px 15px rgba(30, 58, 95, 0.4) !important;
-            transition: all 0.3s ease !important;
-            text-align: center;
-        }
+<!DOCTYPE html>
+<html lang="zh-TW">
 
-        .darkmode-btn:hover {
-            transform: translateY(-3px) !important;
-            box-shadow: 0 6px 20px rgba(30, 58, 95, 0.6) !important;
-        }
-    </style>
-    <script>
-        // Add toggle button
-        document.addEventListener('DOMContentLoaded', function() {
-            const navbar = document.querySelector('.navbar');
-            if (navbar && !document.querySelector('.darkmode-btn')) {
-                const toggleBtn = document.createElement('button');
-                toggleBtn.className = 'darkmode-btn';
-                toggleBtn.innerHTML = '🌙 切換暗色模式';
-                toggleBtn.onclick = () => window.location.href = '?toggle_dm=1';
-                navbar.appendChild(toggleBtn);
-            }
-        });
-    </script>
-<?php endif; ?>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>高雄大學創意競賽管理系統</title>
+  <link rel="stylesheet" href="../asset/announcements.css">
+</head>
+
+<body>
+  <header>
+    <div class="navbar">
+      <a href="main.php" alt="Logo" class="logo">
+        <img src="../images/logo.png" alt="Logo" class="logo">
+      </a>
+      <h1>高雄大學激發學生創意競賽管理系統</h1>
+    </div>
+  </header>
+
+  <main id="content">
+    <section class="announcement-section">
+      <h2>發布公告</h2>
+      <form action="post_announcement.php" method="POST" enctype="multipart/form-data">
+        <!-- 公告標題 -->
+        <label for='announcement-content'>公告內容：</label><textarea id='announcement-content' name='announcement_content' rows='5' required>哈哈明年再來，我是吳俊興，嘿，加油吧
+</textarea><label for='competition-rules'>比賽規則：</label><textarea id='competition-rules' name='competition_rules' rows='5' required>猜得到算你贏，猜，很好</textarea><label for='announcement-file'>上傳檔案：</label><input type='file' id='announcement-file' name='announcement_file' accept='.pdf'>
+        <!-- 提交按鈕 -->
+        <button type="submit">發布公告</button>
+        <input type="hidden" name="username" value="5543">
+        <input type="hidden" name="password" value="5543">
+      </form>
+    </section>
+
+    <form action="admin_dashboard.php" method="POST">
+      <input type="hidden" name="username" value="5543">
+      <input type="hidden" name="password" value="5543">
+      <button type="submit">返回</button>
+    </form>
+  </main>
+</body>
+<footer class="site-footer">
+  <div class="footer-content">
+    <p>&copy; Copyright © 2025 XC Lee Tiger Lin How Ho. All rights reserved.</p>
+    <div class="footer-row">
+      <div class="footer-container">
+        <p>聯絡我們 : <a href="mailto:wylin@nuk.edu.tw">wylin@nuk.edu.tw</a></p>
+      </div>
+      <ul class="footer-links">
+        <li><a href="https://github.com/Tiger0124/db_project.git">關於我們</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+</html>

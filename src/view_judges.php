@@ -141,9 +141,11 @@
                 </div>
             </div>
         </div>
-        <button id="insert_one" onclick="document.getElementById('addForm').style.display = 'flex'">新增評審</button>
-        <button id="insert_many" onclick="document.getElementById('mutiaddForm').style.display = 'flex'">新增多位評審</button>
-        <button id="delete_selected" onclick="delete_student()">刪除選擇的評審</button>
+        <button class=delete_btn id="insert_one"
+            onclick="document.getElementById('addForm').style.display = 'flex'">新增評審</button>
+        <button class=delete_btn id="insert_many"
+            onclick="document.getElementById('mutiaddForm').style.display = 'flex'">新增多位評審</button>
+        <button class=delete_btn id="delete_selected" onclick="delete_student()">刪除選擇的評審</button>
         <div class="rounded-box">
             <table id="judge_table" style="width:100%">
                 <tr>
@@ -406,8 +408,10 @@
         </script>
 
         <form action="admin_dashboard.php" method="POST">
-            <input type="hidden" name="username" value="<?php echo isset($_POST['username']) ? htmlspecialchars($_POST['username'], ENT_QUOTES, 'UTF-8') : ''; ?>">
-            <input type="hidden" name="password" value="<?php echo isset($_POST['password']) ? htmlspecialchars($_POST['password'], ENT_QUOTES, 'UTF-8') : ''; ?>">
+            <input type="hidden" name="username"
+                value="<?php echo isset($_POST['username']) ? htmlspecialchars($_POST['username'], ENT_QUOTES, 'UTF-8') : ''; ?>">
+            <input type="hidden" name="password"
+                value="<?php echo isset($_POST['password']) ? htmlspecialchars($_POST['password'], ENT_QUOTES, 'UTF-8') : ''; ?>">
             <button type="submit">返回</button>
         </form>
     </main>

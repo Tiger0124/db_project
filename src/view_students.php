@@ -38,7 +38,8 @@
 
                 <div class="form-group">
                     <label for="add_id_number">身分證字號:</label>
-                    <input type="text" id="add_id_number" name="id_number" required maxlength="10" pattern="[A-Z][0-9]{9}">
+                    <input type="text" id="add_id_number" name="id_number" required maxlength="10"
+                        pattern="[A-Z][0-9]{9}">
                 </div>
 
                 <div class="form-group">
@@ -135,9 +136,11 @@
                 </div>
             </div>
         </div>
-        <button id="insert_one" onclick="document.getElementById('addForm').style.display = 'flex'">新增學生</button>
-        <button id="insert_many" onclick="document.getElementById('mutiaddForm').style.display = 'flex'">新增多位學生</button>
-        <button id="delete_selected" onclick="delete_student()">刪除選擇的學生</button>
+        <button class=delete_btn id="insert_one"
+            onclick="document.getElementById('addForm').style.display = 'flex'">新增學生</button>
+        <button class=delete_btn id="insert_many"
+            onclick="document.getElementById('mutiaddForm').style.display = 'flex'">新增多位學生</button>
+        <button class=delete_btn id="delete_selected" onclick="delete_student()">刪除選擇的學生</button>
         <div class="rounded-box">
             <table id="student_table" style="width:100%">
                 <tr>
@@ -283,7 +286,8 @@
                     }));
 
                     for (const student of students) {
-                        if (!student.學號 || !student.姓名 || !student.身分證字號 || !student.科系 || !student.電子郵件 || !student.電話) {
+                        if (!student.學號 || !student.姓名 || !student.身分證字號 || !student.科系 || !student.電子郵件 || !student
+                            .電話) {
                             alert('CSV 檔案中有空白欄位，請檢查！');
                             return;
                         }
@@ -390,8 +394,10 @@
         </script>
 
         <form action="admin_dashboard.php" method="POST">
-            <input type="hidden" name="username" value="<?php echo isset($_POST['username']) ? htmlspecialchars($_POST['username'], ENT_QUOTES, 'UTF-8') : ''; ?>">
-            <input type="hidden" name="password" value="<?php echo isset($_POST['password']) ? htmlspecialchars($_POST['password'], ENT_QUOTES, 'UTF-8') : ''; ?>">
+            <input type="hidden" name="username"
+                value="<?php echo isset($_POST['username']) ? htmlspecialchars($_POST['username'], ENT_QUOTES, 'UTF-8') : ''; ?>">
+            <input type="hidden" name="password"
+                value="<?php echo isset($_POST['password']) ? htmlspecialchars($_POST['password'], ENT_QUOTES, 'UTF-8') : ''; ?>">
             <button type="submit">返回</button>
         </form>
     </main>
