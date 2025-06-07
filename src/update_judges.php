@@ -10,6 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = $_POST['title'];
     $name = $_POST['name'];
     $phone = $_POST['phone'];
+    $password = $_POST['password'];
     $session = $_POST['session'];
     $sessionNumber = str_replace(['第', '屆'], '', $session);//13
     try {
@@ -46,6 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 '頭銜' => $title,
                 '姓名' => $name,
                 '電話' => $phone,
+                '密碼' => $password,
                 '屆數' => $sessionNumber
             ]
         ]);
