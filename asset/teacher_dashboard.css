@@ -21,8 +21,8 @@ body {
   background-color: #f5f5f5;
   color: #333;
   line-height: 1.6;
-  padding-top: 80px; /* 為header預留空間 */
-  padding-bottom: 70px; /* 為footer預留空間 */
+  padding-top: 100px;
+  padding-bottom: 80px;
 }
 
 /* Header 樣式 - 固定在頂部 */
@@ -73,7 +73,7 @@ header h1 {
 main#content {
   flex: 1;
   width: 100vw;
-  padding: 2rem;
+  padding: 3rem 2rem 2rem 2rem;
   background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
   display: flex;
   flex-direction: column;
@@ -83,32 +83,23 @@ main#content {
   margin-bottom: 0;
 }
 
-/* 內容容器 */
-.content-wrapper {
-  width: 100%;
-  max-width: 1000px;
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.1);
-  padding: 3rem;
-  margin: 0 auto;
-}
-
 /* 歡迎標題 */
-h2 {
+main h2 {
   text-align: center;
   color: #2c3e50;
-  font-size: 2.2rem;
+  font-size: 2.5rem;
   margin-bottom: 3rem;
   font-weight: 600;
+  animation: fadeInUp 0.8s ease-out 0.2s both;
 }
 
-/* 教師按鈕容器 - 響應式布局 */
+/* 教師按鈕容器 - 響應式網格布局 */
 .buttons {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 2個按鈕橫排 */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 2rem;
-  max-width: 700px;
+  max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
   padding: 3rem;
   background: linear-gradient(135deg, #8e44ad 0%, #9b59b6 100%);
@@ -117,6 +108,7 @@ h2 {
   place-items: center;
   transform: translateY(0);
   transition: all 0.3s ease;
+  animation: fadeInUp 0.6s ease-out;
 }
 
 .buttons:hover {
@@ -140,10 +132,11 @@ h2 {
   transition: all 0.3s ease;
   box-shadow: 0 8px 25px rgba(245, 190, 17, 0.4);
   cursor: pointer;
-  min-height: 100px;
-  min-width: 200px;
+  min-height: 120px;
+  min-width: 250px;
   width: 100%;
   height: 100%;
+  white-space: nowrap;
 }
 
 .buttons input[type="submit"]:hover {
@@ -153,60 +146,192 @@ h2 {
   color: white;
 }
 
-/* 錯誤訊息樣式 */
-main > h2 {
-  text-align: center;
-  color: #dc3545;
-  font-size: 2rem;
-  margin: 2rem auto;
+/* 按鈕動畫延遲 */
+.buttons form:nth-child(1) input { animation: slideInLeft 0.6s ease-out 0.1s both; }
+.buttons form:nth-child(2) input { animation: slideInLeft 0.6s ease-out 0.2s both; }
+.buttons form:nth-child(3) input { animation: slideInLeft 0.6s ease-out 0.3s both; }
+.buttons form:nth-child(4) input { animation: slideInLeft 0.6s ease-out 0.4s both; }
+.buttons form:nth-child(5) input { animation: slideInLeft 0.6s ease-out 0.5s both; }
+
+/* 特殊按鈕樣式 */
+.buttons input[value*="編輯個人資料"] {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.buttons input[value*="編輯個人資料"]:hover {
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
+
+.buttons input[value*="修改密碼"] {
+  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+  color: white;
+}
+
+.buttons input[value*="修改密碼"]:hover {
+  background: linear-gradient(135deg, #c82333 0%, #dc3545 100%);
+}
+
+/* 錯誤容器 - 滿版設計 */
+.error-container {
+  width: 100vw;
+  min-height: 100vh;
+  margin: 0;
   padding: 2rem;
-  background: white;
-  border-left: 4px solid #dc3545;
-  border-radius: 8px;
-  max-width: 800px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
-
-main > p {
-  text-align: center;
-  color: #666;
-  font-size: 1.2rem;
-  margin: 1rem auto;
-  padding: 1rem;
-  background: white;
-  border-radius: 8px;
-  max-width: 600px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
-
-/* 返回按鈕容器 */
-.button-container {
+  background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  margin: 3rem auto;
-  max-width: 300px;
+  align-items: center;
+  text-align: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  padding-top: 100px;
+  padding-bottom: 80px;
 }
 
-/* 返回按鈕樣式 */
-.system-button {
-  display: inline-block;
-  padding: 1.2rem 2.5rem;
-  background: linear-gradient(135deg, #FFD700 0%, #f5be11 100%);
-  color: #2c3e50;
+/* 錯誤內容卡片 */
+.error-content {
+  max-width: 600px;
+  background: white;
+  border-radius: 20px;
+  padding: 3rem;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+  width: 90%;
+  animation: slideInUp 0.8s ease-out;
+}
+
+/* 錯誤圖示 */
+.error-icon {
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+  animation: shake 0.5s ease-in-out 0.5s;
+}
+
+/* 錯誤標題 */
+.error-title {
+  color: #dc3545;
+  font-size: 2.2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  border-left: 4px solid #dc3545;
+  padding-left: 1rem;
+  text-align: left;
+}
+
+/* 錯誤訊息 */
+.error-message {
+  color: #6c757d;
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  line-height: 1.5;
+  text-align: left;
+  padding-left: 1.2rem;
+}
+
+/* 幫助區塊 */
+.help-section {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 15px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border-left: 4px solid #8e44ad;
+  text-align: center;
+}
+
+.help-title {
+  color: #8e44ad;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.help-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.help-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+}
+
+.help-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.help-label {
+  font-weight: 600;
+  color: #495057;
+  font-size: 1.1rem;
+}
+
+.help-value {
+  color: #8e44ad;
+  font-weight: 500;
+  background: rgba(142, 68, 173, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+/* 動作區塊 */
+.action-section {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.retry-button {
+  padding: 1.2rem 3rem;
+  background: linear-gradient(135deg, #8e44ad 0%, #9b59b6 100%);
+  color: white;
   text-decoration: none;
   border-radius: 12px;
   font-weight: 700;
   font-size: 1.2rem;
-  text-align: center;
   transition: all 0.3s ease;
-  box-shadow: 0 6px 20px rgba(245, 190, 17, 0.4);
+  box-shadow: 0 6px 20px rgba(142, 68, 173, 0.4);
 }
 
-.system-button:hover {
+.retry-button:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 30px rgba(245, 190, 17, 0.6);
-  background: linear-gradient(135deg, #f5be11 0%, #e6a800 100%);
+  box-shadow: 0 10px 30px rgba(142, 68, 173, 0.6);
+  background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
   color: white;
+  text-decoration: none;
+}
+
+.home-button {
+  padding: 1.2rem 3rem;
+  background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+  color: white;
+  text-decoration: none;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 20px rgba(108, 117, 125, 0.4);
+}
+
+.home-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(108, 117, 125, 0.6);
+  background: linear-gradient(135deg, #495057 0%, #343a40 100%);
+  color: white;
+  text-decoration: none;
 }
 
 /* Footer 樣式 - 固定在底部 */
@@ -286,8 +411,8 @@ main > p {
 /* 響應式設計 */
 @media (max-width: 768px) {
   body {
-    padding-top: 110px;
-    padding-bottom: 90px;
+    padding-top: 130px;
+    padding-bottom: 100px;
   }
   
   header {
@@ -311,21 +436,16 @@ main > p {
   }
   
   main#content {
-    padding: 1rem;
+    padding: 2rem 1rem;
   }
   
-  .content-wrapper {
-    padding: 2rem;
-  }
-  
-  h2 {
-    font-size: 1.8rem;
+  main h2 {
+    font-size: 2rem;
     margin-bottom: 2rem;
   }
   
   .buttons {
-    grid-template-columns: 1fr; /* 小螢幕時改為垂直排列 */
-    grid-template-rows: auto;
+    grid-template-columns: 1fr;
     gap: 1.5rem;
     max-width: 90vw;
     padding: 2rem;
@@ -338,15 +458,43 @@ main > p {
     min-width: auto;
   }
   
-  main > h2 {
-    font-size: 1.6rem;
-    padding: 1.5rem;
+  .error-container {
+    padding: 1rem;
+    padding-top: 130px;
+    padding-bottom: 100px;
   }
   
-  main > p {
+  .error-content {
+    padding: 2rem;
+    width: 95%;
+  }
+  
+  .error-title {
+    font-size: 1.8rem;
+  }
+  
+  .help-item {
+    flex-direction: column;
+    gap: 0.8rem;
+    text-align: center;
+  }
+  
+  .help-label,
+  .help-value {
+    font-size: 1rem;
+  }
+  
+  .action-section {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .retry-button,
+  .home-button {
+    width: 100%;
+    text-align: center;
+    padding: 1rem 2rem;
     font-size: 1.1rem;
-    padding: 1rem;
-    margin: 1rem auto;
   }
   
   .site-footer {
@@ -366,8 +514,8 @@ main > p {
 
 @media (max-width: 480px) {
   body {
-    padding-top: 130px;
-    padding-bottom: 110px;
+    padding-top: 150px;
+    padding-bottom: 120px;
   }
   
   header {
@@ -378,12 +526,8 @@ main > p {
     font-size: 1.2rem;
   }
   
-  h2 {
-    font-size: 1.5rem;
-  }
-  
-  .content-wrapper {
-    padding: 1.5rem;
+  main h2 {
+    font-size: 1.7rem;
   }
   
   .buttons {
@@ -398,14 +542,23 @@ main > p {
     min-height: 70px;
   }
   
-  .system-button {
-    padding: 1rem 2rem;
-    font-size: 1.1rem;
+  .error-container {
+    padding: 0.5rem;
+    padding-top: 150px;
+    padding-bottom: 120px;
   }
   
-  main > h2 {
-    font-size: 1.4rem;
-    padding: 1rem;
+  .error-content {
+    padding: 1.5rem;
+    width: 98%;
+  }
+  
+  .error-title {
+    font-size: 1.5rem;
+  }
+  
+  .error-icon {
+    font-size: 3rem;
   }
   
   .site-footer {
@@ -416,17 +569,19 @@ main > p {
 /* 大螢幕優化 */
 @media (min-width: 1200px) {
   .buttons {
-    max-width: 800px;
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 1300px;
     gap: 2.5rem;
   }
   
   .buttons input[type="submit"] {
     font-size: 1.2rem;
-    min-height: 120px;
+    min-height: 140px;
+    min-width: 280px;
   }
   
-  h2 {
-    font-size: 2.5rem;
+  main h2 {
+    font-size: 2.8rem;
   }
 }
 
@@ -442,10 +597,44 @@ main > p {
   }
 }
 
-.buttons {
-  animation: fadeInUp 0.6s ease-out;
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
-h2 {
-  animation: fadeInUp 0.8s ease-out 0.2s both;
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); }
+  20%, 40%, 60%, 80% { transform: translateX(3px); }
+}
+
+/* 載入狀態 */
+.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* 錯誤狀態圖示 */
+main > h2:contains("系統錯誤")::before {
+  content: "⚠️";
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 1rem;
 }

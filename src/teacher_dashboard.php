@@ -70,14 +70,30 @@
 
             </div>';
         } else {
-            echo '<h2>登入失敗，請返回並重試。</h2>';
-            echo '<P>教師帳號密碼提示</P>';
-            echo '<p>教師帳號：身分證字號</p>';
-            echo '<p>教師密碼：密碼</p>';
-            echo '
-            <div class="button-container">    
-                <a href="teacher.php" class="system-button">返回</a>
-            </div>';
+            echo '<div class="error-container">';
+            echo '<div class="error-icon">🔒</div>';
+            echo '<h2 class="error-title">登入失敗</h2>';
+            echo '<p class="error-message">帳號或密碼不正確，請檢查後重試</p>';
+
+            echo '<div class="help-section">';
+            echo '<h3 class="help-title">登入資訊提醒</h3>';
+            echo '<div class="help-content">';
+            echo '<div class="help-item">';
+            echo '<span class="help-label">教師帳號：</span>';
+            echo '<span class="help-value">身分證字號</span>';
+            echo '</div>';
+            echo '<div class="help-item">';
+            echo '<span class="help-label">教師密碼：</span>';
+            echo '<span class="help-value">設定的密碼</span>';
+            echo '</div>';
+            echo '</div>';
+            echo '</div>';
+
+            echo '<div class="action-section">';
+            echo '<a href="teacher.php" class="retry-button">重新登入</a>';
+            echo '<a href="main.php" class="home-button">返回首頁</a>';
+            echo '</div>';
+            echo '</div>';
         }
 
     } catch (Exception $e) {
