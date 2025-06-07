@@ -171,11 +171,16 @@
                     ?>
                 </select>
 
+                <label for="professor-jobtitle">職稱：</label>
+                <input type="text" id="professor-jobtitle" name="professor_jobtitle" required readonly>
+
                 <label for="professor-email">電子郵件：</label>
                 <input type="email" id="professor-email" name="professor_email" required readonly>
 
                 <label for="professor-phone">電話：</label>
                 <input type="text" id="professor-phone" name="professor_phone" required readonly>
+
+                <input type="hidden" id="professor-id" name="professor__id" value="">
             </div>
 
             <div class="submit-section">
@@ -212,16 +217,41 @@
         const name = document.getElementById('professor-name').value;
 
         if (name === "") {
+            document.getElementById('professor-jobtitle').value = "";
             document.getElementById('professor-email').value = "";
             document.getElementById('professor-phone').value = "";
+            document.getElementById('professor-id').value = "";
             return;
         }
 
         fetch('get_teacher_info.php?name=' + encodeURIComponent(name))
             .then(response => response.json())
             .then(data => {
-                document.getElementById('professor-email').value = data.email || '';
-                document.getElementById('professor-phone').value = data.phone || '';
+                if (data.length === 0) {
+                    alert("找不到該教授");
+                    return;
+                }
+
+                if (data.length === 1) {
+                    document.getElementById('professor-jobtitle').value = data[0].jobtitle || '';
+                    document.getElementById('professor-email').value = data[0].email || '';
+                    document.getElementById('professor-phone').value = data[0].phone || '';
+                    document.getElementById('professor-id').value = data[0].id || '';
+                } else {
+                    // 多筆 → 讓使用者挑選
+                    const selected = prompt("找到多位同名指導老師，請輸入要選哪一位的序號：\n" +
+                        data.map((prof, i) =>
+                            `${i + 1}. 電子郵件: ${prof.email}，電話: ${prof.phone} 職稱: ${prof.jobtitle} 身分證字號: ${prof.id}`
+                        ).join("\n"));
+
+                    const idx = parseInt(selected) - 1;
+                    if (!isNaN(idx) && idx >= 0 && idx < data.length) {
+                        document.getElementById('professor-email').value = data[idx].email || '';
+                        document.getElementById('professor-phone').value = data[idx].phone || '';
+                        document.getElementById('professor-jobtitle').value = data[idx].jobtitle || '';
+                        document.getElementById('professor-id').value = data[idx].id || '';
+                    }
+                }
             })
             .catch(error => {
                 console.error('Error fetching professor info:', error);
