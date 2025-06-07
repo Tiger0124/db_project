@@ -15,6 +15,5 @@ $supabaseClient = new Client([
         'Authorization' => 'Bearer ' . $supabaseApiKey,
         'Accept' => 'application/json',
     ],
-    'verify' => 'C:\AppServ\php7\extras\ssl\cacert.pem' // 將此路徑替換為實際路徑
 ]);
 ?>
