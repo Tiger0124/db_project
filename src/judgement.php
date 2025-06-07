@@ -100,11 +100,11 @@
                             $scoredTeamMap[$score['隊伍編號']] = true;
                         }
 
-                        // 過濾出尚未被評分的隊伍
+                        // 過濾出尚未被評分且報名進度為「完成報名」的隊伍
                         $unscoredTeams = array_filter($teams, function ($team) use ($scoredTeamMap) {
-                            return !isset($scoredTeamMap[$team['隊伍編號']]);
+                            return !isset($scoredTeamMap[$team['隊伍編號']]) && $team['報名進度'] === '完成報名';
                         });
-
+                        
                         if (empty($unscoredTeams)) {
                             echo "<script>alert('您已評分所有隊伍'); goBack();</script>";
                             exit;

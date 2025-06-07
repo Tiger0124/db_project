@@ -106,17 +106,51 @@
             try {
                 $response = $supabaseClient->get("學生", [
                     'query' => [
-                        '學號' => "eq.$student_num"
+                        '學號' => "eq.$student_num",
+                        "身分證字號" => "eq.$student_id",
                     ]
                 ]);
                 $data = json_decode($response->getBody(), true);
 
                 if (empty($data)) {
+                    echo '<form id="backForm" action="student_dashboard.php" method="POST">';
+                    echo '<input type="hidden" name="username" value="' . $_POST['username'] . '">';
+                    echo '<input type="hidden" name="password" value="' . $_POST['password'] . '">';
+                    echo '</form>';
+                    echo '<script type="text/javascript">';
                     echo "alert('學號 {$student_num} 有誤，找不到此學生資料');";
-                    echo "window.history.back();";
+                    echo 'document.getElementById("backForm").submit();';
                     echo '</script>';
                     exit;
                 }
+            } catch (GuzzleHttp\Exception\RequestException $e) {
+                die("學生資料更新失敗：" . $e->getMessage());
+            }
+        }
+        // 學生資料
+        for ($i = 1; $i <= 4; $i++) {
+            $student_id = $_POST["student{$i}_id"] ?? null;
+            $student_num = $_POST["student{$i}_num"] ?? null;
+            $student_name = $_POST["student{$i}_name"] ?? null;
+            $student_email = $_POST["student{$i}_email"] ?? null;
+            $student_phone = $_POST["student{$i}_phone"] ?? null;
+            $student_department = $_POST["student{$i}_department"] ?? null;
+
+            // 如果是學生 4，檢查是否有輸入資料，若無則跳過
+            if ($i > 1 && empty($student_id) && empty($student_num) && empty($student_name)) {
+                continue;
+            }
+
+            // 檢查是否有該學號的學生存在
+            try {
+                $response = $supabaseClient->get("學生", [
+                    'query' => [
+                        '學號' => "eq.$student_num",
+                        "身分證字號" => "eq.$student_id",
+
+                    ]
+                ]);
+                $data = json_decode($response->getBody(), true);
 
                 // 更新學生資料
                 $supabaseClient->patch('學生', [
@@ -134,8 +168,9 @@
         // 更新指導老師指導的隊伍
         $professor_id = $_POST['professor_id'];
         $supabaseClient->patch('指導老師', [
-            'query' => ['身份證字號' => "eq.$professor_id"],
+            'query' => ['身分證字號' => "eq.$professor_id"],
             'json' => [
+                '參加年份' => $currentYear,
                 '隊伍編號' => $team_num
             ]
         ]);
@@ -168,3 +203,4 @@
             </div>
         </div>
     </footer>
+</body>
