@@ -69,6 +69,55 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>評分提交結果 - 高雄大學創意競賽管理系統</title>
     <link rel="stylesheet" href="../asset/submit_score.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.0.0/dist/umd/supabase.min.js"></script>
+    <script>
+        const supabaseClient = supabase.createClient(
+            'https://xlomzrhmzjjfjmsvqxdo.supabase.co',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhsb216cmhtempqZmptc3ZxeGRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg0OTk3NTcsImV4cCI6MjA2NDA3NTc1N30.AaGloZjC_aqW3OQkn4aDxy7SGymfTsJ6JWNWJYcYbGo'
+        );
+        async function rank() {
+            const { data, error } = await supabaseClient
+                .from('評分資料')
+                .select('*')
+                .eq('參加年份','2025');
+            if (error) {
+                console.error('Error fetching data:', error);
+                return;
+            }
+            //參加年份與隊伍編號相同的放在一起
+            const groupedData = data.reduce((acc, item) => {
+                const key = `${item.參加年份}-${item.隊伍編號}`;
+                if (!acc[key]) {
+                    acc[key] = [];
+                }
+                acc[key].push(item);
+                return acc;
+            }, {});
+            // 將每個隊伍的評分進行排序
+            const rankedTeams = Object.entries(groupedData).map(([key, items]) => {
+                const totalScore = items.reduce((sum, item) => sum + item.創意性 + item.實用性 + item.完整性, 0);
+                return {
+                    key,
+                    totalScore,
+                    items
+                };
+            });
+            // 按照總分降序排序
+            rankedTeams.sort((a, b) => b.totalScore - a.totalScore);
+            console.log('Ranked Teams:', rankedTeams);
+            //根據總分更新至資料庫
+            for (let i = 0; i < rankedTeams.length; i++) {
+                const [year, teamId] = rankedTeams[i].key.split('-');
+                const rank = i + 1;
+                await supabaseClient
+                    .from('隊伍')
+                    .update({ 名次: rank })
+                    .eq('參加年份', year)
+                    .eq('隊伍編號', teamId);
+            }
+        }
+        rank();
+    </script>
 </head>
 
 <body>

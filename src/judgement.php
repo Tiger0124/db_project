@@ -10,18 +10,25 @@
     <link rel="stylesheet" href="../asset/judgement.css">
 
     <script>
+        src = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.0.0/dist/umd/supabase.min.js";
+
         function goBack() {
             const form = document.createElement("form");
             form.method = "post";
             form.action = "judge_dashboard.php";
 
-            form.innerHTML = `
+            function goBack() {
+                const form = document.createElement("form");
+                form.method = "post";
+                form.action = "judge_dashboard.php";
+
+                form.innerHTML = `
             <input type="hidden" name="username" value="<?php echo htmlspecialchars($_POST['username']); ?>">
             <input type="hidden" name="password" value="<?php echo htmlspecialchars($_POST['password']); ?>">
         `;
-            document.body.appendChild(form);
-            form.submit();
-        }
+                document.body.appendChild(form);
+                form.submit();
+            }
     </script>
 </head>
 
@@ -62,13 +69,22 @@
 
                         // 年份對應屆數
                         $yearToSession = [
-                            2013 => "1", 2014 => "2", 2015 => "3", 2016 => "4",
-                            2017 => "5", 2018 => "6", 2019 => "7", 2020 => "8",
-                            2021 => "9", 2022 => "10", 2023 => "11", 2024 => "12",
+                            2013 => "1",
+                            2014 => "2",
+                            2015 => "3",
+                            2016 => "4",
+                            2017 => "5",
+                            2018 => "6",
+                            2019 => "7",
+                            2020 => "8",
+                            2021 => "9",
+                            2022 => "10",
+                            2023 => "11",
+                            2024 => "12",
                             2025 => "13"
                         ];
                         $session = $yearToSession[$currentYear] ?? null;
-                        
+
                         if (!$session) {
                             echo "<script>alert('無效的年度，無法對應屆數'); history.back();</script>";
                             exit;
@@ -170,21 +186,26 @@
 
                                 <!-- 評分輸入 - 創意性 -->
                                 <td>
-                                    <input type="number" name="scores_new[<?= $team['隊伍編號'] ?>]" placeholder="1-100" min="1" max="100" required>
+                                    <input type="number" name="scores_new[<?= $team['隊伍編號'] ?>]" placeholder="1-100" min="1"
+                                        max="100" required>
                                     <input type="hidden" name="team_ids[<?= $team['隊伍編號'] ?>]" value="<?= $team['隊伍編號'] ?>">
                                     <input type="hidden" name="sessions[<?= $team['隊伍編號'] ?>]" value="<?= $team['屆數'] ?>">
-                                    <input type="hidden" name="username" value="<?= htmlspecialchars($_POST['username'] ?? '') ?>">
-                                    <input type="hidden" name="password" value="<?= htmlspecialchars($_POST['password'] ?? '') ?>">
+                                    <input type="hidden" name="username"
+                                        value="<?= htmlspecialchars($_POST['username'] ?? '') ?>">
+                                    <input type="hidden" name="password"
+                                        value="<?= htmlspecialchars($_POST['password'] ?? '') ?>">
                                 </td>
 
                                 <!-- 評分輸入 - 實用性 -->
                                 <td>
-                                    <input type="number" name="scores_use[<?= $team['隊伍編號'] ?>]" placeholder="1-100" min="1" max="100" required>
+                                    <input type="number" name="scores_use[<?= $team['隊伍編號'] ?>]" placeholder="1-100" min="1"
+                                        max="100" required>
                                 </td>
 
                                 <!-- 評分輸入 - 完整性 -->
                                 <td>
-                                    <input type="number" name="scores_integrity[<?= $team['隊伍編號'] ?>]" placeholder="1-100" min="1" max="100" required>
+                                    <input type="number" name="scores_integrity[<?= $team['隊伍編號'] ?>]" placeholder="1-100"
+                                        min="1" max="100" required>
                                 </td>
 
                                 <!-- 評語輸入 -->
@@ -193,12 +214,27 @@
                                 </td>
                             </tr>
                         <?php endforeach; ?>
-                </tbody>
+                        <<<<<<< HEAD </tbody>
             </table>
             <div style="text-align: right;">
                 <button type="submit">提交評分</button>
             </div>
             </form>
+            =======
+            </tbody>
+            </table>
+            <div style="text-align: right;">
+                <button type="submit" id="count_rank">提交評分</button>
+            </div>
+            </form>
+            <script>
+                document.getElementById('count_rank').addEventListener('click', function(event) {
+                    if (!confirm('確定要提交評分嗎？')) {
+                        event.preventDefault();
+                    }
+                });
+            </script>
+            >>>>>>> tiger_branch
         </section>
         <form action="judge_dashboard.php" method="POST">
             <input type="hidden" name="username" value="<?php echo $_POST['username']; ?>">

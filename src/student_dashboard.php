@@ -123,7 +123,7 @@
                 <button type="submit">報名參賽</button>
             </form>';
         }
-    '</div>';
+    echo '</div>';
     } else {
         echo '<h2>登入失敗，請返回並重試。</h2>';
         echo '<P>隊伍帳號密碼提示</P>';
