@@ -100,7 +100,7 @@
                     <div class="student-info" data-student="3" style="display: none;">
                         <div class="student-header">
                             <h4>組員三資料</h4>
-                            <span class="-badge">必填</span>
+                            <span class="required-badge">必填</span>
                         </div>
 
                         <label for="student3-id">身分證字號：</label>
@@ -154,23 +154,42 @@
 
             <h3>指導教授資料</h3>
             <div class="form-group">
-                <label for="professor-id">身分證字號：</label>
-                <input type="text" id="professor-id" name="professor_id" required>
-
                 <label for="professor-name">姓名：</label>
-                <input type="text" id="professor-name" name="professor_name" required>
+                <select id="professor-name" name="professor_name" required onchange="fetchProfessorInfo()">
+                    <option value="">請選擇指導老師姓名</option>
+                    <?php
+                    include 'conn.php';
+
+                    // 從 Supabase 撈取教授資料
+                    $response = $supabaseClient->get("指導老師"); // 假設表名為「教授」
+                    $professors = json_decode($response->getBody(), true);
+
+                    foreach ($professors as $professor) {
+                        $name = $professor['姓名']; // 根據你的資料欄位名稱調整
+                        echo "<option value=\"" . htmlspecialchars($name) . "\">$name</option>";
+                    }
+                    ?>
+                </select>
 
                 <label for="professor-email">電子郵件：</label>
-                <input type="email" id="professor-email" name="professor_email" required>
+                <input type="email" id="professor-email" name="professor_email" required readonly>
 
                 <label for="professor-phone">電話：</label>
-                <input type="text" id="professor-phone" name="professor_phone" required>
+                <input type="text" id="professor-phone" name="professor_phone" required readonly>
             </div>
 
             <div class="submit-section">
                 <button type="submit" id="submitBtn">提交報名表</button>
             </div>
         </form>
+        
+        <div class="return-section">
+            <form action="student_dashboard.php" method="POST">
+                <input type="hidden" name="username" value="<?= htmlspecialchars($_POST['username']) ?>">
+                <input type="hidden" name="password" value="<?= htmlspecialchars($_POST['password']) ?>">
+                <button type="submit" class="return-btn">返回</button>
+            </form>
+        </div>
     </main>
 
     <footer class="site-footer">
@@ -188,6 +207,27 @@
     </footer>
 
     <script src="student_register.js"></script>
+    <script>
+    function fetchProfessorInfo() {
+        const name = document.getElementById('professor-name').value;
+
+        if (name === "") {
+            document.getElementById('professor-email').value = "";
+            document.getElementById('professor-phone').value = "";
+            return;
+        }
+
+        fetch('get_teacher_info.php?name=' + encodeURIComponent(name))
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('professor-email').value = data.email || '';
+                document.getElementById('professor-phone').value = data.phone || '';
+            })
+            .catch(error => {
+                console.error('Error fetching professor info:', error);
+            });
+    }
+    </script>
 </body>
 
 </html>

@@ -51,16 +51,6 @@
                 ]
             ]);
             $members = json_decode($team_response->getBody(), true);
-
-            // 取得指導老師資料
-            $professor_response = $supabaseClient->get('指導老師', [
-                'query' => [
-                    '隊伍編號' => 'eq.' . $team_id,
-                    'select' => '身分證字號,姓名,電子郵件,電話'
-                ]
-            ]);
-            $professor_data = json_decode($professor_response->getBody(), true);
-            $professor = count($professor_data) > 0 ? $professor_data[0] : null;
         ?>
             <section class="edit-team-section">
                 <h2>修改團隊成員資料</h2>
@@ -73,11 +63,6 @@
                                 學生 <?= $index + 1 ?>
                             </button>
                         <?php endforeach; ?>
-                    <?php endif; ?>
-                    <?php if (!empty($professor)): ?>
-                        <button type="button" class="tab-btn professor-tab" data-member="professor">
-                            指導老師
-                        </button>
                     <?php endif; ?>
                 </div>
 
@@ -98,8 +83,7 @@
                                         <div class="form-group">
                                             <label for="student<?= $index ?>-studentid">學號：</label>
                                             <input type="text" id="student<?= $index ?>-studentid"
-                                                name="student<?= $index ?>_studentid" value="<?= htmlspecialchars($member["學號"]) ?>"
-                                                required>
+                                                name="student<?= $index ?>_studentid" value="<?= htmlspecialchars($member["學號"]) ?>" required readonly>
                                         </div>
                                     </div>
 
@@ -132,41 +116,6 @@
                                 </fieldset>
                             </div>
                         <?php endforeach; ?>
-                    <?php endif; ?>
-
-                    <!-- 指導老師資料表單 -->
-                    <?php if (!empty($professor)): ?>
-                        <div class="member-form" data-form="professor">
-                            <fieldset class="professor-fieldset">
-                                <legend>指導老師資料</legend>
-
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label for="professor-id">身分證字號：</label>
-                                        <input type="text" id="professor-id" name="professor_id"
-                                            value="<?= htmlspecialchars($professor["身分證字號"]) ?>" required readonly>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="professor-name">姓名：</label>
-                                        <input type="text" id="professor-name" name="professor_name"
-                                            value="<?= htmlspecialchars($professor["姓名"]) ?>" required>
-                                    </div>
-                                </div>
-
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label for="professor-email">電子郵件：</label>
-                                        <input type="email" id="professor-email" name="professor_email"
-                                            value="<?= htmlspecialchars($professor["電子郵件"]) ?>" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="professor-phone">電話：</label>
-                                        <input type="tel" id="professor-phone" name="professor_phone"
-                                            value="<?= htmlspecialchars($professor["電話"]) ?>" required>
-                                    </div>
-                                </div>
-                            </fieldset>
-                        </div>
                     <?php endif; ?>
 
                     <input type="hidden" name="team_id" value="<?= $team_id ?>">
