@@ -134,8 +134,8 @@
                     <td>${teacher ? teacher.姓名 : '無'}</td>
                     <td>${students.length > 0 ? students.map(s => `${s.學號}: ${s.姓名}`).join('<br>') : '無'}</td>
                     <td>${teamWork ? teamWork.作品名稱 : '無'}</td>
-                    <td>${teamWork ? `<a href="data:application/pdf;base64,${teamWork.作品說明書}" download="${teamWork.作品名稱}_說明書.pdf">下載說明書</a>` : '無'}</td>
-                    <td>${teamWork ? `<a href="data:application/pdf;base64,${teamWork.作品說明書}" download="${teamWork.作品名稱}_海報.pdf">下載海報</a>` : '無'}</td>
+                    <td>${teamWork ? `<a href="data:application/pdf;base64,${teamWork.說明書}" download="說明書.pdf">下載說明書</a>` : '無'}</td>
+                    <td>${teamWork ? `<a href="data:application/pdf;base64,${teamWork.海報}" download="海報.pdf">下載海報</a>` : '無'}</td>
                     <td>${rank}</td>
                     <td><button type="button" class="delete_btn" data-id="${team.隊伍編號}">刪除</button></td>
                 </tr>`;
