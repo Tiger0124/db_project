@@ -26,7 +26,7 @@
         // 查詢 Supabase「指導老師」資料表中是否有符合的紀錄
         $response = $supabaseClient->get('指導老師', [
             'query' => [
-                '隊伍編號' => 'eq.' . $filename,
+                '身分證字號' => 'eq.' . $filename,
                 '密碼' => 'eq.' . $filepasswd
             ]
         ]);
@@ -72,8 +72,8 @@
         } else {
             echo '<h2>登入失敗，請返回並重試。</h2>';
             echo '<P>教師帳號密碼提示</P>';
-            echo '<p>教師帳號：隊伍編號</p>';
-            echo '<p>教師密碼：身分證字號</p>';
+            echo '<p>教師帳號：身分證字號</p>';
+            echo '<p>教師密碼：密碼</p>';
             echo '
             <div class="button-container">    
                 <a href="teacher.php" class="system-button">返回</a>

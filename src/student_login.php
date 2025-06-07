@@ -22,10 +22,10 @@
     <main id="content">
         <h2 style="text-align: center">學生登入系統 </h2>
         <form action="student_dashboard.php" method="POST">
-            <label for="username">隊伍編號</label>
-            <input type="text" id="username" name="username" value="stu2" required>
+            <label for="username">帳號</label>
+            <input type="text" id="username" name="username" required>
             <label for="password">密碼</label>
-            <input type="password" id="password" name="password" value="123" required>
+            <input type="password" id="password" name="password" required>
             <button type="submit">登入</button>
         </form>
     </main>

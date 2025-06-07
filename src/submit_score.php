@@ -7,34 +7,55 @@ include 'conn.php';
 $messages = [];
 $success = true;
 $username = '';
-$judgeId = '';
+$password = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $scores = $_POST['scores']; // 所有評分
+    $scores_new = $_POST['scores_new']; // 評分資料
+    $scores_use = $_POST['scores_use']; // 評分資料
+    $scores_integrity = $_POST['scores_integrity']; // 評分資料
+    $comments = $_POST['comments']; // 評語資料
     $teamIds = $_POST['team_ids']; // 隊伍編號
     $sessions = $_POST['sessions']; // 屆數
-    $username = $_POST['username']; // 評審帳號
-    $judgeId = $_POST['judge_id']; // 評審身分證(密碼)
-
+    $username = $_POST['username']; // 評審身分證(帳號)
+    // $username = str_pad($username, 12);  // 若 CHAR(12)
+    $password = trim($_POST['password']); // 評審密碼(密碼)
     $currentYear = date("Y");
+    
+    foreach ($teamIds as $teamId) {
+        $session = trim($sessions[$teamId]);
+        $score_new = $scores_new[$teamId];
+        $score_use = $scores_use[$teamId];
+        $score_integrity = $scores_integrity[$teamId];
+        $comment = $comments[$teamId];
 
-    foreach ($scores as $teamId => $score) {
-        $session = $sessions[$teamId]; // 取得對應屆數
-        
-        // 使用預處理語句防止SQL注入
-        $sql = "INSERT INTO 評分資料 (評分, 參加年份, 隊伍編號, 身分證字號, 屆數) 
-                VALUES (?, ?, ?, ?, ?)";
+        $supabaseUrl = 'https://xlomzrhmzjjfjmsvqxdo.supabase.co/rest/v1/評分資料';
+        $supabaseApiKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhsb216cmhtempqZmptc3ZxeGRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg0OTk3NTcsImV4cCI6MjA2NDA3NTc1N30.AaGloZjC_aqW3OQkn4aDxy7SGymfTsJ6JWNWJYcYbGo';
 
-        $stmt = mysqli_prepare($link, $sql);
-        mysqli_stmt_bind_param($stmt, "sisss", $score, $currentYear, $teamId, $judgeId, $session);
+        try {
+            $response = $supabaseClient->request('POST', $supabaseUrl, [
+                'headers' => [
+                    'apikey' => $supabaseApiKey,
+                    'Authorization' => 'Bearer ' . $supabaseApiKey,
+                    'Content-Type' => 'application/json',
+                    'Prefer' => 'return=representation'
+                ],
+                'json' => [
+                    '參加年份' => $currentYear,
+                    '隊伍編號' => $teamId,
+                    '身分證字號' => $username,
+                    '屆數' => (string)$session,
+                    '創意性' => (int)$score_new,
+                    '實用性' => (int)$score_use,
+                    '完整性' => (int)$score_integrity,
+                    '評語' => $comment
+                ]
+            ]);
 
-        if (mysqli_stmt_execute($stmt)) {
-            $messages[] = ['type' => 'success', 'text' => "隊伍 $teamId 的評分已成功提交！"];
-        } else {
+            $messages[] = ['type' => 'success', 'text' => "隊伍 $teamId 評分成功送出"];
+        } catch (Exception $e) {
+            $messages[] = ['type' => 'error', 'text' => "隊伍 $teamId 評分失敗：" . $e->getMessage()];
             $success = false;
-            $messages[] = ['type' => 'error', 'text' => "隊伍 $teamId 的評分提交失敗：" . mysqli_error($link)];
         }
-        mysqli_stmt_close($stmt);
     }
 }
 ?>
@@ -99,7 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="action-buttons">
                 <form action="judge_dashboard.php" method="POST">
                     <input type="hidden" name="username" value="<?= htmlspecialchars($username) ?>">
-                    <input type="hidden" name="password" value="<?= htmlspecialchars($judgeId) ?>">
+                    <input type="hidden" name="password" value="<?= htmlspecialchars($password) ?>">
                     <button type="submit" class="return-btn">返回評審系統</button>
                 </form>
             </div>
