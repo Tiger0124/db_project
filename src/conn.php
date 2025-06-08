@@ -16,5 +16,6 @@ $supabaseClient = new Client([
         'Accept' => 'application/json',
     ],
     'verify' => false
+    'verify' => false // 將此路徑替換為實際路徑
 ]);
 ?>

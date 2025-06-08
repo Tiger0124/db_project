@@ -5,8 +5,7 @@
   box-sizing: border-box;
 }
 
-html,
-body {
+html, body {
   height: 100vh;
   width: 100vw;
   margin: 0;
@@ -22,8 +21,8 @@ body {
   background-color: #f5f5f5;
   color: #333;
   line-height: 1.6;
-  padding-top: 100px;
-  padding-bottom: 80px;
+  padding-top: 100px; /* 為header預留空間 */
+  padding-bottom: 80px; /* 為footer預留空間 */
 }
 
 /* Header 樣式 - 固定在頂部 */
@@ -37,12 +36,12 @@ header {
     to right,
     #ffffff 0%,
     #ffffff 30%,
-    #ffd700 60%,
+    #FFD700 60%,
     #f5be11 100%
   );
   color: #2c3e50;
   padding: 1rem 0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   z-index: 1000;
 }
 
@@ -59,7 +58,7 @@ header {
 .logo img {
   height: 50px;
   width: auto;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
 }
 
 header h1 {
@@ -67,133 +66,219 @@ header h1 {
   font-weight: 600;
   letter-spacing: 1px;
   color: #2c3e50;
-  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8);
+  text-shadow: 0 1px 3px rgba(255,255,255,0.8);
 }
 
 /* Main 內容區塊 */
 main {
   flex: 1;
-  width: 100%;
-  padding: 2rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  width: 100vw;
+  padding: 3rem 2rem 2rem 2rem;
+  background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
+/* 上傳區塊 */
 .upload-section {
   width: 100%;
   max-width: 800px;
+  margin: 0 auto;
   background: white;
   border-radius: 20px;
   padding: 3rem;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
-  animation: fadeInUp 0.6s ease-out;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+  margin-bottom: 2rem;
+  transform: translateY(0);
+  transition: all 0.3s ease;
+  animation: fadeInUp 0.8s ease-out;
 }
 
+.upload-section:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+}
+
+/* 區塊標題樣式 */
 .upload-section h2 {
   text-align: center;
-  font-size: 2rem;
   color: #2c3e50;
-  margin-bottom: 2rem;
+  font-size: 2.2rem;
+  margin-bottom: 3rem;
+  font-weight: 600;
+  border-bottom: 3px solid #28a745;
+  padding-bottom: 1rem;
+  position: relative;
+}
+
+.upload-section h2::before {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 3px;
+  background: linear-gradient(135deg, #FFD700 0%, #f5be11 100%);
 }
 
 /* 表單樣式 */
-form {
+.upload-section form {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 2rem;
 }
 
+/* 表單群組 */
 .form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.form-group label {
-  font-weight: 600;
-  color: #2c3e50;
-}
-
-.form-group input[type="text"],
-.form-group input[type="url"],
-.form-group input[type="file"],
-.form-group textarea {
-  padding: 0.8rem 1rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-family: inherit;
-  font-size: 1rem;
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  border-radius: 15px;
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
   transition: all 0.3s ease;
+  animation: slideInLeft 0.6s ease-out;
 }
 
-.form-group input[type="text"]:focus,
-.form-group input[type="url"]:focus,
-.form-group textarea:focus {
+.form-group:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(40, 167, 69, 0.4);
+}
+
+/* 表單群組動畫延遲 */
+.form-group:nth-child(1) { animation-delay: 0.1s; }
+.form-group:nth-child(2) { animation-delay: 0.2s; }
+.form-group:nth-child(3) { animation-delay: 0.3s; }
+.form-group:nth-child(4) { animation-delay: 0.4s; }
+.form-group:nth-child(5) { animation-delay: 0.5s; }
+.form-group:nth-child(6) { animation-delay: 0.6s; }
+
+/* 標籤樣式 */
+label {
+  color: white;
+  font-weight: 600;
+  font-size: 1.2rem;
+  margin-bottom: 0.8rem;
+  display: block;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+/* 輸入框樣式 */
+input[type="file"],
+input[type="url"],
+input[type="text"],
+textarea {
+  width: 100%;
+  padding: 1rem;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-family: inherit;
+  background: rgba(255, 255, 255, 0.95);
+  transition: all 0.3s ease;
+  margin-top: 0.5rem;
+}
+
+input[type="file"]:focus,
+input[type="url"]:focus,
+input[type="text"]:focus,
+textarea:focus {
   outline: none;
-  border-color: #3498db;
-  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+  border-color: #FFD700;
+  background: white;
+  box-shadow: 0 4px 15px rgba(245, 190, 17, 0.3);
+  transform: translateY(-2px);
 }
 
-.form-group textarea {
+/* 文字區域特殊樣式 */
+textarea {
   min-height: 120px;
   resize: vertical;
+  line-height: 1.5;
 }
 
-.form-group input[type="file"] {
-  padding: 0.5rem 11;
+/* 檔案上傳輸入框特殊樣式 */
+input[type="file"] {
+  padding: 0.8rem;
+  background: white;
+  border: 2px dashed rgba(255, 255, 255, 0.7);
+  cursor: pointer;
 }
 
-button[type="submit"],
-button[type="button"] {
-  padding: 1rem 2rem;
-  background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
-  color: white;
+input[type="file"]:hover {
+  border-color: #FFD700;
+  background: #fffef7;
+}
+
+/* Placeholder 樣式 */
+input::placeholder,
+textarea::placeholder {
+  color: #999;
+  font-style: italic;
+}
+
+/* 提交按鈕樣式 */
+button[type="submit"] {
+  padding: 1.5rem 3rem;
+  background: linear-gradient(135deg, #FFD700 0%, #f5be11 100%);
+  color: #2c3e50;
   border: none;
-  border-radius: 10px;
-  font-size: 1.1rem;
-  font-weight: 600;
+  border-radius: 15px;
+  font-size: 1.4rem;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
-  margin-top: 1rem;
+  box-shadow: 0 8px 25px rgba(245, 190, 17, 0.4);
+  margin-top: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  animation: fadeInUp 0.8s ease-out 0.7s both;
 }
 
-button[type="submit"]:hover,
-button[type="button"]:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(52, 152, 219, 0.5);
-  background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+button[type="submit"]:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 35px rgba(245, 190, 17, 0.6);
+  background: linear-gradient(135deg, #f5be11 0%, #e6a800 100%);
+  color: white;
+}
+
+/* 返回表單樣式 */
+body > form:last-of-type {
+  width: 100%;
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+  text-align: center;
+  animation: fadeInUp 1s ease-out 0.8s both;
 }
 
 /* 返回按鈕樣式 */
-form[action="student_dashboard.php"] {
-  position: fixed;
-  bottom: 80px;
-  right: 20px;
-  z-index: 999;
-}
-
-form[action="student_dashboard.php"] button {
-  padding: 0.8rem 1.5rem;
-  background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
-  color: white;
+body > form:last-of-type button {
+  width: 100%;
+  padding: 1.2rem 2rem;
+  background: linear-gradient(135deg, #FFD700 0%, #f5be11 100%);
+  color: #2c3e50;
   border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
+  border-radius: 12px;
+  font-size: 1.3rem;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 10px rgba(108, 117, 125, 0.3);
+  box-shadow: 0 6px 20px rgba(245, 190, 17, 0.4);
+  margin: 0;
 }
 
-form[action="student_dashboard.php"] button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(108, 117, 125, 0.5);
-  background: linear-gradient(135deg, #495057 0%, #6c757d 100%);
+body > form:last-of-type button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(245, 190, 17, 0.6);
+  background: linear-gradient(135deg, #f5be11 0%, #e6a800 100%);
+  color: white;
 }
 
-/* Footer 樣式 */
+/* Footer 樣式 - 固定在底部 */
 .site-footer {
   position: fixed;
   bottom: 0;
@@ -267,6 +352,180 @@ form[action="student_dashboard.php"] button:hover {
   color: #3498db;
 }
 
+/* 響應式設計 */
+@media (max-width: 768px) {
+  body {
+    padding-top: 130px;
+    padding-bottom: 100px;
+  }
+  
+  header {
+    height: 110px;
+    background: linear-gradient(
+      to bottom,
+      #ffffff 0%,
+      #f5be11 100%
+    );
+  }
+  
+  .navbar {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+    padding: 0 1rem;
+  }
+  
+  header h1 {
+    font-size: 1.4rem;
+  }
+  
+  main {
+    padding: 2rem 1rem;
+  }
+  
+  .upload-section {
+    padding: 2rem;
+    max-width: 90vw;
+  }
+  
+  .upload-section h2 {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+  }
+  
+  .form-group {
+    padding: 1.5rem;
+  }
+  
+  label {
+    font-size: 1.1rem;
+  }
+  
+  input[type="file"],
+  input[type="url"],
+  input[type="text"],
+  textarea {
+    padding: 0.8rem;
+    font-size: 0.9rem;
+  }
+  
+  button[type="submit"] {
+    font-size: 1.2rem;
+    padding: 1.2rem 2rem;
+  }
+  
+  body > form:last-of-type {
+    max-width: 90vw;
+    padding: 1.5rem;
+  }
+  
+  body > form:last-of-type button {
+    font-size: 1.1rem;
+    padding: 1rem;
+  }
+  
+  .site-footer {
+    height: 90px;
+  }
+  
+  .footer-row {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+  }
+  
+  .footer-links {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding-top: 150px;
+    padding-bottom: 120px;
+  }
+  
+  header {
+    height: 130px;
+  }
+  
+  header h1 {
+    font-size: 1.2rem;
+  }
+  
+  .upload-section h2 {
+    font-size: 1.5rem;
+  }
+  
+  .upload-section {
+    padding: 1.5rem;
+    max-width: 95vw;
+  }
+  
+  .form-group {
+    padding: 1rem;
+  }
+  
+  label {
+    font-size: 1rem;
+  }
+  
+  input[type="file"],
+  input[type="url"],
+  input[type="text"],
+  textarea {
+    padding: 0.7rem;
+    font-size: 0.85rem;
+  }
+  
+  button[type="submit"] {
+    font-size: 1.1rem;
+    padding: 1rem 1.5rem;
+  }
+  
+  body > form:last-of-type {
+    max-width: 95vw;
+    padding: 1rem;
+  }
+  
+  body > form:last-of-type button {
+    font-size: 1rem;
+    padding: 0.8rem;
+  }
+  
+  .site-footer {
+    height: 110px;
+  }
+}
+
+/* 大螢幕優化 */
+@media (min-width: 1200px) {
+  .upload-section {
+    max-width: 900px;
+    padding: 3.5rem;
+  }
+  
+  .upload-section h2 {
+    font-size: 2.5rem;
+  }
+  
+  .form-group {
+    padding: 2.5rem;
+  }
+  
+  label {
+    font-size: 1.3rem;
+  }
+  
+  input[type="file"],
+  input[type="url"],
+  input[type="text"],
+  textarea {
+    padding: 1.2rem;
+    font-size: 1.1rem;
+  }
+}
+
 /* 動畫效果 */
 @keyframes fadeInUp {
   from {
@@ -279,91 +538,46 @@ form[action="student_dashboard.php"] button:hover {
   }
 }
 
-/* 響應式設計 */
-@media (max-width: 768px) {
-  body {
-    padding-top: 130px;
-    padding-bottom: 100px;
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
   }
-
-  header {
-    height: 110px;
-    background: linear-gradient(to bottom, #ffffff 0%, #f5be11 100%);
-  }
-
-  .navbar {
-    flex-direction: column;
-    text-align: center;
-    gap: 1rem;
-    padding: 0 1rem;
-  }
-
-  header h1 {
-    font-size: 1.4rem;
-  }
-
-  main {
-    padding: 1rem;
-  }
-
-  .upload-section {
-    padding: 2rem;
-    max-width: 90vw;
-  }
-
-  .upload-section h2 {
-    font-size: 1.7rem;
-  }
-
-  .site-footer {
-    height: 90px;
-  }
-
-  .footer-row {
-    flex-direction: column;
-    text-align: center;
-    gap: 0.5rem;
-  }
-
-  .footer-links {
-    justify-content: center;
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
 
-@media (max-width: 480px) {
-  body {
-    padding-top: 150px;
-    padding-bottom: 120px;
-  }
+/* 檔案上傳拖拽效果 */
+input[type="file"]:hover {
+  background: linear-gradient(135deg, #fffef7 0%, #fff9e6 100%);
+}
 
-  header {
-    height: 130px;
-  }
+/* 表單驗證狀態 */
+input.valid {
+  border-color: #28a745;
+  background: #f8fff9;
+}
 
-  header h1 {
-    font-size: 1.2rem;
-  }
+input.invalid {
+  border-color: #dc3545;
+  background: #fff8f8;
+}
 
-  .upload-section {
-    padding: 1.5rem;
-    max-width: 95vw;
-  }
+/* 上傳進度條 */
+.upload-progress {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+  margin-top: 1rem;
+  overflow: hidden;
+}
 
-  .upload-section h2 {
-    font-size: 1.5rem;
-  }
-
-  .site-footer {
-    height: 110px;
-  }
-
-  form[action="student_dashboard.php"] {
-    bottom: 110px;
-    right: 10px;
-  }
-
-  form[action="student_dashboard.php"] button {
-    padding: 0.6rem 1rem;
-    font-size: 0.9rem;
-  }
+.upload-progress-bar {
+  height: 100%;
+  background: linear-gradient(135deg, #FFD700 0%, #f5be11 100%);
+  width: 0%;
+  transition: width 0.3s ease;
 }

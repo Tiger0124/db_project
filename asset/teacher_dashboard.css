@@ -21,8 +21,8 @@ body {
   background-color: #f5f5f5;
   color: #333;
   line-height: 1.6;
-  padding-top: 80px; /* 為header預留空間 */
-  padding-bottom: 70px; /* 為footer預留空間 */
+  padding-top: 100px;
+  padding-bottom: 80px;
 }
 
 /* Header 樣式 - 固定在頂部 */
@@ -73,143 +73,375 @@ header h1 {
 main#content {
   flex: 1;
   width: 100vw;
-  padding: 2rem;
+  padding: 3rem 2rem 2rem 2rem;
   background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   margin-top: 0;
   margin-bottom: 0;
 }
 
-/* 內容容器 */
-.content-wrapper {
+/* 歡迎區塊 */
+.welcome-section {
   width: 100%;
   max-width: 1000px;
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+  margin: 0 auto 3rem auto;
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  border-radius: 20px;
   padding: 3rem;
-  margin: 0 auto;
-}
-
-/* 歡迎標題 */
-h2 {
+  box-shadow: 0 15px 40px rgba(40, 167, 69, 0.4);
+  color: white;
   text-align: center;
-  color: #2c3e50;
-  font-size: 2.2rem;
-  margin-bottom: 3rem;
-  font-weight: 600;
+  animation: fadeInUp 0.8s ease-out;
 }
 
-/* 教師按鈕容器 - 響應式布局 */
-.buttons {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 2個按鈕橫排 */
-  gap: 2rem;
-  max-width: 700px;
-  margin: 0 auto;
-  padding: 3rem;
-  background: linear-gradient(135deg, #8e44ad 0%, #9b59b6 100%);
-  border-radius: 25px;
-  box-shadow: 0 15px 40px rgba(142, 68, 173, 0.4);
-  place-items: center;
-  transform: translateY(0);
-  transition: all 0.3s ease;
-}
-
-.buttons:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 20px 50px rgba(142, 68, 173, 0.5);
-}
-
-/* 教師系統按鈕 */
-.buttons input[type="submit"] {
+.welcome-header {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.student-icon {
+  font-size: 4rem;
+  animation: bounce 1s ease-in-out 0.5s;
+}
+
+.welcome-title {
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.status-badge {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 1rem 2rem;
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.status-label {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.status-value {
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #FFD700;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+/* 狀態顏色 */
+.status-unregister .status-value {
+  color: #ff6b6b;
+}
+
+.status-reject .status-value {
+  color: #ffa726;
+}
+
+/* 儀表板容器 */
+.dashboard-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 20px;
+  padding: 3rem;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+  animation: fadeInUp 0.6s ease-out 0.2s both;
+}
+
+/* 按鈕網格 */
+.buttons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  place-items: center;
+}
+
+/* 儀表板按鈕 */
+.dashboard-btn {
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 2rem 1.5rem;
-  background: linear-gradient(135deg, #FFD700 0%, #f5be11 100%);
-  color: #2c3e50;
   border: none;
   border-radius: 15px;
   font-weight: 700;
   font-size: 1.1rem;
   text-align: center;
   transition: all 0.3s ease;
-  box-shadow: 0 8px 25px rgba(245, 190, 17, 0.4);
   cursor: pointer;
-  min-height: 100px;
-  min-width: 200px;
+  min-height: 120px;
+  min-width: 250px;
   width: 100%;
   height: 100%;
+  gap: 1rem;
+  text-decoration: none;
+  color: inherit;
 }
 
-.buttons input[type="submit"]:hover {
+.dashboard-btn:hover {
   transform: translateY(-4px) scale(1.03);
+  text-decoration: none;
+  color: inherit;
+}
+
+/* 按鈕圖示 */
+.btn-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.btn-text {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+/* 不同類型按鈕樣式 */
+.edit-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+.edit-btn:hover {
+  box-shadow: 0 12px 35px rgba(102, 126, 234, 0.6);
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+  color: white;
+}
+
+.upload-btn {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+  box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
+}
+
+.upload-btn:hover {
+  box-shadow: 0 12px 35px rgba(40, 167, 69, 0.6);
+  background: linear-gradient(135deg, #20c997 0%, #28a745 100%);
+  color: white;
+}
+
+.history-btn {
+  background: linear-gradient(135deg, #FFD700 0%, #f5be11 100%);
+  color: #2c3e50;
+  box-shadow: 0 8px 25px rgba(245, 190, 17, 0.4);
+}
+
+.history-btn:hover {
   box-shadow: 0 12px 35px rgba(245, 190, 17, 0.6);
   background: linear-gradient(135deg, #f5be11 0%, #e6a800 100%);
   color: white;
 }
 
-/* 錯誤訊息樣式 */
-main > h2 {
-  text-align: center;
-  color: #dc3545;
-  font-size: 2rem;
-  margin: 2rem auto;
+.register-btn {
+  background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+  color: white;
+  box-shadow: 0 8px 25px rgba(23, 162, 184, 0.4);
+}
+
+.register-btn:hover {
+  box-shadow: 0 12px 35px rgba(23, 162, 184, 0.6);
+  background: linear-gradient(135deg, #138496 0%, #17a2b8 100%);
+  color: white;
+}
+
+.reregister-btn {
+  background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
+  color: #2c3e50;
+  box-shadow: 0 8px 25px rgba(255, 193, 7, 0.4);
+}
+
+.reregister-btn:hover {
+  box-shadow: 0 12px 35px rgba(255, 193, 7, 0.6);
+  background: linear-gradient(135deg, #e0a800 0%, #ffc107 100%);
+  color: white;
+}
+
+.disabled-btn {
+  background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+  color: white;
+  box-shadow: 0 8px 25px rgba(108, 117, 125, 0.4);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.disabled-btn:hover {
+  transform: none;
+  box-shadow: 0 8px 25px rgba(108, 117, 125, 0.4);
+}
+
+/* 按鈕動畫延遲 */
+.dashboard-form:nth-child(1) .dashboard-btn { animation: slideInLeft 0.6s ease-out 0.3s both; }
+.dashboard-form:nth-child(2) .dashboard-btn { animation: slideInLeft 0.6s ease-out 0.4s both; }
+.dashboard-form:nth-child(3) .dashboard-btn { animation: slideInLeft 0.6s ease-out 0.5s both; }
+.dashboard-form:nth-child(4) .dashboard-btn { animation: slideInLeft 0.6s ease-out 0.6s both; }
+.dashboard-form:nth-child(5) .dashboard-btn { animation: slideInLeft 0.6s ease-out 0.7s both; }
+
+/* 錯誤容器 - 滿版設計 */
+.error-container {
+  width: 100vw;
+  min-height: 100vh;
+  margin: 0;
   padding: 2rem;
-  background: white;
-  border-left: 4px solid #dc3545;
-  border-radius: 8px;
-  max-width: 800px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
-
-main > p {
-  text-align: center;
-  color: #666;
-  font-size: 1.2rem;
-  margin: 1rem auto;
-  padding: 1rem;
-  background: white;
-  border-radius: 8px;
-  max-width: 600px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
-
-/* 返回按鈕容器 */
-.button-container {
+  background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  margin: 3rem auto;
-  max-width: 300px;
+  align-items: center;
+  text-align: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  padding-top: 100px;
+  padding-bottom: 80px;
 }
 
-/* 返回按鈕樣式 */
-.system-button {
-  display: inline-block;
-  padding: 1.2rem 2.5rem;
+.error-content {
+  max-width: 600px;
+  background: white;
+  border-radius: 20px;
+  padding: 3rem;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+  width: 90%;
+  animation: slideInUp 0.8s ease-out;
+}
+
+.error-icon {
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+  animation: shake 0.5s ease-in-out 0.5s;
+}
+
+.error-title {
+  color: #dc3545;
+  font-size: 2.2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  border-left: 4px solid #dc3545;
+  padding-left: 1rem;
+  text-align: left;
+}
+
+.error-message {
+  color: #6c757d;
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  line-height: 1.5;
+  text-align: left;
+  padding-left: 1.2rem;
+}
+
+.help-section {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 15px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border-left: 4px solid #28a745;
+  text-align: center;
+}
+
+.help-title {
+  color: #28a745;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.help-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.help-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+}
+
+.help-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.help-label {
+  font-weight: 600;
+  color: #495057;
+  font-size: 1.1rem;
+}
+
+.help-value {
+  color: #28a745;
+  font-weight: 500;
+  background: rgba(40, 167, 69, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.action-section {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.retry-button {
+  padding: 1.2rem 3rem;
   background: linear-gradient(135deg, #FFD700 0%, #f5be11 100%);
   color: #2c3e50;
   text-decoration: none;
   border-radius: 12px;
   font-weight: 700;
   font-size: 1.2rem;
-  text-align: center;
   transition: all 0.3s ease;
   box-shadow: 0 6px 20px rgba(245, 190, 17, 0.4);
 }
 
-.system-button:hover {
+.retry-button:hover {
   transform: translateY(-3px);
   box-shadow: 0 10px 30px rgba(245, 190, 17, 0.6);
   background: linear-gradient(135deg, #f5be11 0%, #e6a800 100%);
   color: white;
+  text-decoration: none;
 }
 
-/* Footer 樣式 - 固定在底部 */
+.home-button {
+  padding: 1.2rem 3rem;
+  background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+  color: white;
+  text-decoration: none;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 20px rgba(108, 117, 125, 0.4);
+}
+
+.home-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(108, 117, 125, 0.6);
+  background: linear-gradient(135deg, #495057 0%, #343a40 100%);
+  color: white;
+  text-decoration: none;
+}
+
+/* Footer 樣式 */
 .site-footer {
   position: fixed;
   bottom: 0;
@@ -286,8 +518,8 @@ main > p {
 /* 響應式設計 */
 @media (max-width: 768px) {
   body {
-    padding-top: 110px;
-    padding-bottom: 90px;
+    padding-top: 130px;
+    padding-bottom: 100px;
   }
   
   header {
@@ -311,42 +543,71 @@ main > p {
   }
   
   main#content {
-    padding: 1rem;
+    padding: 2rem 1rem;
   }
   
-  .content-wrapper {
+  .welcome-section {
     padding: 2rem;
-  }
-  
-  h2 {
-    font-size: 1.8rem;
-    margin-bottom: 2rem;
-  }
-  
-  .buttons {
-    grid-template-columns: 1fr; /* 小螢幕時改為垂直排列 */
-    grid-template-rows: auto;
-    gap: 1.5rem;
     max-width: 90vw;
-    padding: 2rem;
   }
   
-  .buttons input[type="submit"] {
+  .welcome-title {
+    font-size: 2rem;
+  }
+  
+  .dashboard-container {
+    padding: 2rem;
+    max-width: 90vw;
+  }
+  
+  .buttons-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .dashboard-btn {
+    min-height: 100px;
+    min-width: auto;
     font-size: 1rem;
     padding: 1.5rem;
-    min-height: 80px;
-    min-width: auto;
   }
   
-  main > h2 {
-    font-size: 1.6rem;
-    padding: 1.5rem;
+  .btn-icon {
+    font-size: 2rem;
   }
   
-  main > p {
-    font-size: 1.1rem;
+  .error-container {
     padding: 1rem;
-    margin: 1rem auto;
+    padding-top: 130px;
+    padding-bottom: 100px;
+  }
+  
+  .error-content {
+    padding: 2rem;
+    width: 95%;
+  }
+  
+  .error-title {
+    font-size: 1.8rem;
+  }
+  
+  .help-item {
+    flex-direction: column;
+    gap: 0.8rem;
+    text-align: center;
+  }
+  
+  .action-section {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .retry-button,
+  .home-button {
+    width: 100%;
+    text-align: center;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
   }
   
   .site-footer {
@@ -366,8 +627,8 @@ main > p {
 
 @media (max-width: 480px) {
   body {
-    padding-top: 130px;
-    padding-bottom: 110px;
+    padding-top: 150px;
+    padding-bottom: 120px;
   }
   
   header {
@@ -378,55 +639,46 @@ main > p {
     font-size: 1.2rem;
   }
   
-  h2 {
-    font-size: 1.5rem;
+  .welcome-title {
+    font-size: 1.7rem;
   }
   
-  .content-wrapper {
+  .dashboard-container {
     padding: 1.5rem;
-  }
-  
-  .buttons {
-    padding: 1.5rem;
-    gap: 1rem;
     max-width: 95vw;
   }
   
-  .buttons input[type="submit"] {
+  .dashboard-btn {
+    min-height: 80px;
     font-size: 0.9rem;
     padding: 1.2rem;
-    min-height: 70px;
   }
   
-  .system-button {
-    padding: 1rem 2rem;
-    font-size: 1.1rem;
+  .btn-icon {
+    font-size: 1.8rem;
   }
   
-  main > h2 {
-    font-size: 1.4rem;
-    padding: 1rem;
+  .error-container {
+    padding: 0.5rem;
+    padding-top: 150px;
+    padding-bottom: 120px;
+  }
+  
+  .error-content {
+    padding: 1.5rem;
+    width: 98%;
+  }
+  
+  .error-title {
+    font-size: 1.5rem;
+  }
+  
+  .error-icon {
+    font-size: 3rem;
   }
   
   .site-footer {
     height: 110px;
-  }
-}
-
-/* 大螢幕優化 */
-@media (min-width: 1200px) {
-  .buttons {
-    max-width: 800px;
-    gap: 2.5rem;
-  }
-  
-  .buttons input[type="submit"] {
-    font-size: 1.2rem;
-    min-height: 120px;
-  }
-  
-  h2 {
-    font-size: 2.5rem;
   }
 }
 
@@ -442,10 +694,42 @@ main > p {
   }
 }
 
-.buttons {
-  animation: fadeInUp 0.6s ease-out;
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
-h2 {
-  animation: fadeInUp 0.8s ease-out 0.2s both;
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); }
+  20%, 40%, 60%, 80% { transform: translateX(3px); }
 }

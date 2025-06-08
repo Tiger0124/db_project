@@ -209,7 +209,7 @@ fieldset:hover {
 
 /* Legend 樣式 */
 legend {
-  color: white;
+  color: black;
   font-weight: 700;
   font-size: 1.4rem;
   padding: 0.8rem 1.5rem;
