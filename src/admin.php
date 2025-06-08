@@ -18,7 +18,7 @@
     <main id="content">    
         <h2 style="text-align: center">管理員登入系統 </h2>             
         <form action="admin_dashboard.php" method="POST">
-            <label for="username">帳號</label>
+            <label for="username">帳號 (員工編號)</label>
             <input type="text" id="username" name="username" required>
             <label for="password">密碼</label>
             <input type="password" id="password" name="password" required>
