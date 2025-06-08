@@ -1,3 +1,4 @@
+<?php include 'darkmode.php'; ?>
 <?php
 // 設定時區
 date_default_timezone_set('Asia/Taipei');
@@ -20,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // $username = str_pad($username, 12);  // 若 CHAR(12)
     $password = trim($_POST['password']); // 評審密碼(密碼)
     $currentYear = date("Y");
-    
+
     foreach ($teamIds as $teamId) {
         $session = trim($sessions[$teamId]);
         $score_new = $scores_new[$teamId];
@@ -62,6 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!DOCTYPE html>
 <html lang="zh-TW">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -74,10 +76,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhsb216cmhtempqZmptc3ZxeGRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg0OTk3NTcsImV4cCI6MjA2NDA3NTc1N30.AaGloZjC_aqW3OQkn4aDxy7SGymfTsJ6JWNWJYcYbGo'
         );
         async function rank() {
-            const { data, error } = await supabaseClient
+            const {
+                data,
+                error
+            } = await supabaseClient
                 .from('評分資料')
                 .select('*')
-                .eq('參加年份','2025');
+                .eq('參加年份', '2025');
             if (error) {
                 console.error('Error fetching data:', error);
                 return;
@@ -109,7 +114,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 const rank = i + 1;
                 await supabaseClient
                     .from('隊伍')
-                    .update({ 名次: rank })
+                    .update({
+                        名次: rank
+                    })
                     .eq('參加年份', year)
                     .eq('隊伍編號', teamId);
             }
@@ -117,6 +124,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         rank();
     </script>
 </head>
+
 <body>
     <header>
         <div class="navbar">
@@ -130,7 +138,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <main id="content">
         <div class="result-container">
             <h2>評分提交結果</h2>
-            
+
             <div class="messages-container">
                 <?php if (!empty($messages)): ?>
                     <?php foreach ($messages as $message): ?>
@@ -178,7 +186,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <footer class="site-footer">
         <div class="footer-content">
-            <p>&copy; Copyright © 2025 XC Lee Tiger Lin  How Ho. All rights reserved.</p>
+            <p>&copy; Copyright © 2025 XC Lee Tiger Lin How Ho. All rights reserved.</p>
             <div class="footer-row">
                 <div class="footer-container">
                     <p>聯絡我們 : <a href="mailto:wylin@nuk.edu.tw">wylin@nuk.edu.tw</a></p>
@@ -190,4 +198,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </footer>
 </body>
+
 </html>

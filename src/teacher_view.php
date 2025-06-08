@@ -1,5 +1,7 @@
+<?php include 'darkmode.php'; ?>
 <!DOCTYPE html>
 <html lang="zh-TW">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +9,7 @@
     <link rel="stylesheet" href="../asset/teacher_view.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
+
 <body>
     <header>
         <div class="navbar">
@@ -18,67 +21,79 @@
     </header>
 
     <main>
-    <div class="container">
-  <section id="teamContent"></section>
-    </div>
+        <div class="container">
+            <section id="teamContent"></section>
+        </div>
 
-    <script>
-    const { createClient } = supabase;
-    const supabaseClient = createClient
-        ('https://xlomzrhmzjjfjmsvqxdo.supabase.co',
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhsb216cmhtempqZmptc3ZxeGRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg0OTk3NTcsImV4cCI6MjA2NDA3NTc1N30.AaGloZjC_aqW3OQkn4aDxy7SGymfTsJ6JWNWJYcYbGo');
+        <script>
+            const {
+                createClient
+            } = supabase;
+            const supabaseClient = createClient('https://xlomzrhmzjjfjmsvqxdo.supabase.co',
+                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhsb216cmhtempqZmptc3ZxeGRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg0OTk3NTcsImV4cCI6MjA2NDA3NTc1N30.AaGloZjC_aqW3OQkn4aDxy7SGymfTsJ6JWNWJYcYbGo');
 
-    const name = "<?php echo $_POST['username']; ?>";
+            const name = "<?php echo $_POST['username']; ?>";
 
-    async function loadTeamdata() {
-    const { data: teacherData } = await supabaseClient
-        .from('指導老師')
-        .select('*')
-        .eq('身分證字號', name);
+            async function loadTeamdata() {
+                const {
+                    data: teacherData
+                } = await supabaseClient
+                    .from('指導老師')
+                    .select('*')
+                    .eq('身分證字號', name);
 
-    if (!teacherData || teacherData.length === 0) {
-        document.getElementById('teamContent').innerHTML = '<p>查無指導老師資料</p>';
-        return;
-    }
+                if (!teacherData || teacherData.length === 0) {
+                    document.getElementById('teamContent').innerHTML = '<p>查無指導老師資料</p>';
+                    return;
+                }
 
-    const { 參加年份, 隊伍編號 } = teacherData[0];
+                const {
+                    參加年份,
+                    隊伍編號
+                } = teacherData[0];
 
-    const [{ data: teamData }, { data: workData }, { data: studentData }] = await Promise.all([
-        supabaseClient.from('隊伍').select('*').eq('隊伍編號', 隊伍編號).eq('參加年份', 參加年份),
-        supabaseClient.from('作品').select('*').eq('隊伍編號', 隊伍編號).eq('參加年份', 參加年份),
-        supabaseClient.from('學生').select('*').eq('隊伍編號', 隊伍編號).eq('參加年份', 參加年份)
-    ]);
+                const [{
+                    data: teamData
+                }, {
+                    data: workData
+                }, {
+                    data: studentData
+                }] = await Promise.all([
+                    supabaseClient.from('隊伍').select('*').eq('隊伍編號', 隊伍編號).eq('參加年份', 參加年份),
+                    supabaseClient.from('作品').select('*').eq('隊伍編號', 隊伍編號).eq('參加年份', 參加年份),
+                    supabaseClient.from('學生').select('*').eq('隊伍編號', 隊伍編號).eq('參加年份', 參加年份)
+                ]);
 
-    const team = teamData[0];
-    const work = workData[0];
+                const team = teamData[0];
+                const work = workData[0];
 
-    let html = `<section class='team-info'>`;
+                let html = `<section class='team-info'>`;
 
-    if(!team) {
-        html += '<p>您目前並未指導任何團隊</p>';
-        document.getElementById('teamContent').innerHTML = html;
-        return;
-    }
+                if (!team) {
+                    html += '<p>您目前並未指導任何團隊</p>';
+                    document.getElementById('teamContent').innerHTML = html;
+                    return;
+                }
 
-    // 🧑‍🎓 學生資料
-    html += `<h2>隊員資料</h2><div class="team-details">`;
-    studentData.forEach(s => {
-        html += `
+                // 🧑‍🎓 學生資料
+                html += `<h2>隊員資料</h2><div class="team-details">`;
+                studentData.forEach(s => {
+                    html += `
         <div class="info-item"><span class="label">姓名：</span><span class="value">${s.姓名}</span></div>
         <div class="info-item"><span class="label">學號：</span><span class="value">${s.學號}</span></div>
         <div class="info-item"><span class="label">科系：</span><span class="value">${s.科系}</span></div>
         <div class="info-item"><span class="label">電子郵件：</span><span class="value">${s.電子郵件}</span></div>
         <hr/>
         `;
-    });
-    html += `</div>`;
+                });
+                html += `</div>`;
 
-    // 🧾 隊伍基本資料
-    html += `<h2>隊伍資訊</h2><div class="team-details team-basic-info">`;
-    html += `<div class="info-item"><span class="label">隊伍名稱：</span><span class="value">${team.隊伍名稱}</span></div>`;
-    html += `<div class="info-item"><span class="label">報名進度：</span><span class="value">${team.報名進度 || '無'}</span></div>`;
-    html += `<div class="info-item"><span class="label">名次：</span><span class="value">${team.名次 || '尚未公布'}</span></div>`;
-    html += `</div>`;
+                // 🧾 隊伍基本資料
+                html += `<h2>隊伍資訊</h2><div class="team-details team-basic-info">`;
+                html += `<div class="info-item"><span class="label">隊伍名稱：</span><span class="value">${team.隊伍名稱}</span></div>`;
+                html += `<div class="info-item"><span class="label">報名進度：</span><span class="value">${team.報名進度 || '無'}</span></div>`;
+                html += `<div class="info-item"><span class="label">名次：</span><span class="value">${team.名次 || '尚未公布'}</span></div>`;
+                html += `</div>`;
 
     // 📄 作品資訊
     if(!work) {
@@ -101,9 +116,9 @@
         <div class="info-item"><span class="label">作品影片網址：</span><a href="${work['作品展示(youtube連結)']}" target="_blank" class="external-link">${work['作品展示(youtube連結)']}</a></div>
         <div class="info-item"><span class="label">作品程式碼網址：</span><a href="${work['程式碼(Github連結)']}" target="_blank" class="external-link">${work['程式碼(Github連結)']}</a></div>
     `;
-    html += `</div></section>`;
+                html += `</div></section>`;
 
-    document.getElementById('teamContent').innerHTML = html;
+                document.getElementById('teamContent').innerHTML = html;
 
         if(team.報名進度 === '完成送件') {
             const confirmButton = document.createElement('button');
@@ -154,8 +169,8 @@
         }
     }
 
-    loadTeamdata();
-    </script>
+            loadTeamdata();
+        </script>
         <div class="return-section">
             <form action="teacher_dashboard.php" method="POST">
                 <input type="hidden" name="username" value="<?php echo htmlspecialchars($_POST['username']); ?>">
@@ -179,4 +194,5 @@
         </div>
     </footer>
 </body>
+
 </html>

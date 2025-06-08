@@ -1,6 +1,6 @@
+<?php include 'darkmode.php'; ?>
 <!DOCTYPE html>
 <html lang="zh-TW">
-<?php include 'darkmode.php'; ?>
 
 <head>
     <meta charset="UTF-8">
@@ -100,9 +100,9 @@
         // 解析回傳結果
         $data = json_decode($response->getBody(), true);
 
-            foreach ($data as $row) {
-                // 從資料表取得 base64 的 blob 資料
-                $blob = $row['宣傳海報']; // 假設 Supabase 資料表儲存的就是 base64 字串
+        foreach ($data as $row) {
+            // 從資料表取得 base64 的 blob 資料
+            $blob = $row['宣傳海報']; // 假設 Supabase 資料表儲存的就是 base64 字串
 
             echo "<a href='data:application/pdf;base64," . $blob . "' download='宣傳海報.pdf'>下載宣傳海報</a><br>";
         }

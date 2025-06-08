@@ -1,3 +1,4 @@
+<?php include 'darkmode.php'; ?>
 <?php
 include 'conn.php';
 
@@ -12,7 +13,7 @@ $response = $supabaseClient->get("指導老師?姓名=eq." . urlencode($name));
 $data = json_decode($response->getBody(), true);
 
 if (empty($data)) {
-    echo json_encode(['email' => '', 'phone' => '', 'jobtitle' => '' , 'id' => '']);
+    echo json_encode(['email' => '', 'phone' => '', 'jobtitle' => '', 'id' => '']);
     exit;
 }
 

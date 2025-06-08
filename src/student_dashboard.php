@@ -1,5 +1,4 @@
 <?php include 'darkmode.php'; ?>
-
 <!DOCTYPE html>
 <html lang="zh-TW">
 
@@ -49,13 +48,10 @@
         ]);
         $members = json_decode($team_response->getBody(), true);
 
-        if(!$team_id)
-        {
+        if (!$team_id) {
             echo '<h2>歡迎，' . $name . ' 參賽同學！<br>目前狀態: 未報名</h2>';
             $members = [['報名進度' => '未報名']];
-        }
-        else
-        {
+        } else {
             echo '<h2>歡迎，' . $name . ' 參賽同學！<br>目前狀態: ' . $members[0]['報名進度'] . '</h2>';
         }
 
@@ -81,9 +77,7 @@
         if ($members[0]['報名進度'] == '未報名') {
             // 如果報名進度是未報名，則禁用上傳作品按鈕
             echo '<button type="submit" disabled>請先報名</button>';
-        }
-        else if ($members[0]['報名進度'] == '退件')
-        {
+        } else if ($members[0]['報名進度'] == '退件') {
             echo '
             <form action="student_upload.php" method="POST">
                 <input type="hidden" name="username" value="' . $_POST['username'] . '">
@@ -100,16 +94,14 @@
                 <input type="hidden" name="password" value="' . $_POST['password'] . '">
                 <button type="submit" disabled>已上傳作品</button>
             </form>';
-        } 
-        else
-        {
+        } else {
             echo '
             <form action="student_upload.php" method="POST">
                 <input type="hidden" name="username" value="' . $_POST['username'] . '">
                 <input type="hidden" name="password" value="' . $_POST['password'] . '">
                 <button type="submit">上傳作品</button>
             </form>';
-        } 
+        }
 
 
         echo '
@@ -126,8 +118,7 @@
                 <input type="hidden" name="password" value="' . $_POST['password'] . '">
                 <button type="submit" disabled>已報名參賽</button>
             </form>';
-        }
-        else{
+        } else {
             echo '
             <form action="student_register.php" method="POST">
                 <input type="hidden" name="username" value="' . $_POST['username'] . '">
@@ -135,7 +126,7 @@
                 <button type="submit">報名參賽</button>
             </form>';
         }
-    echo '</div>';
+        echo '</div>';
     } else {
         echo '<h2>登入失敗，請返回並重試。</h2>';
         echo '<P>隊伍帳號密碼提示</P>';

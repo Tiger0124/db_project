@@ -1,3 +1,4 @@
+<?php include 'darkmode.php'; ?>
 <!DOCTYPE html>
 <html lang="zh-TW">
 
@@ -38,23 +39,23 @@
         echo '
         <div class="admin-buttons">
             <form action="edit_judge.php" method="POST">
-                <input type="hidden" name="username" value="' .$filename. '">
-                <input type="hidden" name="password" value="' .$filepasswd. '">
+                <input type="hidden" name="username" value="' . $filename . '">
+                <input type="hidden" name="password" value="' . $filepasswd . '">
                 <button type="submit">修改個人資料</button>
             </form>
             <form action="judgement.php" method="POST">
-                <input type="hidden" name="username" value="' .$filename. '">
-                <input type="hidden" name="password" value="' .$filepasswd. '">
+                <input type="hidden" name="username" value="' . $filename . '">
+                <input type="hidden" name="password" value="' . $filepasswd . '">
                 <button type="submit">填寫評分分數</button>
             </form>
             <form action="student_history.php" method="POST">
-                <input type="hidden" name="username" value="' .$filename. '">
-                <input type="hidden" name="password" value="' .$filepasswd. '">
+                <input type="hidden" name="username" value="' . $filename . '">
+                <input type="hidden" name="password" value="' . $filepasswd . '">
                 <button type="submit">查看歷屆作品</button>
             </form>
             <form action="judge_changepassword.php" method="POST">
-                <input type="hidden" name="username" value="' .$filename. '">
-                <input type="hidden" name="password" value="' .$filepasswd. '">
+                <input type="hidden" name="username" value="' . $filename . '">
+                <input type="hidden" name="password" value="' . $filepasswd . '">
                 <button type="submit">修改密碼</button>
             </form>
             </div>';

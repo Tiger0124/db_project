@@ -1,3 +1,4 @@
+<?php include 'darkmode.php'; ?>
 <?php
 session_start();
 require_once 'conn.php';
@@ -9,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $students = $_POST['students'];
     $project_name = $_POST['project_name'];
     $project_description = $_POST['project_description'];
-    
+
     try {
         // 更新隊伍資料
         $teamResponse = $supabaseClient->patch('隊伍', [
@@ -51,7 +52,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             alert('資料更新成功！');
             window.location.href = 'view_students.php';
         </script>";
-        
     } catch (Exception $e) {
         echo "<script>
             alert('更新失敗：" . addslashes($e->getMessage()) . "');
