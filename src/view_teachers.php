@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>高雄大學創意競賽管理系統</title>
-    <link rel="stylesheet" href="../asset/view_students.css">
+    <link rel="stylesheet" href="../asset/view_teachers.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
