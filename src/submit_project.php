@@ -84,8 +84,6 @@
             if (!empty($code_url)) $updateData['程式碼(Github連結)'] = $code_url;
 
             // 處理說明書上傳
-
-
             if (isset($_FILES['manual_file']) && $_FILES['manual_file']['error'] === UPLOAD_ERR_OK) {
                 $file_tmp_name = $_FILES['manual_file']['tmp_name'];
                 $updateData['說明書'] = base64_encode(file_get_contents($file_tmp_name));
@@ -100,6 +98,12 @@
 
             // 如果有數據需要更新
             if (!empty($updateData)) {
+                $supabaseClient->patch('隊伍', [
+                        'query' => ['隊伍編號' => "eq.$team_id"],
+                        'json' => [
+                            '報名進度' => '完成送件',
+                        ]
+                ]);
                 if ($is_update) {
                     // 更新現有記錄
                     $response = $supabaseClient->patch('作品', [

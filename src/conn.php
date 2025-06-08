@@ -15,6 +15,7 @@ $supabaseClient = new Client([
         'Authorization' => 'Bearer ' . $supabaseApiKey,
         'Accept' => 'application/json',
     ],
+    'verify' => false
     'verify' => false // 將此路徑替換為實際路徑
 ]);
 ?>

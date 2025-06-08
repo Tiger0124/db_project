@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>高雄大學創意競賽管理系統</title>
-  <link rel="stylesheet" href="../asset/view_judges.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高雄大學創意競賽管理系統</title>
+    <link rel="stylesheet" href="../asset/view_students.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
   <header>
@@ -17,282 +18,378 @@
   </header>
 
   <main id="content">
-  <?php
-    // 顯示刪除結果訊息
-    if (isset($_POST['delete_success']) && $_POST['delete_success'] === '1') {
-        echo '<div class="alert alert-success" style="background-color: #d4edda; color: #155724; padding: 10px; margin: 10px 0; border: 1px solid #c3e6cb; border-radius: 4px;">評審委員刪除成功！</div>';
-    }
-    if (isset($_POST['delete_error'])) {
-        echo '<div class="alert alert-error" style="background-color: #f8d7da; color: #721c24; padding: 10px; margin: 10px 0; border: 1px solid #f5c6cb; border-radius: 4px;">刪除失敗：' . htmlspecialchars($_POST['delete_error']) . '</div>';
-    }
-    ?>
-    <form action="view_judges.php" method="POST">
-        <select name="year">
-          <option value="2013">2013</option>
-          <option value="2014">2014</option>
-          <option value="2015">2015</option>
-          <option value="2016">2016</option>
-          <option value="2017">2017</option>
-          <option value="2018">2018</option>
-          <option value="2019">2019</option>
-          <option value="2020">2020</option>
-          <option value="2021">2021</option>
-          <option value="2022">2022</option>
-          <option value="2023">2023</option>
-          <option value="2024">2024</option>
-          <option value="2025">2025</option>
-        </select>
-        <button type="submit">查詢</button>
-        <button type="button" class="btn-add" onclick="openAddForm()">新增評審</button>
-        <input type="hidden" name="username" value="<?php echo isset($_POST['username']) ? htmlspecialchars($_POST['username'], ENT_QUOTES, 'UTF-8') : ''; ?>">
-        <input type="hidden" name="password" value="<?php echo isset($_POST['password']) ? htmlspecialchars($_POST['password'], ENT_QUOTES, 'UTF-8') : ''; ?>">
-    </form>
-
-    <!-- 新增評審表單 (預設隱藏) -->
+    <h2>評審委員資料查詢</h2>
+    <p>以下是所有評審委員的資料，您可以選擇編輯或刪除評審委員資料。</p>
+    <!-- 欄位順序
+        身分證字號
+        姓名
+        頭銜
+        電話
+        電子郵件
+        密碼
+        最近一次參與比賽 -->
     <div id="addForm" class="edit-form-container" style="display: none;">
         <div class="edit-form">
-            <h3>新增評審委員</h3>
-            <form id="addJudgeForm" method="POST" action="add_judge.php">
-                <input type="hidden" name="username" value="<?php echo isset($_POST['username']) ? htmlspecialchars($_POST['username'], ENT_QUOTES, 'UTF-8') : ''; ?>">
-                <input type="hidden" name="password" value="<?php echo isset($_POST['password']) ? htmlspecialchars($_POST['password'], ENT_QUOTES, 'UTF-8') : ''; ?>">
-                <input type="hidden" name="year" value="<?php echo isset($_POST['year']) ? htmlspecialchars($_POST['year'], ENT_QUOTES, 'UTF-8') : ''; ?>">
-                
+            <h3>新增評審</h3>
                 <div class="form-group">
-                    <label for="add_id_number">身分證字號:</label>
-                    <input type="text" id="add_id_number" name="id_number" required maxlength="10" pattern="[A-Z][0-9]{9}">
+                    <label for="add_judge_id">身分證字號:</label>
+                    <input type="text" id="add_judge_id" required>
                 </div>
-                
+
+                <div class="form-group">
+                    <label for="add_judge_name">姓名:</label>
+                    <input type="text" id="add_judge_name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="add_subname">頭銜:</label>
+                    <input type="text" id="add_subname" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="add_judge_number">電話:</label>
+                    <input type="tel" id="add_judge_number"  required maxlength="10" pattern="[A-Z][0-9]{9}">
+                </div>
+
                 <div class="form-group">
                     <label for="add_email">電子郵件:</label>
-                    <input type="email" id="add_email" name="email" required>
+                    <input type="email" id="add_email" required>
                 </div>
-                
                 <div class="form-group">
-                    <label for="add_title">頭銜:</label>
-                    <input type="text" id="add_title" name="title" required>
+                    <label for="add_pwd">密碼:</label>
+                    <input type="text" id="add_pwd" required>
                 </div>
-                
-                <div class="form-group">
-                    <label for="add_name">姓名:</label>
-                    <input type="text" id="add_name" name="name" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="add_phone">電話:</label>
-                    <input type="tel" id="add_phone" name="phone" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="add_phone">密碼:</label>
-                    <input type="password" id="add_password" name="password" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="add_session">屆數:</label>
-                    <select id="add_session" name="session" required>
-                        <option value="">請選擇屆數</option>
-                        <option value="第1屆">第1屆</option>
-                        <option value="第2屆">第2屆</option>
-                        <option value="第3屆">第3屆</option>
-                        <option value="第4屆">第4屆</option>
-                        <option value="第5屆">第5屆</option>
-                        <option value="第6屆">第6屆</option>
-                        <option value="第7屆">第7屆</option>
-                        <option value="第8屆">第8屆</option>
-                        <option value="第9屆">第9屆</option>
-                        <option value="第10屆">第10屆</option>
-                        <option value="第11屆">第11屆</option>
-                        <option value="第12屆">第12屆</option>
-                        <option value="第13屆">第13屆</option>
-                    </select>
-                </div>
-                
                 <div class="form-buttons">
-                    <button type="submit" class="btn-save">新增</button>
+                    <button type="submit" class="btn-save" onclick="insert()">新增</button>
                     <button type="button" class="btn-cancel" onclick="closeAddForm()">取消</button>
                 </div>
-            </form>
         </div>
     </div>
-
-    <!-- 編輯評審表單 (預設隱藏) -->
+    <div id="mutiaddForm" class="edit-form-container" style="display: none;">
+        <div class="edit-form">
+            <h3>上傳csv檔</h3>
+            <p>請依以下欄位順序準備 CSV 檔案，欄位需為 UTF-8 編碼：</p>
+            <table id = "example" style="width:100%; text-align:center;">
+            <thead>
+                <tr>
+                <th>身分證字號</th>
+                <th>姓名</th>
+                <th>頭銜</th>
+                <th>電話</th>
+                <th>電子郵件</th>
+                <th>密碼</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                <td>A123456789</td>
+                <td>王小明</td>
+                <td>教授</td>
+                <td>0912345678</td>
+                <td>mike@example.com</td>
+                <td>password</td>
+                </tr>
+            </tbody>
+            </table>
+            <div id="csvUploadForm" class="form-group" style="margin-top: 1rem;">
+                <label for="csv_file">選擇 CSV 檔案：</label>
+                <input type="file" id="csv_file" name="csv_file" accept=".csv" required>
+            </div>
+            <div class="form-buttons">
+                <button type="submit" class="btn-save" onclick="muti_insert()">上傳</button>
+                <button type="button" class="btn-cancel" onclick="closeMutiAddForm()">取消</button>
+            </div>
+        </div>
+    </div>
     <div id="editForm" class="edit-form-container" style="display: none;">
         <div class="edit-form">
-            <h3>編輯評審委員</h3>
-            <form id="updateForm" method="POST" action="update_judges.php">
-                <input type="hidden" id="edit_original_id" name="original_id" value="">
-                <input type="hidden" id="edit_original_session" name="original_session" value="">
-                <input type="hidden" name="username" value="<?php echo isset($_POST['username']) ? htmlspecialchars($_POST['username'], ENT_QUOTES, 'UTF-8') : ''; ?>">
-                <input type="hidden" name="password" value="<?php echo isset($_POST['password']) ? htmlspecialchars($_POST['password'], ENT_QUOTES, 'UTF-8') : ''; ?>">
-                <input type="hidden" name="year" value="<?php echo isset($_POST['year']) ? htmlspecialchars($_POST['year'], ENT_QUOTES, 'UTF-8') : ''; ?>">
-                
-                <div class="form-group">
-                    <label for="edit_id_number">身分證字號:</label>
-                    <input type="text" id="edit_id_number" name="id_number" required maxlength="10" pattern="[A-Z][0-9]{9}">
+            <h3>編輯評審資料</h3>
+            <div class="form-group">
+                    <label for="edit_judge_id">身分證字號:</label>
+                    <input type="text" id="edit_judge_id" disabled>
                 </div>
-                
+
+                <div class="form-group">
+                    <label for="edit_judge_name">姓名:</label>
+                    <input type="text" id="edit_judge_name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit_subname">頭銜:</label>
+                    <input type="text" id="edit_subname" required maxlength="10" pattern="[A-Z][0-9]{9}">
+                </div>
+                <div class="form-group">
+                    <label for="edit_number">電話:</label>
+                    <input type="tel" id="edit_number" required>
+                </div>
+
                 <div class="form-group">
                     <label for="edit_email">電子郵件:</label>
-                    <input type="email" id="edit_email" name="email" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="edit_title">頭銜:</label>
-                    <input type="text" id="edit_title" name="title" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="edit_name">姓名:</label>
-                    <input type="text" id="edit_name" name="name" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="edit_phone">電話:</label>
-                    <input type="tel" id="edit_phone" name="phone" required>
+                    <input type="email" id="edit_email" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="edit_phone">密碼:</label>
-                    <input type="password" id="edit_password" name="password" required>
+                    <label for="edit_pwd">密碼:</label>
+                    <input type="tel" id="edit_pwd" required>
                 </div>
-
-                <div class="form-group">
-                    <label for="edit_session">屆數:</label>
-                    <select id="edit_session" name="session" required>
-                        <option value="">請選擇屆數</option>
-                        <option value="第1屆">第1屆</option>
-                        <option value="第2屆">第2屆</option>
-                        <option value="第3屆">第3屆</option>
-                        <option value="第4屆">第4屆</option>
-                        <option value="第5屆">第5屆</option>
-                        <option value="第6屆">第6屆</option>
-                        <option value="第7屆">第7屆</option>
-                        <option value="第8屆">第8屆</option>
-                        <option value="第9屆">第9屆</option>
-                        <option value="第10屆">第10屆</option>
-                        <option value="第11屆">第11屆</option>
-                        <option value="第12屆">第12屆</option>
-                        <option value="第13屆">第13屆</option>
-                    </select>
-                </div>
-                
                 <div class="form-buttons">
-                    <button type="submit" class="btn-save">儲存</button>
+                    <button type="submit" class="btn-save" onclick="update()">儲存</button>
                     <button type="button" class="btn-cancel" onclick="closeEditForm()">取消</button>
                 </div>
-            </form>
         </div>
     </div>
-    
+    <button id="insert_one" onclick="document.getElementById('addForm').style.display = 'flex'">新增評審</button>
+    <button id="insert_many" onclick="document.getElementById('mutiaddForm').style.display = 'flex'">新增多位評審</button>
+    <button id="delete_selected" onclick="delete_student()">刪除選擇的評審</button>
     <div class="rounded-box">
-        <table style="width:100%">
-            <tr>
-                <th>身分證字號</th>
-                <th>電子郵件</th>
-                <th>頭銜</th>
-                <th>姓名</th>
-                <th>電話</th>
-                <th>密碼</th>
-                <th>操作</th>
-            </tr>
-            <?php
-
-            require_once 'conn.php';
-
-            // 年份到屆數的對應陣列
-            $yearToSession = [
-                2013 => "第1屆", 2014 => "第2屆", 2015 => "第3屆", 2016 => "第4屆",
-                2017 => "第5屆", 2018 => "第6屆", 2019 => "第7屆", 2020 => "第8屆",
-                2021 => "第9屆", 2022 => "第10屆", 2023 => "第11屆", 2024 => "第12屆",
-                2025 => "第13屆"
-            ];
-
-            // 檢查是否有提交表單並且選擇的年份是有效的
-            if (isset($_POST['year']) && array_key_exists($_POST['year'], $yearToSession)) {
-                $selectedYear = $_POST['year'];
-                $session = $yearToSession[$selectedYear];
-                $sessionNumber = str_replace(['第', '屆'], '', $session);//13
-                try {
-                    // 使用屆數進行查詢
-                    $response = $supabaseClient->get('評審委員', [
-                        'query' => [
-                            '屆數' => 'eq.' . $sessionNumber,
-                            'select' => '*',
-                        ]
-                    ]);
-
-                    $status_code = $response->getStatusCode();
-                    
-                    if ($status_code == 200) {
-                        $judgesData = json_decode($response->getBody()->getContents(), true);
-
-                        if (!empty($judgesData)) {
-                            foreach ($judgesData as $row) {
-                                echo "<tr>";
-                                
-                                // 身分證字號
-                                $id_number = isset($row['身分證字號']) ? htmlspecialchars($row['身分證字號'], ENT_QUOTES, 'UTF-8') : 'N/A';
-                                echo "<td>" . $id_number . "</td>";
-                                
-                                // 電子郵件
-                                $email = isset($row['電子郵件']) ? htmlspecialchars($row['電子郵件'], ENT_QUOTES, 'UTF-8') : 'N/A';
-                                echo "<td>" . $email . "</td>";
-                                
-                                // 頭銜
-                                $title = isset($row['頭銜']) ? htmlspecialchars($row['頭銜'], ENT_QUOTES, 'UTF-8') : 'N/A';
-                                echo "<td>" . $title . "</td>";
-                                
-                                // 姓名
-                                $name = isset($row['姓名']) ? htmlspecialchars($row['姓名'], ENT_QUOTES, 'UTF-8') : 'N/A';
-                                echo "<td>" . $name . "</td>";
-                                
-                                // 電話
-                                $phone = isset($row['電話']) ? htmlspecialchars($row['電話'], ENT_QUOTES, 'UTF-8') : 'N/A';
-                                echo "<td>" . $phone . "</td>";
-
-                                // 電話
-                                $password = isset($row['密碼']) ? htmlspecialchars($row['密碼'], ENT_QUOTES, 'UTF-8') : 'N/A';
-                                echo "<td>" . $password . "</td>";
-
-                                // 操作按鈕
-                                echo "<td>";
-                                $edit_data = json_encode([
-                                    'id_number' => $row['身分證字號'] ?? '',
-                                    'email' => $row['電子郵件'] ?? '',
-                                    'title' => $row['頭銜'] ?? '',
-                                    'name' => $row['姓名'] ?? '',
-                                    'phone' => $row['電話'] ?? '',
-                                    'session' => $row['屆數'] ?? '',
-                                    'password' => $row['密碼'] ?? ''
-                                ]);
-                                echo "<button class='btn-edit' onclick='openEditForm(" . htmlspecialchars($edit_data, ENT_QUOTES, 'UTF-8') . ")'>編輯</button>";
-                                // 新增刪除按鈕
-                                echo "<button class='btn-delete' onclick='confirmDelete(\"" . htmlspecialchars($row['身分證字號'], ENT_QUOTES, 'UTF-8') . "\", \"" . htmlspecialchars($row['姓名'], ENT_QUOTES, 'UTF-8') . "\", \"" . htmlspecialchars($row['屆數'], ENT_QUOTES, 'UTF-8') . "\")' style='background-color: #dc3545; margin-left: 5px; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 12px;'>刪除</button>";
-                                echo "</td>";
-                                
-                                echo "</tr>";
-                            }
-                        } else {
-                            echo "<tr><td colspan='6'>查無 " . htmlspecialchars($selectedYear, ENT_QUOTES, 'UTF-8') . " 年度（" . htmlspecialchars($session, ENT_QUOTES, 'UTF-8') . "）的評審委員資料。</td></tr>";
-                        }
-                    } else {
-                        echo "<tr><td colspan='6'>查詢評審委員資料失敗，HTTP 狀態碼：" . $status_code . "</td></tr>";
-                    }
-                } catch (GuzzleHttp\Exception\RequestException $e) {
-                    echo "<tr><td colspan='6'>Guzzle 請求錯誤: ";
-                    if ($e->hasResponse()) {
-                        echo htmlspecialchars($e->getResponse()->getBody()->getContents(), ENT_QUOTES, 'UTF-8');
-                    } else {
-                        echo htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
-                    }
-                    echo "</td></tr>";
-                } catch (Exception $e) {
-                    echo "<tr><td colspan='6'>執行查詢時發生例外狀況: " . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8') . "</td></tr>";
-                }
-            }
-            ?>
-        </table>
+      <table id="judge_table" style="width:100%">
+          <tr>
+            <th><input type="checkbox" id="select-all"></th>
+            <th>身分證字號</th>
+            <th>姓名</th>
+            <th>頭銜</th>
+            <th>電話</th>
+            <th>電子郵件</th>
+            <th>密碼</th>
+            <th>最近一次參與的比賽</th>
+            <th>編輯</th>
+          </tr>
+      </table>
     </div>
+    
+
+    <script>
+        const { createClient } = supabase;
+        const supabaseClient = createClient(
+            'https://xlomzrhmzjjfjmsvqxdo.supabase.co',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhsb216cmhtempqZmptc3ZxeGRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg0OTk3NTcsImV4cCI6MjA2NDA3NTc1N30.AaGloZjC_aqW3OQkn4aDxy7SGymfTsJ6JWNWJYcYbGo'
+        );
+        async function retrival() {
+            const { data: judges, error } = await supabaseClient
+                .from('評審委員')
+                .select('*')
+
+            if (error) {
+                console.error('Error fetching judges:', error);
+                return;
+            }
+            const yearMap = {
+                1: 2013,
+                2: 2014,
+                3: 2015,
+                4: 2016,
+                5: 2017,
+                6: 2018,
+                7: 2019,
+                8: 2020,
+                9: 2021,
+                10: 2022,
+                11: 2023,
+                12: 2024,
+                13: 2025
+            };
+
+            const table = document.getElementById('judge_table');
+            judges.forEach(judge => {
+                if(!judge.屆數) {
+                judge.屆數 = 'N/A';
+                }
+                judge.屆數 = yearMap[judge.屆數];
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><input type="checkbox" class="judge-checkbox"></td>
+                    <td>${judge.身分證字號}</td>
+                    <td>${judge.姓名}</td>
+                    <td>${judge.頭銜}</td>
+                    <td>${judge.電話}</td>
+                    <td>${judge.電子郵件}</td>
+                    <td>${judge.密碼}</td>
+                    <td>${judge.屆數}</td>
+                    <td><button class="edit-button">編輯</button></td>
+                `;
+                table.appendChild(row);
+            });
+        }
+        retrival();
+        // button to select all checkboxes
+        document.getElementById('select-all').addEventListener('change', function() {
+            const checkboxes = document.querySelectorAll('.judge-checkbox');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = this.checked;
+            });
+        });
+
+        document.getElementById('judge_table').addEventListener('click', function(e) {
+            if (e.target && e.target.classList.contains('edit-button')) {
+                const row = e.target.closest('tr');
+
+                document.getElementById('edit_judge_id').value = row.children[1].textContent;
+                document.getElementById('edit_judge_name').value = row.children[2].textContent;
+                document.getElementById('edit_subname').value = row.children[3].textContent;
+                document.getElementById('edit_number').value = row.children[4].textContent;
+                document.getElementById('edit_email').value = row.children[5].textContent;
+                document.getElementById('edit_pwd').value = row.children[6].textContent;
+
+                document.getElementById('editForm').style.display = 'flex';
+            }
+        });
+
+        function insert() {
+            const judgeId = document.getElementById('add_judge_id').value;
+            const judgeName = document.getElementById('add_judge_name').value;
+            const password = document.getElementById('add_pwd').value;
+            const subname = document.getElementById('add_subname').value;
+            const email = document.getElementById('add_email').value;
+            const phone = document.getElementById('add_judge_number').value;
+
+
+            if (!judgeId || !judgeName || !password || !subname || !email || !phone) {
+                alert('請填寫所有欄位！');
+                return;
+            }
+
+            supabaseClient
+                .from('評審委員')
+                .insert([
+                    { 
+                        身分證字號: judgeId, 
+                        屆數: '13',
+                        姓名: judgeName,
+                        頭銜: subname,  
+                        電話: phone, 
+                        電子郵件: email, 
+                        密碼: password 
+                    }
+                ])
+                .then(response => {
+                    if (response.error) {
+                        alert('新增失敗：' + response.error.message);
+                    } else {
+                        alert('新增成功！');
+                        closeAddForm();
+                        location.reload();
+                    }
+                });
+        }
+
+        function muti_insert() {
+            const fileInput = document.getElementById('csv_file');
+            if (!fileInput.files.length) {
+                alert('請選擇一個 CSV 檔案！');
+                return;
+            }
+            const clean = val => val?.trim().replace(/^"+|"+$/g, '');
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+            reader.onload = async function(event) {
+                const csvData = event.target.result;
+                const rows = csvData.split('\n').map(row => row.split(','));
+                const judges = rows.slice(1).map(row => ({
+                    身分證字號: clean(row[0].trim()),
+                    屆數: '13',
+                    姓名: clean(row[1].trim()),
+                    頭銜: clean(row[2].trim()),
+                    電話: clean(row[3].trim()),
+                    電子郵件: clean(row[4].trim()),
+                    密碼: clean(row[5].trim())
+                }));
+
+                for (const judge of judges) {
+                    if (!judge.姓名 || !judge.電話 || !judge.電子郵件 || !judge.身分證字號 || !judge.頭銜 || !judge.密碼) {
+                        alert('CSV 檔案中有空白欄位，請檢查！');
+                        return;
+                    }
+                }
+                console.log('judges to insert:', judges);
+                const { data, error } = await supabaseClient
+                    .from('評審委員')
+                    .insert(judges);
+                if (error) {
+                    alert('上傳失敗：' + error.message);
+                } else {
+                    alert('上傳成功！');
+                    closeMutiAddForm();
+                    location.reload();
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function update() {
+            const judgeId = document.getElementById('edit_judge_id').value;
+            const judgeName = document.getElementById('edit_judge_name').value;
+            const password = document.getElementById('edit_pwd').value;
+            const subname = document.getElementById('edit_subname').value;
+            const email = document.getElementById('edit_email').value;
+            const phone = document.getElementById('edit_number').value;
+            if (!judgeId || !judgeName || !password || !subname || !email || !phone) {
+                alert('請填寫所有欄位！');
+                return;
+            }
+            supabaseClient
+                .from('評審委員')
+                .update({ 姓名: judgeName, 電話: phone, 電子郵件: email, 頭銜: subname, 密碼: password })
+                .eq('身分證字號', judgeId)
+                .then(response => {
+                    if (response.error) {
+                        alert('更新失敗：' + response.error.message);
+                    } else {
+                        alert('更新成功！');
+                        closeEditForm();
+                        location.reload();
+                    }
+                });
+        }
+
+        function delete_student() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+            if (checkboxes.length === 0) {
+                alert('請選擇至少一個評審！');
+                return;
+            }
+
+            const judgesIds = Array.from(checkboxes).map(checkbox => checkbox.closest('tr').children[1].textContent);
+
+            supabaseClient
+                .from('評審委員')
+                .delete()
+                .in('身分證字號', judgesIds)
+                .then(response => {
+                    if (response.error) {
+                        alert('刪除失敗：' + response.error.message);
+                    } else {
+                        alert('刪除成功！');
+                        location.reload();
+                    }
+                });
+        }
+
+        function closeMutiAddForm() {
+            document.getElementById('mutiaddForm').style.display = 'none';
+            document.getElementById('csv_file').value = '';
+        }
+        function closeAddForm() {
+            document.getElementById('addForm').style.display = 'none';
+            document.getElementById('add_judge_id').value = '';
+            document.getElementById('add_judge_name').value = '';
+            document.getElementById('add_subname').value = '';
+            document.getElementById('add_judge_number').value = '';
+            document.getElementById('add_email').value = '';
+            document.getElementById('add_pwd').value = '';
+        }
+        function closeEditForm() {
+            document.getElementById('editForm').style.display = 'none';
+            document.getElementById('edit_judge_id').value = '';
+            document.getElementById('edit_judge_name').value = '';
+            document.getElementById('edit_subname').value = '';
+            document.getElementById('edit_number').value = '';
+            document.getElementById('edit_email').value = '';
+            document.getElementById('edit_pwd').value = '';
+        }
+
+
+        
+    </script>
     
     <form action="admin_dashboard.php" method="POST">
         <input type="hidden" name="username" value="<?php echo isset($_POST['username']) ? htmlspecialchars($_POST['username'], ENT_QUOTES, 'UTF-8') : ''; ?>">
@@ -300,113 +397,6 @@
         <button type="submit">返回</button>
     </form>
   </main>
-
-  <script>
-    function openAddForm() {
-        // 如果有選擇年份，自動設定對應的屆數
-        const yearSelect = document.querySelector('select[name="year"]');
-        const sessionSelect = document.getElementById('add_session');
-        
-        if (yearSelect.value) {
-            const yearToSession = {
-                2013: "第1屆", 2014: "第2屆", 2015: "第3屆", 2016: "第4屆",
-                2017: "第5屆", 2018: "第6屆", 2019: "第7屆", 2020: "第8屆",
-                2021: "第9屆", 2022: "第10屆", 2023: "第11屆", 2024: "第12屆",
-                2025: "第13屆"
-            };
-            sessionSelect.value = yearToSession[yearSelect.value] || "";
-        }
-        
-        // 顯示新增表單
-        document.getElementById('addForm').style.display = 'flex';
-    }
-
-    function closeAddForm() {
-        document.getElementById('addForm').style.display = 'none';
-        // 清空表單
-        document.getElementById('addJudgeForm').reset();
-    }
-
-    function openEditForm(data) {
-        // 填入表單資料
-        document.getElementById('edit_original_id').value = data.id_number;
-        document.getElementById('edit_original_session').value = data.session;
-        document.getElementById('edit_id_number').value = data.id_number;
-        document.getElementById('edit_email').value = data.email;
-        document.getElementById('edit_title').value = data.title;
-        document.getElementById('edit_name').value = data.name;
-        document.getElementById('edit_phone').value = data.phone;
-        document.getElementById('edit_password').value = data.password;
-        document.getElementById('edit_session').value = data.session;
-        
-        // 顯示編輯表單
-        document.getElementById('editForm').style.display = 'flex';
-    }
-
-    function closeEditForm() {
-        document.getElementById('editForm').style.display = 'none';
-    }
-
-    // 在現有的 JavaScript 函數後面新增
-    function confirmDelete(idNumber, judgeName, session) {
-        if (confirm('確定要刪除評審委員「' + judgeName + '」嗎？\n身分證字號：' + idNumber + '\n屆數：第' + session + '屆\n此操作無法復原！')) {
-            // 創建隱藏表單來提交刪除請求
-            var form = document.createElement('form');
-            form.method = 'POST';
-            form.action = 'delete_judge.php';
-            
-            // 添加身分證字號
-            var idInput = document.createElement('input');
-            idInput.type = 'hidden';
-            idInput.name = 'id_number';
-            idInput.value = idNumber;
-            form.appendChild(idInput);
-            
-            // 添加屆數
-            var sessionInput = document.createElement('input');
-            sessionInput.type = 'hidden';
-            sessionInput.name = 'session';
-            sessionInput.value = session;
-            form.appendChild(sessionInput);
-            
-            // 添加用戶名和密碼（保持會話）
-            var usernameInput = document.createElement('input');
-            usernameInput.type = 'hidden';
-            usernameInput.name = 'username';
-            usernameInput.value = document.querySelector('input[name="username"]').value;
-            form.appendChild(usernameInput);
-            
-            var passwordInput = document.createElement('input');
-            passwordInput.type = 'hidden';
-            passwordInput.name = 'password';
-            passwordInput.value = document.querySelector('input[name="password"]').value;
-            form.appendChild(passwordInput);
-            
-            // 添加年份
-            var yearInput = document.createElement('input');
-            yearInput.type = 'hidden';
-            yearInput.name = 'year';
-            yearInput.value = document.querySelector('select[name="year"]').value;
-            form.appendChild(yearInput);
-            
-            document.body.appendChild(form);
-            form.submit();
-        }
-    }
-
-    // 點擊背景關閉表單
-    document.getElementById('addForm').addEventListener('click', function(e) {
-        if (e.target === this) {
-            closeAddForm();
-        }
-    });
-
-    document.getElementById('editForm').addEventListener('click', function(e) {
-        if (e.target === this) {
-            closeEditForm();
-        }
-    });
-  </script>
 </body>
 <footer class="site-footer">
     <div class="footer-content">

@@ -22,6 +22,29 @@
     </header>
 
     <main>
+        <?php
+        include 'conn.php';
+        $filename = $_POST["username"];
+        $filepasswd = $_POST["password"];
+        $team_id = $_POST["team_id"] ?? null;
+
+        // 發送 GET 請求查詢符合條件的學生
+        $response = $supabaseClient->get('隊伍', [
+            'query' => [
+                '隊伍編號' => 'eq.' . $team_id,
+                'select' => '*',
+            ]
+        ]);
+
+
+        $data = json_decode($response->getBody(), true);
+
+        if (count($data) === 1) {
+            $reasons = $data[0]['退件原因'] ?? '';
+            echo '<h2>退件原因: ' . $reasons . '</h2>';
+                $members = [['報名進度' => '未報名']];
+        }
+        ?>
         <section class="upload-section">
             <h2>提交作品資料</h2>
             <form action="submit_project.php" method="POST" enctype="multipart/form-data">

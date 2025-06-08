@@ -33,7 +33,7 @@
         // $result = mysqli_query($link, $sql);
         // $name = mysqli_fetch_array($result);
     if (count($data) === 1) {
-        echo '<h2>學生資料所</h2>';
+        echo '<h2>評審資料</h2>';
         echo '
         <div class="admin-buttons">
             <form action="view_judges.php" method="POST">
