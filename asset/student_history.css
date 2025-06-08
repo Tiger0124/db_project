@@ -5,8 +5,7 @@
   box-sizing: border-box;
 }
 
-html,
-body {
+html, body {
   height: 100vh;
   width: 100vw;
   margin: 0;
@@ -19,11 +18,11 @@ body {
   flex-direction: column;
   min-height: 100vh;
   font-family: "Microsoft JhengHei", "Noto Sans TC", Arial, sans-serif;
-  background-color: #f5f5f5;
+  background: #ffffff; /* 修改為純白色背景 */
   color: #333;
   line-height: 1.6;
-  padding-top: 80px; /* 為header預留空間 */
-  padding-bottom: 70px; /* 為footer預留空間 */
+  padding-top: 100px;
+  padding-bottom: 80px;
 }
 
 /* Header 樣式 - 固定在頂部 */
@@ -37,13 +36,14 @@ header {
     to right,
     #ffffff 0%,
     #ffffff 30%,
-    #ffd700 60%,
+    #FFD700 60%,
     #f5be11 100%
   );
   color: #2c3e50;
   padding: 1rem 0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
   z-index: 1000;
+  backdrop-filter: blur(10px);
 }
 
 .navbar {
@@ -59,7 +59,12 @@ header {
 .logo img {
   height: 50px;
   width: auto;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+  transition: transform 0.3s ease;
+}
+
+.logo img:hover {
+  transform: scale(1.05);
 }
 
 header h1 {
@@ -67,191 +72,313 @@ header h1 {
   font-weight: 600;
   letter-spacing: 1px;
   color: #2c3e50;
-  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8);
+  text-shadow: 0 1px 3px rgba(255,255,255,0.8);
 }
 
 /* Main 內容區塊 */
 main#content {
   flex: 1;
-  width: 100vw;
-  padding: 2rem;
-  background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
-  margin-top: 0;
-  margin-bottom: 0;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 3rem 2rem 2rem 2rem;
 }
 
-/* 標題樣式 */
+/* 頁面標題 */
 main h2 {
   text-align: center;
+  font-size: 2.5rem;
+  font-weight: 700;
   color: #2c3e50;
-  font-size: 2.2rem;
-  margin-bottom: 3rem;
-  font-weight: 600;
+  margin-bottom: 2rem;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  animation: fadeInUp 0.8s ease-out;
 }
 
-/* 年份選擇表單 */
+/* 年份查詢表單 */
 main > form {
   width: 100%;
-  max-width: 500px;
+  max-width: 600px;
   margin: 0 auto 3rem auto;
   padding: 2rem;
-  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  background: white;
   border-radius: 15px;
-  box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
   display: flex;
   align-items: center;
   gap: 1rem;
   flex-wrap: wrap;
   justify-content: center;
+  border: 1px solid #e9ecef;
+  animation: slideInUp 0.6s ease-out 0.2s both;
 }
 
-/* 表單標籤 */
 main > form label {
-  color: white;
   font-weight: 600;
+  color: #495057;
   font-size: 1.1rem;
 }
 
 /* 下拉選單樣式 */
 select {
   padding: 0.8rem 1rem;
-  border: none;
+  border: 2px solid #e9ecef;
   border-radius: 8px;
   font-size: 1rem;
-  background: rgba(255, 255, 255, 0.95);
+  background: #f8f9fa;
   color: #2c3e50;
   cursor: pointer;
   transition: all 0.3s ease;
   min-width: 120px;
+  font-weight: 600;
 }
 
 select:focus {
   outline: none;
+  border-color: #667eea;
   background: white;
-  box-shadow: 0 4px 15px rgba(245, 190, 17, 0.3);
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  transform: translateY(-2px);
 }
 
 /* 查詢按鈕 */
 main > form button {
   padding: 0.8rem 1.5rem;
-  background: linear-gradient(135deg, #ffd700 0%, #f5be11 100%);
-  color: #2c3e50;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
   border: none;
   border-radius: 8px;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(245, 190, 17, 0.3);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  border: 2px solid transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+main > form button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s;
+}
+
+main > form button:hover::before {
+  left: 100%;
 }
 
 main > form button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(245, 190, 17, 0.5);
-  background: linear-gradient(135deg, #f5be11 0%, #e6a800 100%);
-  color: white;
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+  border-color: rgba(255,255,255,0.3);
+}
+
+/* 表格容器 - 需要包裝表格 */
+.table-container {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  margin-bottom: 3rem;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+  overflow-x: auto;
+  border: 1px solid #e9ecef;
+  animation: slideInUp 0.6s ease-out 0.4s both;
 }
 
 /* 表格樣式 */
 table {
   width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
+  min-width: 1000px;
   border-collapse: collapse;
   background: white;
-  border-radius: 15px;
+  font-size: 0.9rem;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 20px rgba(0,0,0,0.05);
 }
 
 /* 表格標題 */
-thead th {
-  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+table thead th {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 1rem;
   padding: 1.2rem 0.8rem;
   text-align: center;
   border: none;
   white-space: nowrap;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  letter-spacing: 0.5px;
 }
 
 /* 表格內容 */
-tbody td {
+table tbody td {
   padding: 1.2rem 0.8rem;
   color: #555;
   font-size: 0.9rem;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid #e9ecef;
   text-align: center;
   vertical-align: middle;
+  word-wrap: break-word;
+  background: white;
+  transition: all 0.3s ease;
 }
 
-tbody tr:last-child td {
-  border-bottom: none;
+/* 隊伍名稱欄位 */
+table td:nth-child(1) {
+  font-weight: 600;
+  color: #2c3e50;
+  background: rgba(102, 126, 234, 0.05);
+  min-width: 150px;
 }
 
-tbody tr:hover {
-  background-color: #f8f9fa;
-  transform: scale(1.005);
-  transition: all 0.2s ease;
-}
-
-/* 無資料訊息 */
-tbody td[colspan] {
-  text-align: center;
-  color: #999;
-  font-style: italic;
-  padding: 3rem;
-  font-size: 1.1rem;
+/* 作品名稱欄位 */
+table td:nth-child(2) {
+  font-weight: 500;
+  color: #28a745;
+  min-width: 200px;
 }
 
 /* 下載連結樣式 */
-tbody td a {
-  display: inline-block;
-  padding: 0.5rem 1rem;
-  background: linear-gradient(135deg, #ffd700 0%, #f5be11 100%);
-  color: #2c3e50;
+table td:nth-child(3) a, 
+table td:nth-child(4) a {
+  color: #17a2b8;
   text-decoration: none;
-  border-radius: 6px;
-  font-weight: 500;
-  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  background: rgba(23, 162, 184, 0.1);
   transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(245, 190, 17, 0.3);
+  display: inline-block;
+  border: 1px solid rgba(23, 162, 184, 0.2);
 }
 
-tbody td a:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(245, 190, 17, 0.5);
-  background: linear-gradient(135deg, #f5be11 0%, #e6a800 100%);
+table td:nth-child(3) a:hover, 
+table td:nth-child(4) a:hover {
+  background: #17a2b8;
   color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(23, 162, 184, 0.3);
+  border-color: #17a2b8;
 }
 
 /* 外部連結樣式 */
-tbody td a[target="_blank"] {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+table td:nth-child(5) a, 
+table td:nth-child(6) a {
+  color: #8e44ad;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  background: rgba(142, 68, 173, 0.1);
+  transition: all 0.3s ease;
+  display: inline-block;
+  border: 1px solid rgba(142, 68, 173, 0.2);
+}
+
+table td:nth-child(5) a:hover, 
+table td:nth-child(6) a:hover {
+  background: #8e44ad;
   color: white;
-  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(142, 68, 173, 0.3);
+  border-color: #8e44ad;
 }
 
-tbody td a[target="_blank"]:hover {
-  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.5);
+/* 無資料訊息 */
+table td[colspan="6"] {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #6c757d;
+  padding: 3rem;
+  font-style: italic;
 }
 
-/* Footer 樣式 - 固定在底部 */
+table tr:last-child td {
+  border-bottom: none;
+}
+
+table tr:hover td {
+  background-color: #f8f9fa;
+  transform: scale(1.002);
+  transition: all 0.2s ease;
+}
+
+table tr:nth-child(even) td {
+  background-color: #fdfdfd;
+}
+
+table tr:nth-child(even):hover td {
+  background-color: #f0f0f0;
+}
+
+/* 返回按鈕樣式 */
+main > button {
+  display: block;
+  margin: 2rem auto;
+  padding: 1.2rem 3rem;
+  background: linear-gradient(135deg, #FFD700 0%, #f5be11 100%);
+  color: #2c3e50;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 20px rgba(245, 190, 17, 0.3);
+  position: relative;
+  overflow: hidden;
+  border: 2px solid transparent;
+}
+
+main > button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.5s;
+}
+
+main > button:hover::before {
+  left: 100%;
+}
+
+main > button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(245, 190, 17, 0.4);
+  background: linear-gradient(135deg, #f5be11 0%, #e6a800 100%);
+  color: white;
+  border-color: rgba(255,255,255,0.3);
+}
+
+/* Footer 樣式 */
 .site-footer {
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100vw;
   height: 70px;
-  background: #2c3e50;
+  background: rgba(44, 62, 80, 0.95);
+  backdrop-filter: blur(10px);
   color: white;
   padding: 1rem 0;
   font-size: 0.9rem;
   z-index: 1000;
   display: flex;
   align-items: center;
+  border-top: 1px solid rgba(255,255,255,0.1);
 }
 
 .footer-content {
@@ -286,6 +413,7 @@ tbody td a[target="_blank"]:hover {
 .footer-container a {
   color: #3498db;
   text-decoration: none;
+  transition: color 0.3s ease;
 }
 
 .footer-container a:hover {
@@ -313,69 +441,75 @@ tbody td a[target="_blank"]:hover {
 }
 
 /* 響應式設計 */
-@media (max-width: 1200px) {
-  main#content {
-    overflow-x: auto;
-  }
-
-  table {
-    min-width: 1000px;
-  }
-}
-
 @media (max-width: 768px) {
   body {
-    padding-top: 110px;
-    padding-bottom: 90px;
+    padding-top: 130px;
+    padding-bottom: 100px;
   }
-
+  
   header {
     height: 110px;
-    background: linear-gradient(to bottom, #ffffff 0%, #f5be11 100%);
+    background: linear-gradient(
+      to bottom,
+      #ffffff 0%,
+      #f5be11 100%
+    );
   }
-
+  
   .navbar {
     flex-direction: column;
     text-align: center;
     gap: 1rem;
     padding: 0 1rem;
   }
-
+  
   header h1 {
     font-size: 1.4rem;
   }
-
-  main#content {
-    padding: 1rem;
+  
+  main {
+    padding: 2rem 1rem;
   }
-
+  
   main h2 {
-    font-size: 1.8rem;
-    margin-bottom: 2rem;
+    font-size: 2rem;
   }
-
+  
   main > form {
-    padding: 1.5rem;
     flex-direction: column;
+    padding: 1.5rem;
     gap: 1rem;
   }
-
-  thead th,
-  tbody td {
-    padding: 0.8rem 0.4rem;
-    font-size: 0.8rem;
+  
+  select, main > form button {
+    width: 100%;
+    max-width: 300px;
   }
-
+  
+  .table-container {
+    padding: 1rem;
+    overflow-x: auto;
+  }
+  
+  table {
+    font-size: 0.8rem;
+    min-width: 1000px;
+  }
+  
+  table th, table td {
+    padding: 0.8rem 0.4rem;
+  }
+  
   .site-footer {
     height: 90px;
   }
-
+  
   .footer-row {
     flex-direction: column;
     text-align: center;
     gap: 0.5rem;
   }
-
+  
   .footer-links {
     justify-content: center;
   }
@@ -383,39 +517,97 @@ tbody td a[target="_blank"]:hover {
 
 @media (max-width: 480px) {
   body {
-    padding-top: 130px;
-    padding-bottom: 110px;
+    padding-top: 150px;
+    padding-bottom: 120px;
   }
-
+  
   header {
     height: 130px;
   }
-
+  
   header h1 {
     font-size: 1.2rem;
   }
-
+  
   main h2 {
-    font-size: 1.5rem;
+    font-size: 1.7rem;
   }
-
+  
   main > form {
     padding: 1rem;
-    max-width: 95vw;
   }
-
-  thead th,
-  tbody td {
-    padding: 0.6rem 0.2rem;
+  
+  .table-container {
+    padding: 0.5rem;
+  }
+  
+  table {
     font-size: 0.7rem;
   }
-
+  
+  table th, table td {
+    padding: 0.5rem 0.2rem;
+  }
+  
   .site-footer {
     height: 110px;
   }
 }
 
-/* 返回區塊 */
-.return-section {
-  border-radius: 15px;
+/* 動畫效果 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* 滾動條樣式 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
+
+/* 載入動畫 */
+.loading {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(102, 126, 234, 0.3);
+  border-radius: 50%;
+  border-top-color: #667eea;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }

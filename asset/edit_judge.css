@@ -18,11 +18,11 @@ body {
   flex-direction: column;
   min-height: 100vh;
   font-family: "Microsoft JhengHei", "Noto Sans TC", Arial, sans-serif;
-  background-color: #f5f5f5;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
   color: #333;
   line-height: 1.6;
-  padding-top: 80px; /* 為header預留空間 */
-  padding-bottom: 70px; /* 為footer預留空間 */
+  padding-top: 100px;
+  padding-bottom: 80px;
 }
 
 /* Header 樣式 - 固定在頂部 */
@@ -41,8 +41,9 @@ header {
   );
   color: #2c3e50;
   padding: 1rem 0;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
   z-index: 1000;
+  backdrop-filter: blur(10px);
 }
 
 .navbar {
@@ -59,6 +60,11 @@ header {
   height: 50px;
   width: auto;
   filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+  transition: transform 0.3s ease;
+}
+
+.logo img:hover {
+  transform: scale(1.05);
 }
 
 header h1 {
@@ -72,118 +78,181 @@ header h1 {
 /* Main 內容區塊 */
 main#content {
   flex: 1;
-  width: 100vw;
-  padding: 2rem;
-  background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 0;
-  margin-bottom: 0;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3rem 2rem 2rem 2rem;
 }
 
-/* 編輯評審資料區塊 */
+/* 編輯區塊 */
 .edit-team-section {
   width: 100%;
   max-width: 800px;
+  margin: 0 auto 3rem auto;
   background: white;
   border-radius: 20px;
   padding: 3rem;
-  box-shadow: 0 15px 40px rgba(0,0,0,0.1);
-  margin-bottom: 2rem;
-  transform: translateY(0);
-  transition: all 0.3s ease;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+  border: 1px solid #e9ecef;
+  animation: slideInUp 0.6s ease-out;
 }
 
-.edit-team-section:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 20px 50px rgba(0,0,0,0.15);
-}
-
-/* 標題樣式 */
-.edit-team-section h2 {
+.edit-team-section > h2 {
   text-align: center;
+  font-size: 2.5rem;
+  font-weight: 700;
   color: #2c3e50;
-  font-size: 2.2rem;
-  margin-bottom: 3rem;
-  font-weight: 600;
+  margin-bottom: 2rem;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border-bottom: 3px solid #FFD700;
+  padding-bottom: 1rem;
+  position: relative;
 }
 
-/* 子標題樣式 */
-.edit-team-section h2[style] {
-  text-align: left;
-  font-size: 1.5rem;
-  margin-bottom: 2rem;
-  margin-left: 0 !important; /* 覆蓋inline style */
-  color: #f5be11;
-  border-bottom: 2px solid #f5be11;
-  padding-bottom: 0.5rem;
+.edit-team-section > h2::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 2px;
 }
 
 /* 表單樣式 */
 form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  width: 100%;
 }
 
-/* 學生資料區塊 */
-.student-info {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-  border-radius: 15px;
-  padding: 2.5rem;
+form h2 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #667eea;
   margin-bottom: 2rem;
-  box-shadow: 0 8px 25px rgba(240, 147, 251, 0.3);
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e9ecef;
+  margin-left: 0 !important; /* 修正偏移問題 */
+}
+
+/* 學生資訊區塊 */
+.student-info {
+  display: block;
+  width: 100%;
+}
+
+/* 表單群組 */
+.form-group {
+  margin-bottom: 1.5rem;
+  width: 100%;
 }
 
 /* 標籤樣式 */
 label {
-  color: white;
-  font-weight: 600;
-  font-size: 1.1rem;
-  margin-bottom: 0.5rem;
-  margin-top: 1rem;
   display: block;
-}
-
-label:first-of-type {
-  margin-top: 0;
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  width: 100%;
 }
 
 /* 輸入框樣式 */
-input[type="text"],
-input[type="email"],
+input[type="text"], 
+input[type="email"], 
 input[type="tel"] {
   width: 100%;
   padding: 1rem;
-  border: 2px solid transparent;
+  border: 2px solid #e9ecef;
   border-radius: 10px;
   font-size: 1rem;
-  font-family: inherit;
-  background: rgba(255, 255, 255, 0.95);
   transition: all 0.3s ease;
+  background: #f8f9fa;
+  font-family: inherit;
   margin-bottom: 1rem;
+  display: block;
 }
 
-input[type="text"]:focus,
-input[type="email"]:focus,
+input[type="text"]:focus, 
+input[type="email"]:focus, 
 input[type="tel"]:focus {
   outline: none;
-  border-color: #FFD700;
+  border-color: #667eea;
   background: white;
-  box-shadow: 0 4px 15px rgba(245, 190, 17, 0.3);
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
   transform: translateY(-2px);
 }
 
-/* 只讀輸入框樣式 */
 input[readonly] {
-  background: rgba(255, 255, 255, 0.7);
-  color: #666;
+  background: #e9ecef;
+  color: #6c757d;
   cursor: not-allowed;
 }
 
-/* 提交按鈕樣式 */
+input[readonly]:focus {
+  border-color: #e9ecef;
+  box-shadow: none;
+  transform: none;
+}
+
+/* 提交按鈕 */
 button[type="submit"] {
+  width: 100%;
+  padding: 1.2rem 2rem;
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 20px rgba(40, 167, 69, 0.3);
+  margin-top: 1rem;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid transparent;
+}
+
+button[type="submit"]::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s;
+}
+
+button[type="submit"]:hover::before {
+  left: 100%;
+}
+
+button[type="submit"]:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(40, 167, 69, 0.5);
+  background: linear-gradient(135deg, #20c997 0%, #28a745 100%);
+  border-color: rgba(255,255,255,0.3);
+}
+
+/* 返回表單樣式 */
+main > form:last-of-type {
+  width: 100%;
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+  text-align: center;
+  border: 1px solid #e9ecef;
+}
+
+/* 返回按鈕樣式 */
+main > form:last-of-type button {
+  width: 100%;
   padding: 1.2rem 2rem;
   background: linear-gradient(135deg, #FFD700 0%, #f5be11 100%);
   color: #2c3e50;
@@ -193,59 +262,57 @@ button[type="submit"] {
   font-weight: 700;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 6px 20px rgba(245, 190, 17, 0.4);
-  margin-top: 1rem;
+  box-shadow: 0 6px 20px rgba(245, 190, 17, 0.3);
+  margin: 0;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid transparent;
 }
 
-button[type="submit"]:hover {
+main > form:last-of-type button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.5s;
+}
+
+main > form:last-of-type button:hover::before {
+  left: 100%;
+}
+
+main > form:last-of-type button:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 30px rgba(245, 190, 17, 0.6);
+  box-shadow: 0 10px 30px rgba(245, 190, 17, 0.4);
   background: linear-gradient(135deg, #f5be11 0%, #e6a800 100%);
   color: white;
+  border-color: rgba(255,255,255,0.3);
 }
 
-/* 返回按鈕容器 */
-main > form {
-  width: 100%;
-  max-width: 200px;
-  margin: 0 auto;
+/* 隱藏輸入框 */
+input[type="hidden"] {
+  display: none;
 }
 
-/* 返回按鈕樣式 */
-main > form button {
-  width: 100%;
-  padding: 1rem 2rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border: none;
-  border-radius: 12px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-}
-
-main > form button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
-  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-}
-
-/* Footer 樣式 - 固定在底部 */
+/* Footer 樣式 */
 .site-footer {
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100vw;
   height: 70px;
-  background: #2c3e50;
+  background: rgba(44, 62, 80, 0.95);
+  backdrop-filter: blur(10px);
   color: white;
   padding: 1rem 0;
   font-size: 0.9rem;
   z-index: 1000;
   display: flex;
   align-items: center;
+  border-top: 1px solid rgba(255,255,255,0.1);
 }
 
 .footer-content {
@@ -280,6 +347,7 @@ main > form button:hover {
 .footer-container a {
   color: #3498db;
   text-decoration: none;
+  transition: color 0.3s ease;
 }
 
 .footer-container a:hover {
@@ -309,8 +377,8 @@ main > form button:hover {
 /* 響應式設計 */
 @media (max-width: 768px) {
   body {
-    padding-top: 110px;
-    padding-bottom: 90px;
+    padding-top: 130px;
+    padding-bottom: 100px;
   }
   
   header {
@@ -333,33 +401,24 @@ main > form button:hover {
     font-size: 1.4rem;
   }
   
-  main#content {
-    padding: 1rem;
+  main {
+    padding: 2rem 1rem;
   }
   
   .edit-team-section {
     padding: 2rem;
-    max-width: 90vw;
   }
   
-  .edit-team-section h2 {
-    font-size: 1.8rem;
-    margin-bottom: 2rem;
+  .edit-team-section > h2 {
+    font-size: 2rem;
   }
   
-  .student-info {
-    padding: 2rem;
+  form h2 {
+    font-size: 1.5rem;
   }
   
-  input[type="text"],
-  input[type="email"],
-  input[type="tel"] {
-    padding: 0.8rem;
-  }
-  
-  button[type="submit"] {
-    font-size: 1.1rem;
-    padding: 1rem;
+  main > form:last-of-type {
+    padding: 1.5rem;
   }
   
   .site-footer {
@@ -379,8 +438,8 @@ main > form button:hover {
 
 @media (max-width: 480px) {
   body {
-    padding-top: 130px;
-    padding-bottom: 110px;
+    padding-top: 150px;
+    padding-bottom: 120px;
   }
   
   header {
@@ -391,29 +450,20 @@ main > form button:hover {
     font-size: 1.2rem;
   }
   
+  .edit-team-section > h2 {
+    font-size: 1.7rem;
+  }
+  
   .edit-team-section {
     padding: 1.5rem;
-    max-width: 95vw;
   }
   
-  .edit-team-section h2 {
-    font-size: 1.5rem;
+  form h2 {
+    font-size: 1.3rem;
   }
   
-  .student-info {
-    padding: 1.5rem;
-  }
-  
-  input[type="text"],
-  input[type="email"],
-  input[type="tel"] {
-    padding: 0.7rem;
-    font-size: 0.9rem;
-  }
-  
-  button[type="submit"] {
-    font-size: 1rem;
-    padding: 0.8rem;
+  main > form:last-of-type {
+    padding: 1rem;
   }
   
   .site-footer {
@@ -421,14 +471,59 @@ main > form button:hover {
   }
 }
 
-/* 大螢幕優化 */
-@media (min-width: 1200px) {
-  .edit-team-section {
-    max-width: 900px;
-    padding: 3.5rem;
+/* 動畫效果 */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px) scale(0.9);
   }
-  
-  .edit-team-section h2 {
-    font-size: 2.5rem;
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
+}
+
+/* 表單驗證樣式 */
+input:invalid {
+  border-color: #dc3545;
+}
+
+input:valid {
+  border-color: #28a745;
+}
+
+/* 載入效果 */
+.loading {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(102, 126, 234, 0.3);
+  border-radius: 50%;
+  border-top-color: #667eea;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* 成功/錯誤訊息樣式 */
+.alert {
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+
+.alert-success {
+  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+  color: #155724;
+  border-color: #c3e6cb;
+}
+
+.alert-error {
+  background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+  color: #721c24;
+  border-color: #f5c6cb;
 }

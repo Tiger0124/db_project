@@ -18,7 +18,7 @@ body {
   flex-direction: column;
   min-height: 100vh;
   font-family: "Microsoft JhengHei", "Noto Sans TC", Arial, sans-serif;
-  background-color: #f5f5f5;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
   color: #333;
   line-height: 1.6;
   padding-top: 100px;
@@ -41,8 +41,9 @@ header {
   );
   color: #2c3e50;
   padding: 1rem 0;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
   z-index: 1000;
+  backdrop-filter: blur(10px);
 }
 
 .navbar {
@@ -59,6 +60,11 @@ header {
   height: 50px;
   width: auto;
   filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+  transition: transform 0.3s ease;
+}
+
+.logo img:hover {
+  transform: scale(1.05);
 }
 
 header h1 {
@@ -72,67 +78,78 @@ header h1 {
 /* Main 內容區塊 */
 main {
   flex: 1;
-  width: 100vw;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 3rem 2rem 2rem 2rem;
-  background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
-  margin-top: 0;
-  margin-bottom: 0;
+}
+
+/* 容器樣式 */
+.container {
+  width: 100%;
+  margin: 0 auto;
 }
 
 /* 隊伍資訊區塊 */
 .team-info {
   width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
   background: white;
   border-radius: 20px;
   padding: 3rem;
   box-shadow: 0 15px 40px rgba(0,0,0,0.1);
   margin-bottom: 2rem;
   animation: fadeInUp 0.8s ease-out;
+  border: 1px solid #e9ecef;
 }
 
 /* 主標題樣式 */
 .team-info h2 {
-  text-align: center;
   color: #2c3e50;
   font-size: 2.2rem;
-  margin-bottom: 3rem;
-  font-weight: 600;
-  border-bottom: 3px solid #8e44ad;
+  margin-bottom: 2rem;
+  font-weight: 700;
+  border-bottom: 3px solid #667eea;
   padding-bottom: 1rem;
   position: relative;
+  text-align: center;
 }
 
-.team-info h2::before {
+.team-info h2::after {
   content: '';
   position: absolute;
   bottom: -3px;
   left: 50%;
   transform: translateX(-50%);
-  width: 100px;
+  width: 80px;
   height: 3px;
   background: linear-gradient(135deg, #FFD700 0%, #f5be11 100%);
+  border-radius: 2px;
 }
 
-/* 隊伍基本資料區塊 */
-.team-basic-info {
-  background: linear-gradient(135deg, #8e44ad 0%, #9b59b6 100%);
+/* 隊伍詳細資料區塊 */
+.team-details {
+  background: #f8f9fa;
   border-radius: 15px;
-  padding: 2.5rem;
-  margin-bottom: 3rem;
-  box-shadow: 0 8px 25px rgba(142, 68, 173, 0.3);
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border: 1px solid #e9ecef;
+}
+
+.team-basic-info {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+.team-basic-info .label {
+  color: #FFD700;
+}
+
+.team-basic-info .value {
   color: white;
 }
 
-.team-basic-info h3 {
-  color: #FFD700;
-  font-size: 1.5rem;
-  margin-bottom: 2rem;
-  font-weight: 600;
-  text-align: center;
-}
-
+/* 資訊項目樣式 */
 .info-item {
   display: flex;
   align-items: center;
@@ -141,168 +158,146 @@ main {
   background: rgba(255, 255, 255, 0.1);
   border-radius: 10px;
   backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.team-details:not(.team-basic-info) .info-item {
+  background: white;
+  border: 1px solid #e9ecef;
 }
 
 .info-item:last-child {
   margin-bottom: 0;
 }
 
+.info-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* 標籤和值樣式 */
 .label {
   font-weight: 600;
-  color: #FFD700;
+  color: #495057;
   min-width: 150px;
   font-size: 1.1rem;
 }
 
 .value {
-  color: white;
+  color: #333;
   font-size: 1rem;
   word-wrap: break-word;
+  flex: 1;
 }
 
-.download-link, .external-link {
-  color: #FFD700;
+/* 分隔線 */
+hr {
+  border: none;
+  height: 2px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  margin: 1.5rem 0;
+  border-radius: 1px;
+}
+
+/* 下載連結樣式 */
+.download-link {
+  color: #17a2b8;
   text-decoration: none;
   font-weight: 600;
   padding: 0.5rem 1rem;
-  background: rgba(255, 215, 0, 0.2);
-  border-radius: 6px;
+  background: rgba(23, 162, 184, 0.1);
+  border-radius: 8px;
   transition: all 0.3s ease;
+  display: inline-block;
+  border: 1px solid rgba(23, 162, 184, 0.2);
+}
+
+.download-link:hover {
+  background: #17a2b8;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(23, 162, 184, 0.3);
+  border-color: #17a2b8;
+  text-decoration: none;
+}
+
+/* 外部連結樣式 */
+.external-link {
+  color: #8e44ad;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  background: rgba(142, 68, 173, 0.1);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  display: inline-block;
+  border: 1px solid rgba(142, 68, 173, 0.2);
   word-break: break-all;
 }
 
-.download-link:hover, .external-link:hover {
+.external-link:hover {
+  background: #8e44ad;
   color: white;
-  background: rgba(255, 215, 0, 0.4);
   transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(142, 68, 173, 0.3);
+  border-color: #8e44ad;
+  text-decoration: none;
 }
 
-/* 子標題樣式 */
-h3 {
-  color: #8e44ad;
-  font-size: 1.5rem;
-  margin: 2rem 0 1.5rem 0;
-  font-weight: 600;
-  border-bottom: 2px solid #8e44ad;
-  padding-bottom: 0.5rem;
-}
-
-/* 桌面版表格容器 */
-.table-container {
-  width: 100%;
-  overflow-x: auto;
-  margin-bottom: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-  background: white;
-}
-
-/* 表格樣式 */
-table {
-  width: 100%;
-  min-width: 800px;
-  border-collapse: collapse;
-  background: white;
-  font-size: 0.9rem;
-}
-
-/* 表格標題 */
-thead th {
-  background: linear-gradient(135deg, #8e44ad 0%, #9b59b6 100%);
-  color: white;
-  font-weight: 600;
-  font-size: 1rem;
-  padding: 1.2rem 0.8rem;
-  text-align: center;
+/* 確認和拒絕按鈕 */
+.confirm-btn, .reject-btn {
+  padding: 1rem 2rem;
   border: none;
-  white-space: nowrap;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-
-/* 表格內容 */
-tbody td {
-  padding: 1.2rem 0.8rem;
-  color: #555;
-  font-size: 0.9rem;
-  border-bottom: 1px solid #f0f0f0;
-  text-align: center;
-  vertical-align: middle;
-  word-wrap: break-word;
-  max-width: 200px;
-}
-
-tbody tr:last-child td {
-  border-bottom: none;
-}
-
-tbody tr:hover {
-  background-color: #f8f9fa;
-  transform: scale(1.002);
-  transition: all 0.2s ease;
-}
-
-/* 手機版卡片顯示 */
-.mobile-cards {
-  display: none;
-}
-
-.student-card, .professor-card {
-  background: linear-gradient(135deg, #8e44ad 0%, #9b59b6 100%);
-  color: white;
-  border-radius: 15px;
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 8px 25px rgba(142, 68, 173, 0.3);
-  animation: fadeInUp 0.6s ease-out;
-}
-
-.card-header {
-  background: rgba(255, 255, 255, 0.2);
-  padding: 1rem;
-  border-radius: 10px;
-  margin-bottom: 1.5rem;
-  text-align: center;
-  backdrop-filter: blur(10px);
-}
-
-.card-header h4 {
-  font-size: 1.3rem;
+  border-radius: 12px;
+  font-size: 1.1rem;
   font-weight: 700;
-  color: #FFD700;
-  margin: 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin: 1rem 0.5rem;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid transparent;
 }
 
-.card-body {
-  display: grid;
-  gap: 1rem;
+.confirm-btn::before, .reject-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s;
 }
 
-.card-field {
-  background: rgba(255, 255, 255, 0.1);
-  padding: 1rem;
-  border-radius: 8px;
-  backdrop-filter: blur(10px);
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+.confirm-btn:hover::before, .reject-btn:hover::before {
+  left: 100%;
 }
 
-.field-label {
-  font-weight: 600;
-  color: #FFD700;
-  font-size: 0.95rem;
-  min-width: 100px;
-  flex-shrink: 0;
-}
-
-.field-value {
+.confirm-btn {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
   color: white;
-  font-size: 1rem;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  flex: 1;
+  box-shadow: 0 6px 20px rgba(40, 167, 69, 0.3);
+}
+
+.confirm-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(40, 167, 69, 0.5);
+  background: linear-gradient(135deg, #20c997 0%, #28a745 100%);
+  border-color: rgba(255,255,255,0.3);
+}
+
+.reject-btn {
+  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+  color: white;
+  box-shadow: 0 6px 20px rgba(220, 53, 69, 0.3);
+}
+
+.reject-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(220, 53, 69, 0.5);
+  background: linear-gradient(135deg, #c82333 0%, #dc3545 100%);
+  border-color: rgba(255,255,255,0.3);
 }
 
 /* 返回區塊 */
@@ -311,10 +306,11 @@ tbody tr:hover {
   max-width: 400px;
   margin: 3rem auto;
   padding: 2rem;
-  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  background: white;
   border-radius: 15px;
-  box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
   text-align: center;
+  border: 1px solid #e9ecef;
 }
 
 .return-btn {
@@ -328,30 +324,42 @@ tbody tr:hover {
   font-weight: 700;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 6px 20px rgba(245, 190, 17, 0.4);
+  box-shadow: 0 6px 20px rgba(245, 190, 17, 0.3);
+  position: relative;
+  overflow: hidden;
+  border: 2px solid transparent;
+}
+
+.return-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.5s;
+}
+
+.return-btn:hover::before {
+  left: 100%;
 }
 
 .return-btn:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 30px rgba(245, 190, 17, 0.6);
+  box-shadow: 0 10px 30px rgba(245, 190, 17, 0.4);
   background: linear-gradient(135deg, #f5be11 0%, #e6a800 100%);
   color: white;
+  border-color: rgba(255,255,255,0.3);
 }
 
 /* 錯誤訊息 */
-.error-message {
+.team-info p {
   text-align: center;
-  max-width: 600px;
-  margin: 2rem auto;
-  padding: 3rem;
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.1);
-}
-
-.error-message h2 {
-  color: #dc3545;
-  margin-bottom: 2rem;
+  font-size: 1.2rem;
+  color: #6c757d;
+  padding: 2rem;
+  font-style: italic;
 }
 
 /* Footer 樣式 */
@@ -361,13 +369,15 @@ tbody tr:hover {
   left: 0;
   width: 100vw;
   height: 70px;
-  background: #2c3e50;
+  background: rgba(44, 62, 80, 0.95);
+  backdrop-filter: blur(10px);
   color: white;
   padding: 1rem 0;
   font-size: 0.9rem;
   z-index: 1000;
   display: flex;
   align-items: center;
+  border-top: 1px solid rgba(255,255,255,0.1);
 }
 
 .footer-content {
@@ -402,6 +412,7 @@ tbody tr:hover {
 .footer-container a {
   color: #3498db;
   text-decoration: none;
+  transition: color 0.3s ease;
 }
 
 .footer-container a:hover {
@@ -461,15 +472,14 @@ tbody tr:hover {
   
   .team-info {
     padding: 2rem;
-    max-width: 95vw;
   }
   
   .team-info h2 {
     font-size: 1.8rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
   }
   
-  .team-basic-info {
+  .team-details {
     padding: 1.5rem;
   }
   
@@ -477,6 +487,7 @@ tbody tr:hover {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.5rem;
+    padding: 1rem;
   }
   
   .label {
@@ -484,21 +495,12 @@ tbody tr:hover {
     font-size: 1rem;
   }
   
-  h3 {
-    font-size: 1.3rem;
-  }
-  
-  /* 隱藏桌面版表格，顯示手機版卡片 */
-  .desktop-table {
-    display: none;
-  }
-  
-  .mobile-cards {
-    display: block;
+  .confirm-btn, .reject-btn {
+    width: 100%;
+    margin: 0.5rem 0;
   }
   
   .return-section {
-    max-width: 90vw;
     padding: 1.5rem;
   }
   
@@ -542,37 +544,25 @@ tbody tr:hover {
   
   .team-info {
     padding: 1.5rem;
-    max-width: 100vw;
-    border-radius: 0;
   }
   
-  .team-basic-info {
+  .team-details {
     padding: 1rem;
   }
   
-  h3 {
-    font-size: 1.1rem;
+  .info-item {
+    padding: 0.8rem;
   }
   
-  .student-card, .professor-card {
-    padding: 1rem;
+  .label {
+    font-size: 0.9rem;
   }
   
-  .card-header h4 {
-    font-size: 1.1rem;
-  }
-  
-  .field-label {
-    font-size: 0.85rem;
-    min-width: 80px;
-  }
-  
-  .field-value {
+  .value {
     font-size: 0.9rem;
   }
   
   .return-section {
-    max-width: 95vw;
     padding: 1rem;
   }
   
@@ -598,21 +588,38 @@ tbody tr:hover {
   }
 }
 
-/* 表格滾動條樣式 */
-.table-container::-webkit-scrollbar {
-  height: 8px;
+/* 載入動畫 */
+.loading {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(102, 126, 234, 0.3);
+  border-radius: 50%;
+  border-top-color: #667eea;
+  animation: spin 1s ease-in-out infinite;
 }
 
-.table-container::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 4px;
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
-.table-container::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #8e44ad 0%, #9b59b6 100%);
-  border-radius: 4px;
+/* 成功/錯誤訊息樣式 */
+.alert {
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+  font-weight: 600;
+  border: 1px solid transparent;
 }
 
-.table-container::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+.alert-success {
+  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+  color: #155724;
+  border-color: #c3e6cb;
+}
+
+.alert-error {
+  background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+  color: #721c24;
+  border-color: #f5c6cb;
 }

@@ -35,9 +35,9 @@ height: 80px;
 background: linear-gradient(
 to right,
 #ffffff 0%,
-#ffffff 30%,
-#FFD700 60%,
-#f5be11 100%
+#f8f9fa 30%,
+#e9ecef 60%,
+#dee2e6 100%
 );
 color: #2c3e50;
 padding: 1rem 0;
@@ -134,24 +134,23 @@ padding: 3rem;
 
 /* 返回按鈕樣式 */
 button[type="submit"] {
-padding: 1.2rem 3rem;
-background: linear-gradient(135deg, #FFD700 0%, #f5be11 100%);
-color: #2c3e50;
+padding: 1rem 2.5rem;
+background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+color: #ffffff;
 border: none;
-border-radius: 12px;
-font-size: 1.3rem;
-font-weight: 700;
+border-radius: 8px;
+font-size: 1.1rem;
+font-weight: 600;
 cursor: pointer;
 transition: all 0.3s ease;
-box-shadow: 0 6px 20px rgba(245, 190, 17, 0.4);
+box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
 margin: 0;
 }
 
 button[type="submit"]:hover {
-transform: translateY(-3px);
-box-shadow: 0 10px 30px rgba(245, 190, 17, 0.6);
-background: linear-gradient(135deg, #f5be11 0%, #e6a800 100%);
-color: white;
+transform: translateY(-2px);
+box-shadow: 0 6px 20px rgba(108, 117, 125, 0.4);
+background: linear-gradient(135deg, #495057 0%, #343a40 100%);
 }
 
 /* Footer 樣式 - 固定在底部 */
@@ -161,13 +160,14 @@ bottom: 0;
 left: 0;
 width: 100vw;
 height: 70px;
-background: #2c3e50;
-color: white;
+background: #f8f9fa;
+color: #495057;
 padding: 1rem 0;
 font-size: 0.9rem;
 z-index: 1000;
 display: flex;
 align-items: center;
+border-top: 1px solid #dee2e6;
 }
 
 .footer-content {
@@ -180,32 +180,17 @@ width: 100%;
 
 .footer-content > p {
 margin-bottom: 0.5rem;
-}
-
-.footer-row {
-display: flex;
-justify-content: space-between;
-align-items: center;
-margin-top: 0.5rem;
-flex-wrap: wrap;
-gap: 1rem;
-}
-
-.footer-container {
-flex: 1;
-}
-
-.footer-container p {
-margin: 0;
+color: #6c757d;
 }
 
 .footer-container a {
-color: #3498db;
+color: #495057;
 text-decoration: none;
+transition: color 0.3s ease;
 }
 
 .footer-container a:hover {
-color: #5dade2;
+color: #212529;
 }
 
 .footer-links {
@@ -217,7 +202,7 @@ padding: 0;
 }
 
 .footer-links li a {
-color: #ecf0f1;
+color: #495057;
 text-decoration: none;
 font-weight: 500;
 transition: color 0.3s ease;
@@ -225,7 +210,7 @@ font-size: 0.9rem;
 }
 
 .footer-links li a:hover {
-color: #3498db;
+color: #212529;
 }
 
 /* 響應式設計 */
