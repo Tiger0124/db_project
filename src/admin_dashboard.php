@@ -31,65 +31,6 @@
             ]
         ]);
         $data = json_decode($response->getBody(), true);
-        
-        // $sql = "SELECT * FROM 管理員_研發處 WHERE 員工編號 = '".$filename."' and 密碼 = '".$filepasswd."'";
-        // $result = mysqli_query($link, $sql);
-        // $name = mysqli_fetch_array($result);
-    if (count($data) === 1) {
-        echo '<h2>歡迎，'.$filename.' 管理員！</h2>';
-        echo '
-        <div class="admin-buttons">
-            <form action="view_teams.php" method="POST">
-                <input type="hidden" name="username" value="' . $_POST['username'] . '">
-                <input type="hidden" name="password" value="' . $_POST['password'] . '">
-                <button type="submit">查詢隊伍資料</button>
-            </form>
-            <form action="view_students.php" method="POST">
-                <input type="hidden" name="username" value="' . $_POST['username'] . '">
-                <input type="hidden" name="password" value="' . $_POST['password'] . '">
-                <button type="submit">查詢學生資料</button>
-            </form>
-            <form action="admin_judges.php" method="POST">
-                <input type="hidden" name="username" value="' . $_POST['username'] . '">
-                <input type="hidden" name="password" value="' . $_POST['password'] . '">
-                <button type="submit">查詢評審資料</button>
-            </form>
-            <form action="view_teachers.php" method="POST">
-                <input type="hidden" name="username" value="' . $_POST['username'] . '">
-                <input type="hidden" name="password" value="' . $_POST['password'] . '">
-                <button type="submit">查詢指導老師資料</button>
-            </form>
-            <form action="announcements.php" method="POST">
-                <input type="hidden" name="username" value="' . $_POST['username'] . '">
-                <input type="hidden" name="password" value="' . $_POST['password'] . '">
-                <button type="submit">公告重要事項</button>
-            </form>
-            </div>';
-    } else {
-        echo '<h2>登入失敗，請返回並重試。</h2>';
-        echo '<P>管理員帳號密碼提示</P>';
-        echo '<p>管理員帳號：員工編號</p>';
-        echo '<p>管理員密碼：密碼</p>';
-        echo '
-            <div class="button-container">    
-                <a href="admin.php" class="system-button">返回</a>
-            </div>';
-    }
-    ?>
-</body>
-<footer class="site-footer">
-    <div class="footer-content">
-        <p>&copy; Copyright © 2025 XC Lee Tiger Lin  How Ho. All rights reserved.</p>
-        <div class="footer-row">
-        <div class="footer-container">
-            <p>聯絡我們 : <a href="mailto:wylin@nuk.edu.tw">wylin@nuk.edu.tw</a></p>
-        </div>
-        <ul class="footer-links">
-            <li><a href="https://github.com/Tiger0124/db_project.git">關於我們</a></li>
-        </ul>
-        </div>
-    </div>
-</footer>
 
         if (count($data) === 1) {
             // 歡迎區塊
@@ -109,12 +50,22 @@
             echo '<div class="buttons-grid">';
 
             // 查詢隊伍資料按鈕
-            echo '<form action="view_students.php" method="POST" class="dashboard-form">';
+            echo '<form action="view_teams.php" method="POST" class="dashboard-form">';
             echo '<input type="hidden" name="username" value="' . htmlspecialchars($_POST['username']) . '">';
             echo '<input type="hidden" name="password" value="' . htmlspecialchars($_POST['password']) . '">';
             echo '<button type="submit" class="dashboard-btn team-btn">';
             echo '<span class="btn-icon">👥</span>';
             echo '<span class="btn-text">查詢隊伍資料</span>';
+            echo '</button>';
+            echo '</form>';
+
+            // 查詢學生資料按鈕
+            echo '<form action="view_students.php" method="POST" class="dashboard-form">';
+            echo '<input type="hidden" name="username" value="' . htmlspecialchars($_POST['username']) . '">';
+            echo '<input type="hidden" name="password" value="' . htmlspecialchars($_POST['password']) . '">';
+            echo '<button type="submit" class="dashboard-btn student-btn">';
+            echo '<span class="btn-icon">🎓</span>';
+            echo '<span class="btn-text">查詢學生資料</span>';
             echo '</button>';
             echo '</form>';
 
