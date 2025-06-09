@@ -180,7 +180,17 @@
             <form action="student_dashboard.php" method="POST">
                 <input type="hidden" name="username" value="' . $_POST['username'] . '">
                 <input type="hidden" name="password" value="' . $_POST['password'] . '">
-                <button type="submit">返回</button>
+                <button type="submit" style="
+                    padding: 0.8rem 1.5rem;
+                    background: linear-gradient(135deg, #ffd700 0%, #f5be11 100%);
+                    color: #2c3e50;
+                    border: none;
+                    border-radius: 8px;
+                    font-size: 1rem;
+                    font-weight: 600;
+                    cursor: pointer;
+                    box-shadow: 0 4px 15px rgba(245, 190, 17, 0.3);
+                ">返回</button>
             </form>';
     } else {
         // 如果不是 POST 提交，跳轉回表單頁面

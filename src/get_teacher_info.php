@@ -1,4 +1,3 @@
-<?php include 'darkmode.php'; ?>
 <?php
 include 'conn.php';
 
